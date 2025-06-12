@@ -105,13 +105,28 @@ export default function Cards() {
             }}
           >
             <div
-              className="card h-120 w-100 flex items-center justify-center text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md bg-[#D9D9D9]/20 border border-[#757575]/70"
+              className="card h-120 w-100 text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md bg-[#D9D9D9]/20 border border-[#757575]/70"
               style={{
                 filter: `blur(${blur}px)`,
                 opacity: opacity,
               }}
             >
-              {text}
+              <div>{text}</div>
+              <div style={{}} className="py-2">
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 35 35"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M28.3546 1.82294C30.889 1.96936 32.9114 3.99181 33.0579 6.52625L34.3849 29.4963C34.6499 34.0837 29.1068 36.5694 25.8576 33.3202L1.56055 9.02315C-1.68861 5.77399 0.797104 0.23093 5.38446 0.495944L28.3546 1.82294Z"
+                    fill="#D9D9D9"
+                    fill-opacity="0.9"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
         );

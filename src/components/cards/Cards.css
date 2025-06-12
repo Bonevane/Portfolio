@@ -20,6 +20,26 @@
   animation: fadeIn 0.5s ease-out 0.2s forwards;
 }
 
+.live-btn {
+  text-align: center;
+  align-content: center;
+  color: #464546;
+  background-color: rgba(217, 217, 217, 0.5);
+  font-size: 1rem;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid #b5b5b5;
+  border-radius: 9999px;
+}
+
+.project-tag {
+  text-align: center;
+  align-content: center;
+  font-size: 1rem;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid #b5b5b5;
+  border-radius: 9999px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

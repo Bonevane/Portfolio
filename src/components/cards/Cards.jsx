@@ -121,7 +121,7 @@ export default function Cards() {
           >
             {isSelected ? (
               <div
-                className="card flex-col h-120 w-100 text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md bg-[#D9D9D9]/20 border border-[#757575]/70"
+                className="card flex-col h-120 w-100 text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md border border-[#757575]/70"
                 style={{
                   padding: "0",
                   justifyContent: "normal",

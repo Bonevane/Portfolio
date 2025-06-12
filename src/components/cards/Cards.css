@@ -1,5 +1,6 @@
 .card {
   font-family: Teachers, sans-serif;
+  background-color: rgba(217, 217, 217, 0.2);
   font-size: 2rem;
   padding: 1rem 1.6rem;
   color: #d9d9d9;
@@ -16,8 +17,8 @@
 }
 
 .cards-container {
-  opacity: 0;
-  animation: fadeIn 0.5s ease-out 0.2s forwards;
+  opacity: 1;
+  animation: fadeIn 0.5s ease-out 0.2s backwards;
 }
 
 .live-btn {

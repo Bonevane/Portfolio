@@ -1,0 +1,6 @@
+.aurora-container {
+  transform: rotate(140deg) translate(-20%, 10%) scaleX(2) scaleY(1.5);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}

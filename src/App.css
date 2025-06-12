@@ -1,0 +1,57 @@
+@font-face {
+  font-family: "ElMessiri";
+  src: url("./assets/fonts/ElMessiri-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Teachers";
+  src: url("./assets/fonts/Teachers-VariableFont_wght.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+@keyframes spin-in {
+  0% {
+    transform: scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes zoomFadeIn {
+  0% {
+    opacity: 0;
+    /* transform: scale(0.7); */
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    /* transform: scale(1); */
+  }
+}

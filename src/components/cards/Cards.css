@@ -6,3 +6,17 @@
 .card:hover {
   transform: scale(1.02) translate(-3%, -3%);
 }
+
+.cards-container {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out 0.2s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

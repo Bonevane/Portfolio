@@ -57,8 +57,10 @@ export default function Dock() {
   };
 
   useEffect(() => {
-    moveUnderline(selected);
-    moveHighlight(selected);
+    setTimeout(() => {
+      moveUnderline(selected);
+      moveHighlight(selected);
+    }, 100);
 
     // Animate dock tabs one by one
     tabs.forEach((_, i) => {

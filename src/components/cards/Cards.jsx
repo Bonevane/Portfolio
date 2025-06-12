@@ -21,7 +21,7 @@ const allCards = [
 ];
 
 export default function Cards() {
-  const [centerIndex, setCenterIndex] = useState(10);
+  const [centerIndex, setCenterIndex] = useState(0);
   const [prevCenterIndex, setPrevCenterIndex] = useState(0);
 
   const scrollVelocity = 0.002; // Smaller is slower for real
@@ -45,10 +45,34 @@ export default function Cards() {
     return () => window.removeEventListener("wheel", handle);
   }, []);
 
+  useEffect(() => {
+    let frameId;
+    const target = allCards.length - 1; // The index you want to animate to
+    const speed = 0.05; // Adjust speed to taste
+    const centerRef = { current: 0 }; // Local tracker
+
+    const animate = () => {
+      centerRef.current += (target - centerRef.current) * speed;
+
+      if (Math.abs(target - centerRef.current) < 0.01) {
+        setCenterIndex(target);
+        cancelAnimationFrame(frameId);
+        return;
+      }
+
+      setCenterIndex(centerRef.current);
+      frameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
   const scrollDirection = centerIndex > prevCenterIndex ? "down" : "up";
 
   return (
-    <div className="absolute bottom-[2rem] right-[8rem] z-0">
+    <div className="cards-container absolute bottom-[2rem] right-[8rem] z-0">
       {allCards.map((text, cardIndex) => {
         const offsetStock = cardIndex - centerIndex;
         let offset = offsetStock * 2;

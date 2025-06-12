@@ -23,8 +23,8 @@ export default function App() {
         speed={1}
       />
       <Dock />
-      <Cards />
-      {/* <Flower /> */}
+      {/* <Cards /> */}
+      <Flower />
     </div>
 
     // const [selected, setSelected] = useState(null);

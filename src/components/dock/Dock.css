@@ -6,6 +6,16 @@
   display: flex;
   gap: 1.5rem;
   z-index: 50;
+  transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 1000px) {
+  .dock-container {
+    /* justify-content: center;
+    bottom: 6rem;
+    left: 0rem;
+    max-width: 100vw; */
+  }
 }
 
 .dock-container.swoop {

@@ -1,30 +1,14 @@
 import { useEffect, useState } from "react";
+import { cards } from "../../data/sections";
 import "./Cards.css";
 
-const allCards = [
-  "One",
-  "Two",
-  "Three",
-  "Four",
-  "Five",
-  "Six",
-  "Seven",
-  "Eight",
-  "Nine",
-  "Ten",
-  "Eleven",
-  "Twelve",
-  "Thirteen",
-  "Fourteen",
-  "Fifteen",
-  "Sixteen",
-];
-
-export default function Cards() {
+export default function Cards({ setCardSection }) {
   const [centerIndex, setCenterIndex] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [prevCardSection, setPrevCardSection] = useState(0);
+  const [animComplete, setAnimComplete] = useState(false);
 
-  const scrollVelocity = 0.002; // Smaller is slower for real
+  const scrollVelocity = 0.002;
 
   const visibleCount = 6;
   const half = Math.floor(visibleCount / 2);
@@ -33,20 +17,58 @@ export default function Cards() {
     e.preventDefault();
     setCenterIndex((prev) => {
       let next = prev + e.deltaY * scrollVelocity;
-      next = Math.max(0, Math.min(allCards.length - 1, next));
+      next = Math.max(0, Math.min(cards.length - 1, next));
       return next;
     });
   };
 
   useEffect(() => {
+    setCardSection(cards[cards.length - 1].section);
+    setPrevCardSection(cards[cards.length - 1].section);
+  }, [setCardSection]);
+
+  useEffect(() => {
+    if (!animComplete) return;
+    const progress = Math.round(centerIndex);
+    if (cards[progress].section != prevCardSection) {
+      setCardSection(cards[progress].section);
+    }
+    setPrevCardSection(cards[progress].section);
+  }, [centerIndex, setCardSection, prevCardSection, animComplete]);
+
+  useEffect(() => {
     const handle = (e) => handleWheel(e);
+
+    let touchStartY = 0;
+
+    const handleTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      const deltaY = touchStartY - e.touches[0].clientY;
+      if (Math.abs(deltaY) < 10) return;
+
+      handleWheel({
+        deltaY,
+        preventDefault: () => e.preventDefault(),
+      });
+    };
+
     window.addEventListener("wheel", handle, { passive: false });
-    return () => window.removeEventListener("wheel", handle);
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", handle);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
   }, []);
 
   useEffect(() => {
     let frameId;
-    const target = allCards.length - 1; // The index you want to animate to
+    const target = cards.length - 1; // The index you want to animate to
     const speed = 0.05; // Adjust speed to taste
     const centerRef = { current: 0 }; // Local tracker
 
@@ -56,6 +78,7 @@ export default function Cards() {
       if (Math.abs(target - centerRef.current) < 0.01) {
         setCenterIndex(target);
         cancelAnimationFrame(frameId);
+        setAnimComplete(true);
         return;
       }
 
@@ -64,13 +87,12 @@ export default function Cards() {
     };
 
     animate();
-
     return () => cancelAnimationFrame(frameId);
   }, []);
 
   return (
-    <div className="cards-container absolute bottom-[2rem] right-[8rem] z-0">
-      {allCards.map((text, cardIndex) => {
+    <div className="cards-container fixed bottom-[2rem] right-[8rem] z-0">
+      {cards.map((text, cardIndex) => {
         const offset = (cardIndex - centerIndex) * 1.5;
         const isSelected = selectedCard === cardIndex;
 
@@ -149,7 +171,7 @@ export default function Cards() {
             }}
           >
             <div
-              className={`card flex-col h-120 w-100 text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md border border-[#757575]/70`}
+              className={`card flex-col h-[30rem] w-[26rem] text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md border border-[#757575]/70`}
               style={{
                 filter: isSelected ? undefined : `blur(${blur}px)`,
                 opacity: isSelected ? 1 : opacity,

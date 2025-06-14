@@ -7,26 +7,41 @@ import Cards from "./components/cards/Cards.jsx";
 import TextOverlay from "./components/text/Text.jsx";
 import "./App.css";
 
-const sections = {
-  Home: ["#FFA73C", "#FFA73C", "#FF3232"],
-  Portfolios: ["#5227FF", "#7cff67", "#5227FF"],
-  About: ["#00B4DB", "#0083B0", "#005f73"],
-  Contact: ["#ff5f6d", "#ffc371", "#ff5f6d"],
-  // Add more as needed
+const colors = {
+  Home: ["#FFA73C", "#FFA73C", "#FF3232"], // Orange
+
+  Work: ["#00E6E6", "#0073CB", "#001F3F"], // Blue
+  Projects: ["#00B4DB", "#00C2CB", "#005f73"], // Cyan
+  Experiments: ["#00B4DB", "#7449FF", "#005f73"], // Purple
+  Misc: ["#FFF9C4", "#FFC01F", "#FBC02D"], // Yellow
+
+  Contact: ["#A2DED0", "#16A085", "#004D40"], // Teal
+  Miscellaneous: ["#FFADC0", "#FF3C73", "#A00048"], // Pink
+
+  // Additional (Unused)
+  Portfolios5: ["#00E6E6", "#FF383B", "#001F3F"], // Red
+  Contact5: ["#5227FF", "#7cff67", "#5227FF"], // Green
+  Contact4: ["#ff5f6d", "#ffc371", "#ff5f6d"], // Light Orange
+  Misc2: ["#FF8A88", "#FFFA80", "#FF8A80"], // Light Yellow
 };
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState("Home");
   const [cardSection, setCardSection] = useState(0);
+  let color = ["", "", ""];
+
+  const activeSectionKey =
+    currentTab === "Portfolios" ? cardSection : currentTab;
+
+  if (Object.prototype.hasOwnProperty.call(colors, activeSectionKey)) {
+    color = colors[activeSectionKey];
+  } else {
+    color = ["#000", "#000", "#000"];
+  }
 
   return (
     <div>
-      <Aurora
-        colorStops={sections[currentTab] ?? ["#000", "#000", "#000"]}
-        blend={1}
-        amplitude={0.5}
-        speed={1}
-      />
+      <Aurora colorStops={color} blend={1} amplitude={0.5} speed={1} />
       <TextOverlay tab={currentTab} cardSection={cardSection} />
       <Dock selected={currentTab} setSelected={setCurrentTab} />
       {/* Show content based on active tab */}

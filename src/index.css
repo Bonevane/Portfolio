@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+::selection {
+  background: transparent;
+  text-shadow: 0 0 5px #b9b9b9, 0 0 15px #b0b0b0, 0 0 20px #797979;
+}
+
 :root {
   overflow: hidden;
   margin: 0;

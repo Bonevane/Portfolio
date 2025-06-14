@@ -6,7 +6,6 @@ export default function TextOverlay({ tab, cardSection }) {
   let subtitle = "";
 
   const activeSectionKey = tab === "Portfolios" ? cardSection : tab;
-  console.log(activeSectionKey);
 
   if (Object.prototype.hasOwnProperty.call(sectionMap, activeSectionKey)) {
     title = sectionMap[activeSectionKey].title;

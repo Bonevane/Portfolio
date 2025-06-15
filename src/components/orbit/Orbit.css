@@ -1,0 +1,19 @@
+@keyframes orbit {
+  from {
+    transform: rotate(var(--start-rotation, 0deg));
+  }
+  to {
+    transform: rotate(calc(var(--start-rotation, 0deg) + 360deg));
+  }
+}
+
+@keyframes orbit-reverse {
+  from {
+    transform: translateX(-50%) translateY(-50%)
+      rotate(calc(var(--start-rotation, 0deg) * -1 + 360deg));
+  }
+  to {
+    transform: translateX(-50%) translateY(-50%)
+      rotate(calc(var(--start-rotation, 0deg) * -1));
+  }
+}

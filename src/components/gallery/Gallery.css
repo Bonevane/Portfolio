@@ -1,0 +1,86 @@
+.gallery-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100vh;
+  display: flex;
+  gap: 60px;
+  padding: 0 60px;
+  overflow: hidden;
+  z-index: 10;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.gallery-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  position: relative;
+}
+
+.gallery-item {
+  position: absolute;
+  width: 100%;
+}
+
+.gallery-item-inner {
+  transform: scale(1.01);
+  opacity: 0;
+  transition: transform 0.3s ease;
+  animation: fadeIn 1s ease-in-out 2s forwards;
+  will-change: transform, opacity;
+}
+.gallery-item-inner:hover {
+  transform: scale(1.04);
+}
+
+.gallery-image {
+  width: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(117, 117, 117, 0.2);
+  aspect-ratio: 3 / 4;
+}
+
+.gallery-image-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  filter: blur(30px);
+  opacity: 0.5;
+  z-index: -1;
+  border-radius: 15px;
+  aspect-ratio: 3 / 4;
+}
+
+.gallery-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 15px;
+  background: rgba(217, 217, 217, 0.2);
+  border: 1px solid rgba(117, 117, 117, 1);
+  z-index: -1;
+}
+
+.gallery-label {
+  font-family: Teachers;
+  position: absolute;
+  right: -8%; /* adjust to get the label closer/further */
+  top: 95%;
+  transform: translateY(0%) rotate(90deg);
+  transform-origin: right top;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ccc;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}

@@ -14,14 +14,14 @@ export default function Orbit() {
   }, []);
 
   const layerConfigs = [
-    { radius: 180, duration: 20 },
-    { radius: 260, duration: 25 },
-    { radius: 350, duration: 30 },
-    { radius: 440, duration: 35 },
+    { radius: 180, duration: 50 },
+    { radius: 260, duration: 67 },
+    { radius: 350, duration: 80 },
+    { radius: 440, duration: 105 },
   ];
 
   return (
-    <div className="fixed top-[-40px] right-[-80px] w-[100vh] h-[100vh] z-40">
+    <div className="fixed top-[-40px] right-[-80px] w-[100vh] h-[100vh] z-40 animate-[fadeIn_1s_ease-in_forwards]">
       <div
         className="absolute top-0 right-0 z-10 hover:scale-110 transition-transform"
         ref={centerRef}
@@ -57,41 +57,46 @@ export default function Orbit() {
         const iconsPerLayer = 2;
         const layer = Math.floor(i / iconsPerLayer);
         const { radius, duration } = layerConfigs[layer];
+        const baseRotation =
+          i * (Math.floor(Math.random() * (60 - 30 + 1)) + 30);
 
-        return (
-          <div
-            key={social.name}
-            className="absolute top-0 right-0"
-            style={{
-              "--start-rotation": `${i * 45}deg`,
-              width: radius * 2,
-              height: radius * 2,
-              marginRight: -radius + offsetY,
-              marginTop: -radius + offsetY,
-              animation: `orbit ${duration}s linear infinite`,
-              willChange: "transform",
-              pointerEvents: "none",
-            }}
-          >
-            <a
-              href={social.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-20 h-20 absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform z-10 backdrop-blur-md"
+        return [0, 120, 240].map((offset, j) => {
+          const rotation = (baseRotation + offset) % 360;
+          return (
+            <div
+              key={`${social.name}-${j}`}
+              className="absolute top-0 right-0"
               style={{
-                backgroundColor: `#${social.color}40`,
-                pointerEvents: "all",
-                animation: `orbit-reverse ${duration}s linear infinite`,
+                "--start-rotation": `${rotation}deg`,
+                width: radius * 2,
+                height: radius * 2,
+                marginRight: -radius + offsetY,
+                marginTop: -radius + offsetY,
+                animation: `orbit ${duration}s linear infinite`,
+                willChange: "transform",
+                pointerEvents: "none",
               }}
             >
-              <img
-                src={social.icon}
-                alt={social.name}
-                className="w-20 h-20 p-4"
-              />
-            </a>
-          </div>
-        );
+              <a
+                href={social.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-20 h-20 absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform z-10 backdrop-blur-md"
+                style={{
+                  backgroundColor: `#${social.color}40`,
+                  pointerEvents: "all",
+                  animation: `orbit-reverse ${duration}s linear infinite`,
+                }}
+              >
+                <img
+                  src={social.icon}
+                  alt={social.name}
+                  className="w-20 h-20 p-4"
+                />
+              </a>
+            </div>
+          );
+        });
       })}
     </div>
   );

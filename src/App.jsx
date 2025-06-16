@@ -7,6 +7,7 @@ import Cards from "./components/cards/Cards.jsx";
 import TextOverlay from "./components/text/Text.jsx";
 import Gallery from "./components/gallery/Gallery.jsx";
 import "./App.css";
+import Phone from "./components/phone/Phone.jsx";
 import Orbit from "./components/orbit/Orbit.jsx";
 
 const itemsLeft = [
@@ -45,7 +46,7 @@ const colors = {
 };
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState("Home");
+  const [currentTab, setCurrentTab] = useState("Contact");
   const [cardSection, setCardSection] = useState(0);
   let color = ["", "", ""];
 
@@ -69,7 +70,7 @@ export default function App() {
       {currentTab === "Misc" && (
         <Gallery imagesLeft={itemsLeft} imagesRight={itemsRight} />
       )}
-      {currentTab === "Contact" && <Orbit />}
+      {currentTab === "Contact" && <Phone />}
     </div>
   );
 }

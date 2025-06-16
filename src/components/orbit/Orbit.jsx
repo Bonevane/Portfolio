@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import "./Orbit.css";
 import { socials, bonevaneIcon } from "../../data/Socials";
 
@@ -16,7 +16,7 @@ export default function Orbit() {
   const layerConfigs = [
     { radius: 180, duration: 50 },
     { radius: 260, duration: 67 },
-    { radius: 350, duration: 80 },
+    { radius: 345, duration: 80 },
     { radius: 440, duration: 105 },
   ];
 
@@ -37,28 +37,11 @@ export default function Orbit() {
           className="absolute top-0 right-0 w-82 h-82 rounded-full p-12 z-[-1]"
         />
       </div>
-      <div
-        className="absolute top-0 right-0 w-82 h-82 border-1 border-[#757575]/50 rounded-full z-[-1]"
-        style={{ transform: "scale(1.55)" }}
-      />
-      <div
-        className="absolute top-0 right-0 w-82 h-82 border-1 border-[#757575]/30 rounded-full z-[-1]"
-        style={{ transform: "scale(2.25)" }}
-      />
-      <div
-        className="absolute top-0 right-0 w-82 h-82 border-1 border-[#757575]/20 rounded-full z-[-1]"
-        style={{ transform: "scale(3.025)" }}
-      />
-      <div
-        className="absolute top-0 right-0 w-82 h-82 border-1 border-[#757575]/10 rounded-full z-[-1]"
-        style={{ transform: "scale(3.8)" }}
-      />
       {socials.map((social, i) => {
         const iconsPerLayer = 2;
         const layer = Math.floor(i / iconsPerLayer);
         const { radius, duration } = layerConfigs[layer];
-        const baseRotation =
-          i * (Math.floor(Math.random() * (60 - 30 + 1)) + 30);
+        const baseRotation = i * (Math.floor(Math.random() * 10) + 40);
 
         return [0, 120, 240].map((offset, j) => {
           const rotation = (baseRotation + offset) % 360;
@@ -77,23 +60,41 @@ export default function Orbit() {
                 pointerEvents: "none",
               }}
             >
-              <a
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-20 h-20 absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform z-10 backdrop-blur-md"
+              <div
+                className="absolute left-0 top-0 w-full h-full rounded-full z-[-1]"
                 style={{
-                  backgroundColor: `#${social.color}40`,
-                  pointerEvents: "all",
+                  border: `1px solid rgba(117, 117, 117, ${
+                    0.2 - layer * 0.05
+                  })`,
+                  transform: `scale(${1.42})`,
+                }}
+              ></div>
+              <div
+                className="absolute left-0 top-0 w-20 h-20 rounded-full z-[-1]"
+                style={{
+                  border: `1px solid rgba(117, 117, 117, ${
+                    0.2 - layer * 0.05
+                  })`,
                   animation: `orbit-reverse ${duration}s linear infinite`,
                 }}
               >
-                <img
-                  src={social.icon}
-                  alt={social.name}
-                  className="w-20 h-20 p-4"
-                />
-              </a>
+                <a
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-full absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110  transition-transform z-10 backdrop-blur-md"
+                  style={{
+                    backgroundColor: `#${social.color}40`,
+                    pointerEvents: "all",
+                  }}
+                >
+                  <img
+                    src={social.icon}
+                    alt={social.name}
+                    className="w-full h-full p-4"
+                  />
+                </a>
+              </div>
             </div>
           );
         });

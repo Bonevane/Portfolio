@@ -7,13 +7,29 @@
   }
 }
 
-@keyframes orbit-reverse {
+@keyframes orbitIn {
   from {
-    transform: translateX(-50%) translateY(-50%)
-      rotate(calc(var(--start-rotation, 0deg) * -1 + 360deg));
+    transform: rotate(var(--start-rotation, 0deg));
   }
   to {
-    transform: translateX(-50%) translateY(-50%)
-      rotate(calc(var(--start-rotation, 0deg) * -1));
+    transform: rotate(calc(var(--start-rotation, 0deg) + 720deg));
+  }
+}
+
+@keyframes orbitInReverse {
+  from {
+    transform: rotate(calc(var(--start-rotation, 0deg) * -1 + 720deg));
+  }
+  to {
+    transform: rotate(calc(var(--start-rotation, 0deg) * -1));
+  }
+}
+
+@keyframes orbit-reverse {
+  from {
+    transform: rotate(calc(var(--start-rotation, 0deg) * -1 + 360deg));
+  }
+  to {
+    transform: rotate(calc(var(--start-rotation, 0deg) * -1));
   }
 }

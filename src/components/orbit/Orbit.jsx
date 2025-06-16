@@ -7,7 +7,7 @@ export default function Orbit() {
   const [offsetY, setOffsetY] = useState(0);
   const [hoveredLayer, setHoveredLayer] = useState(null);
   const baseRotations = useMemo(() => {
-    return socials.map((_, i) => i * (Math.floor(Math.random() * 10) + 40));
+    return socials.map((_, i) => i * 40 + Math.floor(Math.random() * 10));
   }, []);
 
   const iconsPerLayer = 2;
@@ -27,9 +27,9 @@ export default function Orbit() {
   ];
 
   return (
-    <div className="fixed top-[-40px] right-[-80px] w-[100vh] h-[100vh] z-40 animate-[fadeIn_1s_ease-in_forwards]">
+    <div className="fixed top-[-40px] right-[-80px] w-[100vh] h-[100vh] z-40 animate-[fadeIn_1s_ease-in_backwards]">
       <div
-        className="absolute top-0 right-0 z-10 hover:scale-110 transition-transform"
+        className="absolute top-0 right-0 z-10 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)]"
         ref={centerRef}
       >
         <img
@@ -67,7 +67,7 @@ export default function Orbit() {
               className="absolute left-0 top-0 w-full h-full rounded-full z-[-10]"
               style={{
                 border: `1px solid rgba(117, 117, 117, ${
-                  hoveredLayer === layer ? 0.7 : orbitAlpha
+                  hoveredLayer === layer ? 0.6 : orbitAlpha
                 })`,
                 transform: `scale(1.42)`,
                 transition: "border 0.2s ease",
@@ -90,13 +90,13 @@ export default function Orbit() {
               height: radius * 2,
               marginRight: -radius + offsetY,
               marginTop: -radius + offsetY,
-              animation: `orbit ${duration}s linear infinite`,
+              animation: `orbitIn ${3}s cubic-bezier(0.1,0.9,0.64,1), orbit ${duration}s linear infinite ${2.92}s`,
               willChange: "transform",
               pointerEvents: "none",
             }}
           >
             {[0, 120, 240].map((offset, j) => {
-              const rotation = (baseRotation + offset) % 360;
+              const rotation = baseRotation + offset;
 
               return (
                 <div
@@ -108,16 +108,16 @@ export default function Orbit() {
                 >
                   <div
                     key={`${social.name}-${j}`}
-                    className="absolute left-0 top-0 w-20 h-20 rounded-full"
+                    className="absolute left-0 top-0 w-20 h-20 rounded-full translate-x-[-50%] translate-y-[-50%]"
                     style={{
-                      animation: `orbit-reverse ${duration}s linear infinite`,
+                      animation: `orbitInReverse ${3}s cubic-bezier(0.1,0.9,0.64,1), orbit-reverse ${duration}s linear infinite ${2.92}s`,
                     }}
                   >
                     <a
                       href={social.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full h-full absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform z-10 backdrop-blur-md"
+                      className="w-full h-full absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)] z-10 backdrop-blur-md"
                       onMouseEnter={() => setHoveredLayer(layer)}
                       onMouseLeave={() => setHoveredLayer(null)}
                       style={{
@@ -129,6 +129,7 @@ export default function Orbit() {
                         src={social.icon}
                         alt={social.name}
                         className="w-full h-full p-4"
+                        style={{}}
                       />
                     </a>
                   </div>

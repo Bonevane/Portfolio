@@ -5,6 +5,12 @@ import { socials, bonevaneIcon } from "../../data/Socials";
 export default function Orbit() {
   const centerRef = useRef(null);
   const [offsetY, setOffsetY] = useState(0);
+  const [hoveredLayer, setHoveredLayer] = useState(null);
+  const baseRotations = useMemo(() => {
+    return socials.map((_, i) => i * (Math.floor(Math.random() * 10) + 40));
+  }, []);
+
+  const iconsPerLayer = 2;
 
   useEffect(() => {
     if (centerRef.current) {
@@ -38,66 +44,99 @@ export default function Orbit() {
         />
       </div>
       {socials.map((social, i) => {
-        const iconsPerLayer = 2;
         const layer = Math.floor(i / iconsPerLayer);
         const { radius, duration } = layerConfigs[layer];
-        const baseRotation = i * (Math.floor(Math.random() * 10) + 40);
+        const orbitAlpha = 0.3 - layer * 0.08;
 
-        return [0, 120, 240].map((offset, j) => {
-          const rotation = (baseRotation + offset) % 360;
-          return (
+        return (
+          <div
+            key={social.name}
+            className="absolute top-0 right-0"
+            style={{
+              width: radius * 2,
+              height: radius * 2,
+              marginRight: -radius + offsetY,
+              marginTop: -radius + offsetY,
+              animation: `orbit ${duration}s linear infinite`,
+              willChange: "transform",
+              pointerEvents: "none",
+            }}
+          >
+            {/* Orbit Circle */}
             <div
-              key={`${social.name}-${j}`}
-              className="absolute top-0 right-0"
+              className="absolute left-0 top-0 w-full h-full rounded-full z-[-10]"
               style={{
-                "--start-rotation": `${rotation}deg`,
-                width: radius * 2,
-                height: radius * 2,
-                marginRight: -radius + offsetY,
-                marginTop: -radius + offsetY,
-                animation: `orbit ${duration}s linear infinite`,
-                willChange: "transform",
-                pointerEvents: "none",
+                border: `1px solid rgba(117, 117, 117, ${
+                  hoveredLayer === layer ? 0.7 : orbitAlpha
+                })`,
+                transform: `scale(1.42)`,
+                transition: "border 0.2s ease",
               }}
-            >
-              <div
-                className="absolute left-0 top-0 w-full h-full rounded-full z-[-1]"
-                style={{
-                  border: `1px solid rgba(117, 117, 117, ${
-                    0.2 - layer * 0.05
-                  })`,
-                  transform: `scale(${1.42})`,
-                }}
-              ></div>
-              <div
-                className="absolute left-0 top-0 w-20 h-20 rounded-full z-[-1]"
-                style={{
-                  border: `1px solid rgba(117, 117, 117, ${
-                    0.2 - layer * 0.05
-                  })`,
-                  animation: `orbit-reverse ${duration}s linear infinite`,
-                }}
-              >
-                <a
-                  href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full h-full absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110  transition-transform z-10 backdrop-blur-md"
+            ></div>
+          </div>
+        );
+      })}
+      {socials.map((social, i) => {
+        const layer = Math.floor(i / iconsPerLayer);
+        const { radius, duration } = layerConfigs[layer];
+        const baseRotation = baseRotations[i];
+
+        return (
+          <div
+            key={social.name}
+            className="absolute top-0 right-0"
+            style={{
+              width: radius * 2,
+              height: radius * 2,
+              marginRight: -radius + offsetY,
+              marginTop: -radius + offsetY,
+              animation: `orbit ${duration}s linear infinite`,
+              willChange: "transform",
+              pointerEvents: "none",
+            }}
+          >
+            {[0, 120, 240].map((offset, j) => {
+              const rotation = (baseRotation + offset) % 360;
+
+              return (
+                <div
+                  className="absolute left-0 top-0 w-full h-full rounded-full z-[1]"
                   style={{
-                    backgroundColor: `#${social.color}40`,
-                    pointerEvents: "all",
+                    "--start-rotation": `${rotation}deg`,
+                    transform: `rotate(${rotation}deg)`,
                   }}
                 >
-                  <img
-                    src={social.icon}
-                    alt={social.name}
-                    className="w-full h-full p-4"
-                  />
-                </a>
-              </div>
-            </div>
-          );
-        });
+                  <div
+                    key={`${social.name}-${j}`}
+                    className="absolute left-0 top-0 w-20 h-20 rounded-full"
+                    style={{
+                      animation: `orbit-reverse ${duration}s linear infinite`,
+                    }}
+                  >
+                    <a
+                      href={social.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full h-full absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform z-10 backdrop-blur-md"
+                      onMouseEnter={() => setHoveredLayer(layer)}
+                      onMouseLeave={() => setHoveredLayer(null)}
+                      style={{
+                        backgroundColor: `#${social.color}40`,
+                        pointerEvents: "all",
+                      }}
+                    >
+                      <img
+                        src={social.icon}
+                        alt={social.name}
+                        className="w-full h-full p-4"
+                      />
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        );
       })}
     </div>
   );

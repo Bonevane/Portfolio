@@ -211,7 +211,7 @@ export default function Aurora({
       if (ctn && gl.canvas.parentNode === ctn) ctn.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, []);
+  }, [amplitude, blend]);
 
   // When colorStops prop changes, update targetRGB
   useEffect(() => {

@@ -21,6 +21,7 @@
 .card-origin {
   right: 5vw;
   bottom: 8vh;
+  transition: all 0.2s ease-out;
 }
 
 @media screen and (max-width: 720px) {
@@ -32,6 +33,7 @@
   .card-origin {
     right: -12vh;
     bottom: 12vh;
+    transition: all 0.05s ease-out;
   }
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { cards } from "../../data/sections";
 import "./Cards.css";
 
@@ -7,21 +7,91 @@ export default function Cards({ setCardSection }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [prevCardSection, setPrevCardSection] = useState(0);
   const [animComplete, setAnimComplete] = useState(false);
+  const touchVelocityRef = useRef(0);
+  const decayFrame = useRef(null);
 
-  const scrollVelocity = 0.002;
-
+  const wheelScrollFactor = 0.002;
   const visibleCount = 6;
   const half = Math.floor(visibleCount / 2);
 
   const handleWheel = (e) => {
     e.preventDefault();
     setCenterIndex((prev) => {
-      let next = prev + e.deltaY * scrollVelocity;
+      let next = prev + e.deltaY * wheelScrollFactor;
       next = Math.max(0, Math.min(cards.length - 1, next));
       return next;
     });
   };
 
+  useEffect(() => {
+    const handle = (e) => handleWheel(e);
+
+    let touchStartY = 0;
+    let lastTouchY = 0;
+    let lastTouchTime = 0;
+
+    const handleTouchStart = (e) => {
+      if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
+      touchStartY = e.touches[0].clientY;
+      lastTouchY = touchStartY;
+      lastTouchTime = Date.now();
+    };
+
+    const handleTouchMove = (e) => {
+      const currentY = e.touches[0].clientY;
+      const deltaY = lastTouchY - currentY;
+
+      // Prevent jitter
+      if (Math.abs(deltaY) < 2) return;
+
+      const now = Date.now();
+      const dt = now - lastTouchTime;
+
+      // Estimate velocity (pixels/ms)
+      touchVelocityRef.current = deltaY / dt;
+
+      lastTouchY = currentY;
+      lastTouchTime = now;
+
+      handleWheel({
+        deltaY,
+        preventDefault: () => e.preventDefault(),
+      });
+    };
+
+    const handleTouchEnd = () => {
+      let velocity = touchVelocityRef.current * 20; // Convert to px/frame assuming ~60fps
+
+      const decay = () => {
+        if (Math.abs(velocity) < 0.1) return;
+
+        handleWheel({
+          deltaY: velocity,
+          preventDefault: () => {},
+        });
+
+        velocity *= 0.92; // Friction factor
+        decayFrame.current = requestAnimationFrame(decay);
+      };
+
+      decay();
+    };
+
+    window.addEventListener("wheel", handle, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", handle);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+      if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
+    };
+  }, []);
+
+  // These set the card section, but wait until the initial animation is complete
   useEffect(() => {
     setCardSection(cards[cards.length - 1].section);
     setPrevCardSection(cards[cards.length - 1].section);
@@ -36,41 +106,12 @@ export default function Cards({ setCardSection }) {
     setPrevCardSection(cards[progress].section);
   }, [centerIndex, setCardSection, prevCardSection, animComplete]);
 
-  useEffect(() => {
-    const handle = (e) => handleWheel(e);
-
-    let touchStartY = 0;
-
-    const handleTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e) => {
-      const deltaY = touchStartY - e.touches[0].clientY;
-      if (Math.abs(deltaY) < 10) return;
-
-      handleWheel({
-        deltaY,
-        preventDefault: () => e.preventDefault(),
-      });
-    };
-
-    window.addEventListener("wheel", handle, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-
-    return () => {
-      window.removeEventListener("wheel", handle);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, []);
-
+  // Initial animation to the last card
   useEffect(() => {
     let frameId;
-    const target = cards.length - 1; // The index you want to animate to
-    const speed = 0.05; // Adjust speed to taste
-    const centerRef = { current: 0 }; // Local tracker
+    const target = cards.length - 1;
+    const speed = 0.05; // Speed to last card
+    const centerRef = { current: 0 };
 
     const animate = () => {
       centerRef.current += (target - centerRef.current) * speed;
@@ -96,7 +137,7 @@ export default function Cards({ setCardSection }) {
         const offset = (cardIndex - centerIndex) * 1.5;
         const isSelected = selectedCard === cardIndex;
 
-        if (Math.abs(offset) > half + 1 && !isSelected) return null; // Hide far-away cards
+        if (Math.abs(offset) > half + 1 && !isSelected) return null;
 
         const baseRotation = 5;
         const rotation = baseRotation + offset * 5;
@@ -157,7 +198,7 @@ export default function Cards({ setCardSection }) {
         return (
           <div
             key={cardIndex}
-            className="card-origin absolute transition-all duration-[0.5s] ease-out"
+            className="card-origin absolute"
             onClick={() => {
               isSelected ? setSelectedCard(null) : setSelectedCard(cardIndex);
             }}

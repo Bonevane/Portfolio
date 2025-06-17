@@ -26,6 +26,7 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
+  // Entry animation
   useEffect(() => {
     let entryScrollSpeed = 200; // initial speed (px per frame)
     const decay = 0.95; // decay factor per frame (higher = slower deceleration)
@@ -43,17 +44,41 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
     requestAnimationFrame(entryScroll);
   }, []);
 
-  // Manual scroll with friction
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
-      scrollSpeed.current += e.deltaY * 0.5;
+      scrollSpeed.current += e.deltaY * 0.15;
+    };
+
+    let lastTouchY = null;
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length === 1) {
+        lastTouchY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 1 && lastTouchY != null) {
+        const currentY = e.touches[0].clientY;
+        const deltaY = lastTouchY - currentY;
+        scrollSpeed.current += deltaY * 0.3;
+        lastTouchY = currentY;
+        e.preventDefault(); // prevent native scroll
+      }
+    };
+
+    const handleTouchEnd = () => {
+      lastTouchY = null;
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: false });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd);
 
     const animate = () => {
-      scrollSpeed.current *= 0.5; // friction
+      scrollSpeed.current *= 0.9; // friction
       if (Math.abs(scrollSpeed.current) > 0.1) {
         setOffset((prev) => prev + scrollSpeed.current);
       }
@@ -61,8 +86,12 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
     };
 
     requestRef.current = requestAnimationFrame(animate);
+
     return () => {
       window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
       cancelAnimationFrame(requestRef.current);
     };
   }, []);

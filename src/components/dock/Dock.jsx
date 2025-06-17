@@ -54,6 +54,7 @@ export default function Dock({ selected, setSelected }) {
     ringRef.current.style.opacity = "0";
   };
 
+  // Initial animation
   useEffect(() => {
     setTimeout(() => {
       moveUnderline(selected);
@@ -66,6 +67,14 @@ export default function Dock({ selected, setSelected }) {
         setAnimateTabs((prev) => [...prev, i]);
       }, i * 300); // delay per tab
     });
+
+    const handleResize = () => {
+      moveUnderline(selected);
+      moveHighlight(selected);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [selected]);
 
   return (

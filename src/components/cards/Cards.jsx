@@ -91,7 +91,7 @@ export default function Cards({ setCardSection }) {
   }, []);
 
   return (
-    <div className="cards-container fixed bottom-[2rem] right-[8rem] z-0">
+    <div className="cards-container fixed bottom-[2em] right-[8em] z-10 w-[100vw] h-[100vh]">
       {cards.map((text, cardIndex) => {
         const offset = (cardIndex - centerIndex) * 1.5;
         const isSelected = selectedCard === cardIndex;
@@ -108,17 +108,17 @@ export default function Cards({ setCardSection }) {
 
         const expandedStyle = isSelected
           ? {
-              transform: " scale(1.2) rotate(0deg)",
+              transform: " scale(1.15) rotate(0deg) translateX(8%)",
               zIndex: 9999,
               transition: "all 0.5s ease",
             }
           : {};
 
         const cardContent = (
-          <div className="text-left text-[#B5B5B5] flex flex-col justify-between h-full">
-            <div className="p-4">
+          <div className="text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between h-full">
+            <div className="py-3 px-4">
               <div className="flex mb-2 gap-4">
-                <h2 className="text-3xl font-[ElMessiri]">Aperture</h2>
+                <h2 className="text-[1em] font-[ElMessiri]">Aperture</h2>
                 <div className="flex justify-between items-center gap-2 w-full">
                   <div className="flex gap-2">
                     <h2 className="live-btn">Live</h2>
@@ -141,7 +141,7 @@ export default function Cards({ setCardSection }) {
                   )}
                 </div>
               </div>
-              <p className="text-xl font-normal ">
+              <p className="text-[0.6em] font-normal ">
                 A 2D Hyper-Casual Puzzle game built in Unity. Based on “Portal”
                 from Valve.
               </p>
@@ -157,7 +157,7 @@ export default function Cards({ setCardSection }) {
         return (
           <div
             key={cardIndex}
-            className="absolute transition-all duration-[0.5s] ease-out"
+            className="card-origin absolute transition-all duration-[0.5s] ease-out"
             onClick={() => {
               isSelected ? setSelectedCard(null) : setSelectedCard(cardIndex);
             }}
@@ -165,13 +165,11 @@ export default function Cards({ setCardSection }) {
               transform: `rotate(${-rotation}deg) translateY(${translateY}px) translateX(${translateX}px)`,
               transformOrigin: "bottom right",
               zIndex: cardIndex,
-              right: "5rem",
-              bottom: "4rem",
               ...expandedStyle,
             }}
           >
             <div
-              className={`card flex-col h-[30rem] w-[26rem] text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md border border-[#757575]/70`}
+              className={`card flex-col text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md border border-[#757575]/70`}
               style={{
                 filter: isSelected ? undefined : `blur(${blur}px)`,
                 opacity: isSelected ? 1 : opacity,

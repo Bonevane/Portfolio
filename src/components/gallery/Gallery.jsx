@@ -8,7 +8,6 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
   const itemRef = useRef(null);
   const requestRef = useRef();
 
-  const SPACING = 60; // This must match the CSS .gallery-column gap
   const allLeft = [...imagesLeft];
   const allRight = [...imagesRight];
 
@@ -16,7 +15,8 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
   useEffect(() => {
     if (itemRef.current) {
       const height = itemRef.current.getBoundingClientRect().height;
-      setItemHeight(height + SPACING); // include gap
+      const width = itemRef.current.getBoundingClientRect().width;
+      setItemHeight(height + width / 4); // include gap
     }
   }, []);
 
@@ -65,7 +65,7 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
     const totalHeight = originalLength * itemHeight;
     const rawOffset = (offset * direction) % totalHeight;
     const y = (index * itemHeight - rawOffset + totalHeight) % totalHeight;
-    return `translateY(${y - totalHeight / 2}px)`;
+    return `translateY(${y - totalHeight / 3}px)`;
   };
 
   return (

@@ -35,4 +35,14 @@
     );
     padding-bottom: 50vw;
   }
+
+  .text-container.in-contact {
+    background: radial-gradient(
+      100% 100% at top left,
+      rgba(0, 0, 0, 1),
+      transparent
+    );
+    pointer-events: none;
+    touch-action: none;
+  }
 }

@@ -49,7 +49,9 @@ export default function App() {
             <Phone />
           ))}
         {currentTab === "Contact" && <Orbit />}
-        <Dock selected={currentTab} setSelected={setCurrentTab} />
+        <div className="dock-background">
+          <Dock selected={currentTab} setSelected={setCurrentTab} />
+        </div>
       </div>
     </div>
   );

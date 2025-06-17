@@ -9,11 +9,11 @@
   transition: all 0.3s ease-out;
 }
 .toggleBtn:hover {
-  /* animation: pulse 1s infinite ease; */
+  animation: pulse 1s infinite ease;
 }
 
 .toggle {
-  /* animation: swoopUp 1s cubic-bezier(0.34, 2, 0.64, 1) backwards; */
+  animation: swoopUp 1s cubic-bezier(0.34, 2, 0.64, 1) backwards;
 }
 
 @keyframes pulse {

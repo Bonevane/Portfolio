@@ -27,7 +27,7 @@ export default function Orbit() {
   ];
 
   return (
-    <div className="fixed top-[-40px] right-[-80px] w-[100vh] h-[100vh] z-40 animate-[fadeIn_1s_ease-in_backwards]">
+    <div className="fixed top-[-40px] right-[-80px] w-[100vh] h-[100vh] animate-[fadeIn_1s_ease-in_backwards]">
       <div
         className="absolute top-0 right-0 z-10 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)]"
         ref={centerRef}

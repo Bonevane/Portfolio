@@ -21,7 +21,7 @@ export default function TextOverlay({ tab, cardSection, setMiscSection }) {
     <div
       className={`text-container fixed gap-8 flex flex-col z-10 text-left opacity-0 animate-[fadeIn_1s_ease-in_forwards] ${
         tab === "Home" ? "in-home" : ""
-      }`}
+      } ${tab === "Misc" ? "in-misc" : ""}`}
     >
       <div key={title} style={{ pointerEvents: "all" }}>
         <div>

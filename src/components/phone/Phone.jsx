@@ -60,9 +60,25 @@ function SmartphoneModel({ url = "/Pixel_6.glb" }) {
 }
 
 export default function Phone() {
+  const [fov, setFov] = useState(getFovFromWidth(window.innerWidth));
+
+  useEffect(() => {
+    const handleResize = () => {
+      setFov(getFovFromWidth(window.innerWidth));
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  function getFovFromWidth(width) {
+    if (width < 640) return 42;
+    if (width < 1024) return 36;
+    return 30;
+  }
+
   return (
     <div className="phone-container">
-      <Canvas camera={{ position: [0, 0.2, 0.5], fov: 30 }}>
+      <Canvas camera={{ position: [0, 0.2, 0.5], fov: fov }}>
         <Suspense
           fallback={
             <Html>

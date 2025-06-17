@@ -13,11 +13,17 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
 
   // Measure height of one item including spacing
   useEffect(() => {
-    if (itemRef.current) {
-      const height = itemRef.current.getBoundingClientRect().height;
-      const width = itemRef.current.getBoundingClientRect().width;
-      setItemHeight(height + width / 4); // include gap
-    }
+    const measure = () => {
+      if (itemRef.current) {
+        const rect = itemRef.current.getBoundingClientRect();
+        setItemHeight(rect.height + rect.width / 4);
+      }
+    };
+
+    measure(); // Initial measurement
+
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
   useEffect(() => {

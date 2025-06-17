@@ -1,7 +1,8 @@
 import SplitText from "../../bits/SplitText";
 import { sectionMap } from "../../data/sections";
+import ToggleSwitch from "./Toggle";
 
-export default function TextOverlay({ tab, cardSection }) {
+export default function TextOverlay({ tab, cardSection, setMiscSection }) {
   let title = "";
   let subtitle = "";
 
@@ -16,7 +17,7 @@ export default function TextOverlay({ tab, cardSection }) {
   }
 
   return (
-    <div className="fixed top-0 left-0 p-[6rem] flex flex-col z-50 text-left opacity-0 animate-[fadeIn_1s_ease-in_forwards]">
+    <div className="fixed top-0 left-0 p-[6rem] gap-8 flex flex-col z-50 text-left opacity-0 animate-[fadeIn_1s_ease-in_forwards]">
       <div key={title}>
         <div>
           <SplitText
@@ -49,6 +50,11 @@ export default function TextOverlay({ tab, cardSection }) {
           />
         </div>
       </div>
+      {tab === "Misc" && (
+        <div className="text-[#CEC9C9] text-[1.2rem] font-[Teachers] mt-4">
+          <ToggleSwitch setMiscSection={setMiscSection} />
+        </div>
+      )}
     </div>
   );
 }

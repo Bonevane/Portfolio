@@ -13,7 +13,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* background-color: #0b0b0d; */
   background-color: black;
 
   font-synthesis: none;
@@ -44,8 +43,8 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
+/* button {
+  border-radius: 9999px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
@@ -61,17 +60,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+} */

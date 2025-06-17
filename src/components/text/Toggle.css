@@ -1,0 +1,29 @@
+.toggleBtn {
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  padding: 0.8em 2em;
+  font-size: 1em;
+  font-family: inherit;
+  background-color: rgba(217, 217, 217, 0.22);
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.toggleBtn:hover {
+  animation: pulse 1s infinite ease;
+}
+
+.toggle {
+  animation: swoopUp 1s cubic-bezier(0.34, 2, 0.64, 1) forwards;
+}
+
+@keyframes pulse {
+  0% {
+    border: 2px solid transparent;
+  }
+  50% {
+    border: 2px solid #d5d5d5;
+  }
+  100% {
+    border: 2px solid transparent;
+  }
+}

@@ -35,6 +35,7 @@ export default function Cards({ setCardSection }) {
       touchStartY = e.touches[0].clientY;
       lastTouchY = touchStartY;
       lastTouchTime = Date.now();
+      touchVelocityRef.current = 0;
     };
 
     const handleTouchMove = (e) => {

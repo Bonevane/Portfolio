@@ -1,3 +1,15 @@
+.flower-container {
+  width: 80vw;
+  height: 80vw;
+}
+
+@media screen and (max-width: 1000px) {
+  .flower-container {
+    width: 60vh;
+    height: 60vh;
+  }
+}
+
 .profile-circle {
   animation: zoomFadeIn 4s cubic-bezier(0.34, 1.56, 0.64, 1);
   transition: transform 0.3s cubic-bezier(0.4, 2, 0.9, 1);
@@ -12,6 +24,7 @@
 } */
 
 .rotating-flower {
+  touch-action: none;
   cursor: pointer;
   animation: spin-in 3s cubic-bezier(0.16, 0.6, 0.05, 1) forwards;
   will-change: transform;

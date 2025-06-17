@@ -70,25 +70,27 @@ export default function Flower() {
     el.addEventListener("mouseenter", () => (targetSpeed = 0.5));
     el.addEventListener("mouseleave", () => (targetSpeed = 0.2));
 
-    el.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("pointermove", onPointerMove);
+    el.addEventListener("pointerdown", onPointerDown, { passive: false });
+    window.addEventListener("pointermove", onPointerMove, { passive: false });
     window.addEventListener("pointerup", onPointerUp);
 
     return () => {
       cancelAnimationFrame(animationFrame);
       el.removeEventListener("mouseenter", () => (targetSpeed = 0.5));
       el.removeEventListener("mouseleave", () => (targetSpeed = 0.2));
-      el.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("pointermove", onPointerMove);
+      el.removeEventListener("pointerdown", onPointerDown, { passive: false });
+      window.removeEventListener("pointermove", onPointerMove, {
+        passive: false,
+      });
       window.removeEventListener("pointerup", onPointerUp);
     };
   }, []);
 
   return (
     <div>
-      <div className="fixed w-full h-full top-0 bg-[url(./grain.png)] bg-repeat opacity-25"></div>
+      {/* <div className="absolute w-full h-full top-0 bg-[url(./grain.png)] bg-repeat opacity-25"></div> */}
       {/* <div className="fixed bottom-0 right-0 w-[40vw] h-[40vw] translate-x-1/2 translate-y-1/2 rounded-full bg-white blur-[50rem]"></div> */}
-      <div className="fixed top-0 right-0 translate-x-2/7 -translate-y-2/7 w-[130vw] max-w-[900px] h-[130vw] max-h-[900px] flex items-center justify-center">
+      <div className="flower-container fixed top-0 right-0 translate-x-2/7 -translate-y-2/7 max-w-[900px] max-h-[900px] flex items-center justify-center">
         {/* Rotating Flower Wrapper */}
         <div className="absolute w-full h-full rounded-full rotating-flower-wrapper z-10">
           <div
@@ -96,7 +98,6 @@ export default function Flower() {
             data-rotation="0"
             className="relative w-full h-full rounded-full will-change-transform"
           >
-            {/* Blur flower shape */}
             <div
               className="absolute inset-0 backdrop-blur-xl rounded-full rotating-flower"
               style={{

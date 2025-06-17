@@ -9,6 +9,7 @@ import {
   Html,
 } from "@react-three/drei";
 import { Suspense } from "react";
+import "./Phone.css";
 
 function SmartphoneModel({ url = "/Pixel_6.glb" }) {
   const { scene } = useGLTF(url);
@@ -60,8 +61,8 @@ function SmartphoneModel({ url = "/Pixel_6.glb" }) {
 
 export default function Phone() {
   return (
-    <div className="fixed top-0 right-0 w-[50vw] h-[100vh] z-50">
-      <Canvas camera={{ position: [0, 0, 0.5], fov: 30 }}>
+    <div className="phone-container">
+      <Canvas camera={{ position: [0, 0.2, 0.5], fov: 30 }}>
         <Suspense
           fallback={
             <Html>

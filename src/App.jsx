@@ -13,7 +13,7 @@ import { picsLeft, picsRight } from "./data/Pictures.js";
 import { colors } from "./data/Colors.js";
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState("Home");
+  const [currentTab, setCurrentTab] = useState("Portfolios");
   const [cardSection, setCardSection] = useState(0);
   const [miscSection, setMiscSection] = useState("");
   let color = ["", "", ""];
@@ -30,22 +30,27 @@ export default function App() {
   return (
     <div>
       <Aurora colorStops={color} blend={1} amplitude={0.5} speed={1} />
-      <TextOverlay
-        tab={currentTab}
-        cardSection={cardSection}
-        setMiscSection={setMiscSection}
-      />
-      <Dock selected={currentTab} setSelected={setCurrentTab} />
-      {/* Show content based on active tab */}
-      {currentTab === "Portfolios" && <Cards setCardSection={setCardSection} />}
-      {currentTab === "Home" && <Flower />}
-      {currentTab === "Misc" &&
-        (miscSection === "Misc" ? (
-          <Gallery imagesLeft={picsLeft} imagesRight={picsRight} />
-        ) : (
-          <Phone />
-        ))}
-      {currentTab === "Contact" && <Orbit />}
+      <div>
+        <TextOverlay
+          tab={currentTab}
+          cardSection={cardSection}
+          setMiscSection={setMiscSection}
+        />
+
+        {/* Show content based on active tab */}
+        {currentTab === "Home" && <Flower />}
+        {currentTab === "Portfolios" && (
+          <Cards setCardSection={setCardSection} />
+        )}
+        {currentTab === "Misc" &&
+          (miscSection === "Misc" ? (
+            <Gallery imagesLeft={picsLeft} imagesRight={picsRight} />
+          ) : (
+            <Phone />
+          ))}
+        {currentTab === "Contact" && <Orbit />}
+        <Dock selected={currentTab} setSelected={setCurrentTab} />
+      </div>
     </div>
   );
 }

@@ -6,3 +6,23 @@
     opacity: 1;
   }
 } */
+
+.text-container {
+  padding: 6em;
+  width: 60vw;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .text-container {
+    padding: 8vw;
+    width: 100%;
+    font-size: 0.7em;
+  }
+
+  .text-container.in-home {
+    top: 45vh;
+  }
+}

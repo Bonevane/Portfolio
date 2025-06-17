@@ -38,10 +38,10 @@ export default function Dock({ selected, setSelected }) {
 
     const padding = 2.5;
     const { offsetLeft, offsetWidth } = tabEl;
-    underlineRef.current.style.transform = `translateX(calc(${offsetLeft}px + ${padding}rem))`;
+    underlineRef.current.style.transform = `translateX(calc(${offsetLeft}px + ${padding}em))`;
     underlineRef.current.style.width = `calc(${offsetWidth}px - ${
       padding * 2
-    }rem)`;
+    }em)`;
   };
 
   const handleMouseEnter = (tab) => {

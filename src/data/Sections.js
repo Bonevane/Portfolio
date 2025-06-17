@@ -4,11 +4,14 @@ export const sectionMap = {
   Work: { title: "Work", subtitle: "My portfolio. check it out yo." },
   Projects: { title: "Projects", subtitle: "Some cool stuff I made" },
   Experiments: { title: "Experiments", subtitle: "Just playing around." },
-  Misc: { title: "Misc", subtitle: "Miscellaneous stuff I made." },
+  Misc: {
+    title: "Misc",
+    subtitle: "Miscellaneous stuff I made. This is just for testing purposes.",
+  },
   Home: {
     title: "Rafay Ahmad",
     subtitle:
-      "Welcome to my space. This is where I share my work and thoughts.",
+      "Welcome to my space. This is where I share my work and thoughts. And other stuff if I feel like it. It happens sometimes. Just how it is.",
   },
   Portfolio: { title: "Portfolio", subtitle: "Get in touch" },
   Contact: { title: "Contact", subtitle: "Get in touch" },

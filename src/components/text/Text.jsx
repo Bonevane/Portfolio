@@ -1,6 +1,7 @@
 import SplitText from "../../bits/SplitText";
 import { sectionMap } from "../../data/sections";
 import ToggleSwitch from "./Toggle";
+import "./Text.css";
 
 export default function TextOverlay({ tab, cardSection, setMiscSection }) {
   let title = "";
@@ -17,12 +18,16 @@ export default function TextOverlay({ tab, cardSection, setMiscSection }) {
   }
 
   return (
-    <div className="fixed top-0 left-0 p-[6rem] gap-8 flex flex-col z-50 text-left opacity-0 animate-[fadeIn_1s_ease-in_forwards]">
-      <div key={title}>
+    <div
+      className={`text-container fixed gap-8 flex flex-col z-50 text-left opacity-0 animate-[fadeIn_1s_ease-in_forwards] ${
+        tab === "Home" ? "in-home" : ""
+      }`}
+    >
+      <div key={title} style={{ pointerEvents: "all" }}>
         <div>
           <SplitText
             text={title}
-            className="text-[5rem] text-[#CEC9C9] mb-2 font-[ElMessiri]"
+            className="text-[4.6em] text-[#CEC9C9] mb-2 font-[ElMessiri]"
             delay={20}
             duration={2}
             ease="elastic.out(1, 0.3)"
@@ -37,7 +42,7 @@ export default function TextOverlay({ tab, cardSection, setMiscSection }) {
         <div>
           <SplitText
             text={subtitle}
-            className="text-[#CEC9C9] text-[1.6rem] font-[Teachers]"
+            className="text-[#CEC9C9] text-[1.4em] font-[Teachers]"
             delay={10}
             duration={2}
             ease="elastic.out(1, 0.5)"
@@ -51,7 +56,10 @@ export default function TextOverlay({ tab, cardSection, setMiscSection }) {
         </div>
       </div>
       {tab === "Misc" && (
-        <div className="text-[#CEC9C9] text-[1.2rem] font-[Teachers] mt-4">
+        <div
+          className="text-[#CEC9C9] text-[1.2em] font-[Teachers] mt-4"
+          style={{ pointerEvents: "all" }}
+        >
           <ToggleSwitch setMiscSection={setMiscSection} />
         </div>
       )}

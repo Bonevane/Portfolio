@@ -11,7 +11,7 @@ import {
 import { Suspense } from "react";
 import "./Phone.css";
 
-function SmartphoneModel({ url = "/Pixel_6.glb" }) {
+function SmartphoneModel({ url = "/Oneplus.glb" }) {
   const { scene } = useGLTF(url);
   const [loaded, setLoaded] = useState(false);
 
@@ -78,7 +78,7 @@ export default function Phone() {
 
   return (
     <div className="phone-container">
-      <Canvas camera={{ position: [0, 0.2, 0.5], fov: fov }}>
+      <Canvas camera={{ position: [0, 0.2, 0.5], fov: fov }} dpr={2}>
         <Suspense
           fallback={
             <Html>
@@ -88,38 +88,49 @@ export default function Phone() {
             </Html>
           }
         >
-          {/* LIGHTING */}
-          <ambientLight intensity={0.8} />
+          <ambientLight intensity={1} />
 
-          {/* Soft Key Light front-top-right */}
-          <directionalLight position={[3, 4, 5]} intensity={1.2} />
-
-          {/* Rim Light */}
-          <Lightformer
-            position={[-4, 2, -3]}
-            intensity={1}
-            color={"#ccccff"}
-            visible={false}
+          {/* Top Right */}
+          <directionalLight position={[3, 4, 5]} intensity={2} />
+          {/* Front Left */}
+          <directionalLight
+            position={[-2, 1, 1]}
+            intensity={1.2}
+            color="#dceeff" // cooler blue tint
+          />
+          {/* Back Right */}
+          <directionalLight
+            position={[1.5, 2, -2]}
+            intensity={1.2}
+            color="#ccdfff"
+          />
+          {/* Back Top */}
+          <directionalLight
+            position={[0, 1, -2]}
+            intensity={10}
+            color="#e0e0ff"
           />
 
-          {/* Reflections */}
+          {/* Reflection: Area Lights*/}
           <Environment resolution={256}>
             <Lightformer
-              intensity={3}
-              position={[0, 5, -5]}
-              scale={[5, 5, 1]}
+              intensity={4}
+              position={[0, 2, -3]}
+              scale={[4, 3, 1]}
+              color="#ffffff"
             />
+
             <Lightformer
-              intensity={2}
-              position={[5, 1, 2]}
-              scale={[2, 3, 1]}
-              color="white"
+              intensity={3}
+              position={[3, 1, 3]}
+              scale={[3, 2, 1]}
+              color="#fffbe7"
             />
             <Lightformer
               intensity={1.5}
-              position={[-5, 2, 1]}
-              scale={[2, 2, 1]}
-              color="skyblue"
+              position={[-4, 2, 1]}
+              scale={[2, 3, 1]}
+              color="#d4e8ff"
             />
           </Environment>
 

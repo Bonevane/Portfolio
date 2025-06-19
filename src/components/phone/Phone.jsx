@@ -39,16 +39,6 @@ function SmartphoneModel({ url = "/Oneplus.glb" }) {
     immediate: !loaded,
   });
 
-  // Optional material enhancement
-  //   useEffect(() => {
-  //     scene.traverse((child) => {
-  //       if (child.isMesh && child.material) {
-  //         child.material.metalness = 0.8;
-  //         child.material.roughness = 0.1;
-  //       }
-  //     });
-  //   }, [scene]);
-
   return (
     <a.primitive
       object={scene}
@@ -96,7 +86,7 @@ export default function Phone() {
           <directionalLight
             position={[-2, 1, 1]}
             intensity={1.2}
-            color="#dceeff" // cooler blue tint
+            color="#dceeff"
           />
           {/* Back Right */}
           <directionalLight

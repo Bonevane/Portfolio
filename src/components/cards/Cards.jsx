@@ -14,6 +14,19 @@ export default function Cards({ setCardSection }) {
   const visibleCount = 6;
   const half = Math.floor(visibleCount / 2);
 
+  // Vibration for Android
+  const lastVibrationStep = useRef(null);
+  useEffect(() => {
+    const step = Math.round(centerIndex * 10) % 10;
+    const isClickPoint = step === 5 || step === 0;
+
+    if (isClickPoint && lastVibrationStep.current !== step) {
+      lastVibrationStep.current = step;
+      if (navigator.vibrate) navigator.vibrate(1);
+    }
+  }, [centerIndex]);
+
+  // Scrolling stuff and whatnot
   const handleWheel = (e) => {
     e.preventDefault();
     setCenterIndex((prev) => {

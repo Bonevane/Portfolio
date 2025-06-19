@@ -5,16 +5,16 @@ import "./Text.css";
 
 export default function TextOverlay({ tab, cardSection, setMiscSection }) {
   let title = "";
-  let subtitle = "";
+  let subtitles = [""];
 
   const activeSectionKey = tab === "Portfolios" ? cardSection : tab;
 
   if (Object.prototype.hasOwnProperty.call(sectionMap, activeSectionKey)) {
     title = sectionMap[activeSectionKey].title;
-    subtitle = sectionMap[activeSectionKey].subtitle;
+    subtitles = sectionMap[activeSectionKey].subtitle;
   } else {
-    title = "Hello.";
-    subtitle = "You're on an unknown tab.";
+    title = sectionMap["404"].title;
+    subtitles = sectionMap["404"].subtitle;
   }
 
   return (
@@ -41,20 +41,22 @@ export default function TextOverlay({ tab, cardSection, setMiscSection }) {
             textAlign="left"
           />
         </div>
-        <div>
-          <SplitText
-            text={subtitle}
-            className="text-[#CEC9C9] text-[1.4em] font-[Teachers]"
-            delay={10}
-            duration={2}
-            ease="elastic.out(1, 0.5)"
-            splitType="words"
-            from={{ opacity: 0, y: 40 }}
-            to={{ opacity: 1, y: 0 }}
-            threshold={0.1}
-            rootMargin="-100px"
-            textAlign="left"
-          />
+        <div className="flex flex-col gap-4">
+          {subtitles.map((subtitle) => (
+            <SplitText
+              text={subtitle}
+              className="text-[#CEC9C9] text-[1.4em] font-[Teachers]"
+              delay={10}
+              duration={2}
+              ease="elastic.out(1, 0.5)"
+              splitType="words"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="left"
+            />
+          ))}
         </div>
       </div>
       {tab === "Misc" && (

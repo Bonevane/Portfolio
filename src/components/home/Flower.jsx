@@ -7,13 +7,17 @@ export default function Flower() {
   useEffect(() => {
     const el = ref.current;
     let animationFrame;
-    let speed = 0.2; // degrees per frame
+    let speed = 0.2;
     let targetSpeed = 0.2;
+    let initialSpeed = targetSpeed;
 
     let isDragging = false;
     let lastAngle = 0;
     let lastTime = 0;
     let currentRotation = 0;
+
+    let lastVibrationTick = 0; // tracks when last vibration happened
+    const tickInterval = 15; // to set degrees between each vibration
 
     const getAngle = (e) => {
       const rect = el.getBoundingClientRect();
@@ -43,7 +47,7 @@ export default function Flower() {
       el.style.transform = `rotate(${currentRotation}deg)`;
       el.dataset.rotation = currentRotation;
 
-      speed = (deltaAngle / deltaTime) * 16; // ~per-frame rotational speed
+      speed = (deltaAngle / deltaTime) * 16;
       lastAngle = angle;
       lastTime = now;
     };
@@ -61,6 +65,19 @@ export default function Flower() {
         currentRotation = next;
 
         speed += (targetSpeed - speed) * 0.05;
+      }
+
+      // VIBRATION: every tickInterval degrees
+      const deltaSinceLastTick = Math.abs(currentRotation - lastVibrationTick);
+      if (deltaSinceLastTick >= tickInterval) {
+        if (
+          navigator.vibrate &&
+          (speed >= initialSpeed + 0.01 || speed <= initialSpeed - 0.01)
+        ) {
+          const vibrationStrength = 1;
+          navigator.vibrate(vibrationStrength);
+        }
+        lastVibrationTick = currentRotation;
       }
       animationFrame = requestAnimationFrame(update);
     };
@@ -88,8 +105,6 @@ export default function Flower() {
 
   return (
     <div>
-      {/* <div className="absolute w-full h-full top-0 bg-[url(./grain.png)] bg-repeat opacity-25"></div> */}
-      {/* <div className="fixed bottom-0 right-0 w-[40vw] h-[40vw] translate-x-1/2 translate-y-1/2 rounded-full bg-white blur-[50rem]"></div> */}
       <div className="flower-container fixed top-0 right-0 translate-x-2/7 -translate-y-2/7 max-w-[900px] max-h-[900px] flex items-center justify-center">
         {/* Rotating Flower Wrapper */}
         <div className="absolute w-full h-full rounded-full rotating-flower-wrapper z-10">

@@ -14,11 +14,12 @@ import { paths, tabsFromPath } from "./data/Paths.js";
 import "./App.css";
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState("404");
+  const [currentTab, setCurrentTab] = useState("");
   const [cardSection, setCardSection] = useState(0);
-  const [miscSection, setMiscSection] = useState("");
+  const [miscSection, setMiscSection] = useState("Photos");
   let color = ["", "", ""];
 
+  // Navigation and History API
   useEffect(() => {
     const newPath = paths[currentTab];
     if (window.location.pathname !== newPath) {
@@ -29,7 +30,7 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
-      const tab = tabsFromPath[path] || "Home";
+      const tab = tabsFromPath[path] || "404";
       setCurrentTab(tab);
     };
 
@@ -39,9 +40,9 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  const activeSectionKey =
-    currentTab === "Portfolios" ? cardSection : currentTab;
-
+  // Active Section calculation (For colors and text)
+  let activeSectionKey = currentTab === "Portfolios" ? cardSection : currentTab;
+  activeSectionKey = currentTab === "Misc" ? miscSection : activeSectionKey;
   if (Object.prototype.hasOwnProperty.call(colors, activeSectionKey)) {
     color = colors[activeSectionKey];
   } else {
@@ -54,7 +55,7 @@ export default function App() {
       <div>
         <TextOverlay
           tab={currentTab}
-          cardSection={cardSection}
+          activeSectionKey={activeSectionKey}
           setMiscSection={setMiscSection}
         />
 
@@ -64,7 +65,7 @@ export default function App() {
           <Cards setCardSection={setCardSection} />
         )}
         {currentTab === "Misc" &&
-          (miscSection === "Misc" ? (
+          (miscSection === "Gallery" ? (
             <Gallery imagesLeft={picsLeft} imagesRight={picsRight} />
           ) : (
             <Phone />

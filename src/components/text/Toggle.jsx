@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./Toggle.css";
 
 export default function ToggleSwitch({ setMiscSection }) {
-  const [active, setActive] = useState("Misc");
+  const [active, setActive] = useState("Gallery");
   const miscRef = useRef(null);
   const skillsRef = useRef(null);
   const [slideStyle, setSlideStyle] = useState({
@@ -12,7 +12,7 @@ export default function ToggleSwitch({ setMiscSection }) {
   });
 
   useEffect(() => {
-    const activeRef = active === "Misc" ? miscRef : skillsRef;
+    const activeRef = active === "Gallery" ? miscRef : skillsRef;
     if (activeRef.current) {
       const { offsetWidth, offsetHeight, offsetLeft } = activeRef.current;
       setSlideStyle({
@@ -39,11 +39,11 @@ export default function ToggleSwitch({ setMiscSection }) {
       {/* Buttons */}
       <button
         ref={miscRef}
-        onClick={() => setActive("Misc")}
+        onClick={() => setActive("Gallery")}
         className="toggleBtn relative z-10 text-[#CEC9C9]"
         style={{ backgroundColor: "transparent" }}
       >
-        Misc
+        Gallery
       </button>
       <button
         ref={skillsRef}

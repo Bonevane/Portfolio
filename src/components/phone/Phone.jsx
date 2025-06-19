@@ -68,7 +68,7 @@ export default function Phone() {
 
   return (
     <div className="phone-container">
-      <Canvas camera={{ position: [0, 0.2, 0.5], fov: fov }} dpr={2}>
+      <Canvas camera={{ position: [0, 0.2, 0.5], fov: fov }} dpr={[1.6, 2]}>
         <Suspense
           fallback={
             <Html>

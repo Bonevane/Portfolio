@@ -3,11 +3,9 @@ import { sectionMap } from "../../data/sections";
 import ToggleSwitch from "./Toggle";
 import "./Text.css";
 
-export default function TextOverlay({ tab, cardSection, setMiscSection }) {
+export default function TextOverlay({ tab, activeSectionKey, setMiscSection }) {
   let title = "";
   let subtitles = [""];
-
-  const activeSectionKey = tab === "Portfolios" ? cardSection : tab;
 
   if (Object.prototype.hasOwnProperty.call(sectionMap, activeSectionKey)) {
     title = sectionMap[activeSectionKey].title;

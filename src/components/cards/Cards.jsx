@@ -74,7 +74,7 @@ export default function Cards({ setCardSection }) {
     };
 
     const handleTouchEnd = () => {
-      let velocity = touchVelocityRef.current * 20; // Convert to px/frame assuming ~60fps
+      let velocity = touchVelocityRef.current * 30; // Convert to px/frame assuming ~60fps
 
       const decay = () => {
         if (Math.abs(velocity) < 0.1) return;

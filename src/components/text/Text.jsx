@@ -29,7 +29,7 @@ export default function TextOverlay({ tab, cardSection, setMiscSection }) {
         <div>
           <SplitText
             text={title}
-            className="text-[4.6em] text-[#CEC9C9] mb-2 font-[ElMessiri]"
+            className="text-[4.6em] text-[#CEC9C9] mb-2 font-[ElMessiri] translate-x-[-2%]"
             delay={20}
             duration={2}
             ease="elastic.out(1, 0.3)"
@@ -61,7 +61,7 @@ export default function TextOverlay({ tab, cardSection, setMiscSection }) {
       </div>
       {tab === "Misc" && (
         <div
-          className="text-[#CEC9C9] text-[1.2em] font-[Teachers] mt-4"
+          className="text-[#CEC9C9] text-[1.2em] font-[Teachers] mt-2"
           style={{ pointerEvents: "all" }}
         >
           <ToggleSwitch setMiscSection={setMiscSection} />

@@ -13,11 +13,19 @@ export const sectionMap = {
   Home: {
     title: "Rafay Ahmad",
     subtitle: [
-      "Welcome to my space. This is where I share my work and thoughts. And other stuff if I feel like it. It happens sometimes. Just how it is.",
+      "Welcome to my space.",
+      "I'm a software engineer that builds things, breaks things, and fixes things. Sometimes, I share what happens.",
+      "That's just how it goes. Enjoy your stay!",
     ],
   },
   Portfolio: { title: "Portfolio", subtitle: ["Get in touch"] },
-  Contact: { title: "Contact", subtitle: ["Get in touch"] },
+  Contact: {
+    title: "Contact",
+    subtitle: [
+      "Reach out on any of these platforms.",
+      "Say hello. I'd love to talk!",
+    ],
+  },
   404: {
     title: "Hello.",
     subtitle: [

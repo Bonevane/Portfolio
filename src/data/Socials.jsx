@@ -20,7 +20,7 @@ export const socials = [
   {
     name: "Email",
     icon: emailIcon,
-    link: "rahmad.atomic44@gmail.com",
+    link: "mailto:rahmad.atomic44@gmail.com",
     color: "C9FF9F",
   },
   {

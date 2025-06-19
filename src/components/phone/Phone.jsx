@@ -61,7 +61,7 @@ export default function Phone() {
   }, []);
 
   function getFovFromWidth(width) {
-    if (width < 640) return 42;
+    if (width < 640) return 46;
     if (width < 1024) return 36;
     return 30;
   }

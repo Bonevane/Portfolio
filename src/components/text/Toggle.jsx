@@ -25,7 +25,7 @@ export default function ToggleSwitch({ setMiscSection }) {
   }, [active, setMiscSection]);
 
   return (
-    <div className="toggle relative flex gap-2 rounded-full border border-[#757575]/70 p-1 bg-[#D9D9D9]/15 backdrop-blur-md overflow-hidden w-fit">
+    <div className="toggle relative flex gap-2 rounded-full border border-[#757575]/70 p-1 bg-[#D9D9D9]/15 overflow-hidden w-fit">
       {/* Sliding background */}
       <div
         className="absolute rounded-full border border-[#757575] bg-[#d9d9d9]/20 transition-all duration-300 ease-in-out"

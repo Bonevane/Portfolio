@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import Aurora from "./bits/Aurora";
-import Flower from "./components/Home/Flower.jsx";
+import Flower from "./components/home/Flower.jsx";
 import Dock from "./components/dock/Dock.jsx";
 import Cards from "./components/cards/Cards.jsx";
 import TextOverlay from "./components/text/Text.jsx";

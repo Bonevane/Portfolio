@@ -22,9 +22,14 @@ export default function Dock({ selected, setSelected }) {
   };
 
   const moveHighlight = (tab) => {
-    if (!highlightRef.current || !containerRef.current) return;
+    if (!highlightRef.current || !containerRef.current) {
+      return;
+    }
     const tabEl = containerRef.current.querySelector(`[data-tab="${tab}"]`);
-    if (!tabEl) return;
+    if (!tabEl) {
+      highlightRef.current.style.transform = "translateX(-500px)";
+      return;
+    }
 
     const { offsetLeft, offsetWidth } = tabEl;
     highlightRef.current.style.transform = `translateX(${offsetLeft}px)`;

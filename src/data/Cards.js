@@ -1,7 +1,7 @@
 // Reverse Order
 export const cards = [
   {
-    title: "Calculator",
+    title: "iCalc",
     section: "Experiments",
     description:
       "A calculator app built with vanilla JavaScript and HTML. Based on Apple's old iOS calculator.",
@@ -51,7 +51,7 @@ export const cards = [
     thumbnail: "./projects/Autolist.webp",
   },
   {
-    title: "Messages",
+    title: "Notebox",
     section: "Experiments",
     description: "A mini message board app built using Express.js.",
     tags: ["Express.js", "EJS", "Forum"],

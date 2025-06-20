@@ -14,7 +14,7 @@ export default function Cards({ setCardSection }) {
   const visibleCount = 6;
   const half = Math.floor(visibleCount / 2);
 
-  // Vibration for Android
+  // Vibration for Android (Disabled for now)
   const lastVibrationStep = useRef(null);
   useEffect(() => {
     const step = Math.round(centerIndex * 10) % 10;
@@ -22,7 +22,7 @@ export default function Cards({ setCardSection }) {
 
     if (isClickPoint && lastVibrationStep.current !== step) {
       lastVibrationStep.current = step;
-      if (navigator.vibrate) navigator.vibrate(1);
+      // if (navigator.vibrate) navigator.vibrate(1);   // Uncomment for vibration (Disabled because can be annoying)
     }
   }, [centerIndex]);
 
@@ -172,8 +172,10 @@ export default function Cards({ setCardSection }) {
         const cardContent = (
           <div className="text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between h-full">
             <div className="py-3 px-4">
-              <div className="flex mb-2 gap-4">
-                <h2 className="text-[1em] font-[ElMessiri]">{card.title}</h2>
+              <div className="flex mb-2 gap-4 items-center">
+                <h2 className="text-[1em] font-[ElMessiri] whitespace-nowrap">
+                  {card.title}
+                </h2>
                 <div className="flex justify-between items-center gap-2 w-full">
                   <div className="flex gap-2">
                     {card.live === "" ? (

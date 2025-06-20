@@ -19,6 +19,14 @@ export default function App() {
   const [miscSection, setMiscSection] = useState("Photos");
   let color = ["", "", ""];
 
+  useEffect(() => {
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS) {
+      document.body.classList.add("ios");
+    }
+  }, []);
+
   // Navigation and History API
   useEffect(() => {
     const newPath = paths[currentTab];
@@ -30,12 +38,6 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
-
-      // if (path === "/") {
-      //   window.history.replaceState({ tab: "Home" }, "", "/home");
-      //   setCurrentTab("Home");
-      //   return;
-      // }
       const tab = tabsFromPath[path] || "404";
       setCurrentTab(tab);
     };

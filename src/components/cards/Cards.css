@@ -33,8 +33,14 @@
   .card-origin {
     right: -12vh;
     bottom: 12vh;
-    transition: all 0.05s ease-out;
+    transition: all 0.1s ease-out;
   }
+}
+
+body.ios .card-origin {
+  right: -12vh;
+  bottom: 12vh;
+  transition: all 0.05s ease-out;
 }
 
 .cards-container {

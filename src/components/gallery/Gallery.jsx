@@ -106,7 +106,7 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
   return (
     <div className="gallery-wrapper">
       <div className="gallery-column">
-        {allLeft.map((url, i) => (
+        {allLeft.map((pic, i) => (
           <div
             key={`l-${i}`}
             ref={i === 0 ? itemRef : null}
@@ -120,16 +120,16 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
             <div className="gallery-fallback" />
             <div className="gallery-item-inner">
               <div className="gallery-item-inner">
-                <div className="gallery-label">What is going on here?</div>
-                <img src={url} className="gallery-image-blur" />
-                <img src={url} className="gallery-image" />
+                <div className="gallery-label">{pic.text}</div>
+                <img src={pic.url} className="gallery-image-blur" />
+                <img src={pic.url} className="gallery-image" />
               </div>
             </div>
           </div>
         ))}
       </div>
       <div className="gallery-column">
-        {allRight.map((url, i) => (
+        {allRight.map((pic, i) => (
           <div
             key={`r-${i}`}
             className="gallery-item"
@@ -143,9 +143,9 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
 
             <div className="gallery-item-inner">
               <div className="gallery-item-inner">
-                <div className="gallery-label">Placeholder</div>
-                <img src={url} className="gallery-image-blur" />
-                <img src={url} className="gallery-image" />
+                <div className="gallery-label">{pic.text}</div>
+                <img src={pic.url} className="gallery-image-blur" />
+                <img src={pic.url} className="gallery-image" />
               </div>
             </div>
           </div>

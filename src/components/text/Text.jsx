@@ -1,5 +1,5 @@
 import SplitText from "../../bits/SplitText";
-import { sectionMap } from "../../data/sections";
+import { sectionMap } from "../../data/Sections.js";
 import ToggleSwitch from "./Toggle";
 import "./Text.css";
 

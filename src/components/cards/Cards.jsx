@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { cards } from "../../data/sections";
+import { cards } from "../../data/Sections.js";
 import "./Cards.css";
 
 export default function Cards({ setCardSection }) {

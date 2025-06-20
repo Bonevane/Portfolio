@@ -30,6 +30,12 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
+
+      // if (path === "/") {
+      //   window.history.replaceState({ tab: "Home" }, "", "/home");
+      //   setCurrentTab("Home");
+      //   return;
+      // }
       const tab = tabsFromPath[path] || "404";
       setCurrentTab(tab);
     };

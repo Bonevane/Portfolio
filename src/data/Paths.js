@@ -6,6 +6,7 @@ export const paths = {
 };
 
 export const tabsFromPath = {
+  "/": "Home",
   "/home": "Home",
   "/portfolios": "Portfolios",
   "/misc": "Misc",

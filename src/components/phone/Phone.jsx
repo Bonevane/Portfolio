@@ -11,7 +11,7 @@ import {
 import { Suspense } from "react";
 import "./Phone.css";
 
-useGLTF.preload("/models/Oneplus.glb");
+useGLTF.preload("/Oneplus.glb");
 
 function SmartphoneModel({ url = "/Oneplus.glb" }) {
   const { scene } = useGLTF(url);

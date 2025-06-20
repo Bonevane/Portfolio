@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Dock.css";
-import { tabs } from "../../data/sections";
+import { tabs } from "../../data/Sections.js";
 
 export default function Dock({ selected, setSelected }) {
   const [animateTabs, setAnimateTabs] = useState([]);

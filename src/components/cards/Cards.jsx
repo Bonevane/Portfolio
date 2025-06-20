@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { cards } from "../../data/Sections.js";
+import { cards } from "../../data/Cards.js";
 import "./Cards.css";
 
 export default function Cards({ setCardSection }) {
@@ -147,7 +147,7 @@ export default function Cards({ setCardSection }) {
 
   return (
     <div className="cards-container fixed bottom-[2em] right-[8em] z-10 w-[100vw] h-[100vh]">
-      {cards.map((text, cardIndex) => {
+      {cards.map((card, cardIndex) => {
         const offset = (cardIndex - centerIndex) * 1.5;
         const isSelected = selectedCard === cardIndex;
 
@@ -173,11 +173,31 @@ export default function Cards({ setCardSection }) {
           <div className="text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between h-full">
             <div className="py-3 px-4">
               <div className="flex mb-2 gap-4">
-                <h2 className="text-[1em] font-[ElMessiri]">Aperture</h2>
+                <h2 className="text-[1em] font-[ElMessiri]">{card.title}</h2>
                 <div className="flex justify-between items-center gap-2 w-full">
                   <div className="flex gap-2">
-                    <h2 className="live-btn">Live</h2>
-                    <h2 className="live-btn">Live</h2>
+                    {card.live === "" ? (
+                      ""
+                    ) : (
+                      <a
+                        href={card.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <h2 className="live-btn">Live</h2>
+                      </a>
+                    )}
+                    {card.code === "" ? (
+                      ""
+                    ) : (
+                      <a
+                        href={card.code}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <h2 className="code-btn">Code</h2>
+                      </a>
+                    )}
                   </div>
                   {!isSelected && (
                     <svg
@@ -196,15 +216,12 @@ export default function Cards({ setCardSection }) {
                   )}
                 </div>
               </div>
-              <p className="text-[0.6em] font-normal ">
-                A 2D Hyper-Casual Puzzle game built in Unity. Based on “Portal”
-                from Valve.
-              </p>
+              <p className="text-[0.6em] font-normal ">{card.description}</p>
             </div>
             <div className="pb-4 px-4 flex gap-2 justify-between flex-wrap">
-              <h2 className="project-tag">Unity</h2>
-              <h2 className="project-tag">HLSL</h2>
-              <h2 className="project-tag">Tailwind</h2>
+              {card.tags.map((tag) => (
+                <h2 className="project-tag">{tag}</h2>
+              ))}
             </div>
           </div>
         );
@@ -240,8 +257,8 @@ export default function Cards({ setCardSection }) {
                 }}
               >
                 <img
-                  src="../FeatureLarge.jpg"
-                  alt="Project Thumbnail"
+                  src={card.thumbnail}
+                  alt={card.title}
                   className={`absolute top-0 left-0 w-full h-full object-cover ${
                     isSelected ? "border-b border-[#757575]/70" : ""
                   }  rounded-t-3xl`}

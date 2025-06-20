@@ -42,7 +42,8 @@
   animation: fadeIn 0.5s ease-out 0.2s backwards;
 }
 
-.live-btn {
+.live-btn,
+.code-btn {
   text-align: center;
   align-content: center;
   color: #464546;
@@ -55,9 +56,16 @@
   will-change: transform;
 }
 
-.live-btn:hover {
+.code-btn {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(117, 117, 117, 1);
+  color: #d9d9d9;
+}
+
+.live-btn:hover,
+.code-btn:hover {
   transform: scale(1.1);
-  animation: ringPulse 1s infinite ease-in-out;
+  animation: ringPulse 1.5s infinite ease-in-out;
 }
 
 .project-tag {

@@ -2,6 +2,7 @@ export const bonevaneIcon = new URL(
   "../assets/icons/bonevane.svg",
   import.meta.url
 ).href;
+
 const emailIcon = new URL("../assets/icons/email.svg", import.meta.url).href;
 const githubIcon = new URL("../assets/icons/github.svg", import.meta.url).href;
 const linkedinIcon = new URL("../assets/icons/linkedin.svg", import.meta.url)

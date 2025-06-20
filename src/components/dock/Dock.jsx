@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./dock.css";
+import "./Dock.css";
 import { tabs } from "../../data/sections";
 
 export default function Dock({ selected, setSelected }) {

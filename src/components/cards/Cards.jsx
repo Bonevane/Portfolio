@@ -9,6 +9,10 @@ export default function Cards({ setCardSection }) {
   const [animComplete, setAnimComplete] = useState(false);
   const touchVelocityRef = useRef(0);
   const decayFrame = useRef(null);
+  const isDragging = useRef(false);
+  const isTouching = useRef(false);
+  const lastY = useRef(0);
+  const lastTime = useRef(0);
 
   const wheelScrollFactor = 0.002;
   const visibleCount = 6;
@@ -26,96 +30,37 @@ export default function Cards({ setCardSection }) {
     }
   }, [centerIndex]);
 
-  // Scrolling stuff and whatnot
-  const handleWheel = (e) => {
-    e.preventDefault();
-    setCenterIndex((prev) => {
-      let next = prev + e.deltaY * wheelScrollFactor;
-      next = Math.max(0, Math.min(cards.length - 1, next));
-      return next;
-    });
-  };
-
   useEffect(() => {
-    const handle = (e) => handleWheel(e);
-
-    // --- TOUCH VARIABLES ---
-    let touchStartY = 0;
-    let lastTouchY = 0;
-    let lastTouchTime = 0;
-
-    const handleTouchStart = (e) => {
-      if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
-      touchStartY = e.touches[0].clientY;
-      lastTouchY = touchStartY;
-      lastTouchTime = Date.now();
-      touchVelocityRef.current = 0;
-    };
-
-    const handleTouchMove = (e) => {
-      const currentY = e.touches[0].clientY;
-      const deltaY = lastTouchY - currentY;
-
-      if (Math.abs(deltaY) < 2) return;
-
-      const now = Date.now();
-      const dt = now - lastTouchTime;
-
-      touchVelocityRef.current = deltaY / dt;
-
-      lastTouchY = currentY;
-      lastTouchTime = now;
-
-      handleWheel({
-        deltaY,
-        preventDefault: () => e.preventDefault(),
+    // General wheel and touch handling
+    const handleWheel = (e) => {
+      e.preventDefault();
+      setCenterIndex((prev) => {
+        let next = prev + e.deltaY * wheelScrollFactor;
+        next = Math.max(0, Math.min(cards.length - 1, next));
+        return next;
       });
     };
 
-    const handleTouchEnd = () => {
-      let velocity = touchVelocityRef.current * 30;
-
-      const decay = () => {
-        if (Math.abs(velocity) < 0.1) return;
-
-        handleWheel({ deltaY: velocity, preventDefault: () => {} });
-
-        velocity *= 0.92;
-        decayFrame.current = requestAnimationFrame(decay);
-      };
-
-      decay();
-    };
-
-    // --- MOUSE DRAG VARIABLES ---
-    let isDragging = false;
-    let lastMouseY = 0;
-    let lastMouseTime = 0;
-
-    const handleMouseDown = (e) => {
-      isDragging = true;
-      lastMouseY = e.clientY;
-      lastMouseTime = Date.now();
+    const start = (y, isTouch = false) => {
+      if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
+      isTouch ? (isTouching.current = true) : (isDragging.current = true);
+      lastY.current = y;
+      lastTime.current = Date.now();
       touchVelocityRef.current = 0;
       document.body.style.userSelect = "none";
-      if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
     };
 
-    const handleMouseMove = (e) => {
-      if (!isDragging) return;
-
-      const currentY = e.clientY;
-      const deltaY = lastMouseY - currentY;
-
+    const move = (y, e) => {
+      const deltaY = lastY.current - y;
       if (Math.abs(deltaY) < 2) return;
 
       const now = Date.now();
-      const dt = now - lastMouseTime;
+      const dt = now - lastTime.current;
 
       touchVelocityRef.current = deltaY / dt;
 
-      lastMouseY = currentY;
-      lastMouseTime = now;
+      lastY.current = y;
+      lastTime.current = now;
 
       handleWheel({
         deltaY,
@@ -123,47 +68,57 @@ export default function Cards({ setCardSection }) {
       });
     };
 
-    const handleMouseUp = () => {
-      if (!isDragging) return;
-      isDragging = false;
+    const end = (isTouch = false) => {
+      if (isTouch) {
+        if (!isTouching.current) return;
+        isTouching.current = false;
+      } else {
+        if (!isDragging.current) return;
+        isDragging.current = false;
+      }
 
-      let velocity = touchVelocityRef.current * 30;
       document.body.style.userSelect = "";
 
+      let velocity = touchVelocityRef.current * 30;
       const decay = () => {
         if (Math.abs(velocity) < 0.1) return;
-
         handleWheel({ deltaY: velocity, preventDefault: () => {} });
-
         velocity *= 0.92;
         decayFrame.current = requestAnimationFrame(decay);
       };
-
       decay();
     };
 
-    // Register all event listeners
-    window.addEventListener("wheel", handle, { passive: false });
+    // For Mouse Events
+    const handleMouseDown = (e) => start(e.clientY, false);
+    const handleMouseMove = (e) => {
+      if (!isDragging.current) return;
+      move(e.clientY, e);
+    };
+    const handleMouseUp = () => end(false);
 
+    // For Touch Events
+    const handleTouchStart = (e) => start(e.touches[0].clientY, true);
+    const handleTouchMove = (e) => move(e.touches[0].clientY, e);
+    const handleTouchEnd = () => end(true);
+
+    // ALL THEM LISTENERS
+    window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd, { passive: true });
-
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("wheel", handle);
-
+      window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
-
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
-
       if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
     };
   }, []);

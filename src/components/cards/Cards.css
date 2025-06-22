@@ -21,7 +21,7 @@
 .card-origin {
   right: 5vw;
   bottom: 8vh;
-  transition: all 0.2s ease-out;
+  transition: all 2s ease-out;
 }
 
 @media screen and (max-width: 720px) {
@@ -41,6 +41,12 @@ body.ios .card-origin {
   right: -12vh;
   bottom: 12vh;
   transition: all 0.05s ease-out;
+}
+
+body.mac .card-origin {
+  right: -12vh;
+  bottom: 12vh;
+  transition: all 0.02s ease-out;
 }
 
 .cards-container {

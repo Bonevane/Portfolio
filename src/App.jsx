@@ -21,7 +21,6 @@ export default function App() {
 
   useEffect(() => {
     const ua = navigator.userAgent;
-
     const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
 
     const isMacSafari =
@@ -29,9 +28,8 @@ export default function App() {
       /Safari/.test(ua) &&
       !/Chrome|Chromium|Edg/.test(ua);
 
-    if (isIOS || isMacSafari) {
-      document.body.classList.add("ios");
-    }
+    if (isIOS) document.body.classList.add("ios");
+    if (isMacSafari) document.body.classList.add("mac");
   }, []);
 
   // Navigation and History API

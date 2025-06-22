@@ -20,9 +20,16 @@ export default function App() {
   let color = ["", "", ""];
 
   useEffect(() => {
-    const isIOS =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    if (isIOS) {
+    const ua = navigator.userAgent;
+
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+
+    const isMacSafari =
+      /Macintosh/.test(ua) &&
+      /Safari/.test(ua) &&
+      !/Chrome|Chromium|Edg/.test(ua);
+
+    if (isIOS || isMacSafari) {
       document.body.classList.add("ios");
     }
   }, []);

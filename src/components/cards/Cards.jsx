@@ -39,6 +39,7 @@ export default function Cards({ setCardSection }) {
   useEffect(() => {
     const handle = (e) => handleWheel(e);
 
+    // --- TOUCH VARIABLES ---
     let touchStartY = 0;
     let lastTouchY = 0;
     let lastTouchTime = 0;
@@ -55,13 +56,11 @@ export default function Cards({ setCardSection }) {
       const currentY = e.touches[0].clientY;
       const deltaY = lastTouchY - currentY;
 
-      // Prevent jitter
       if (Math.abs(deltaY) < 2) return;
 
       const now = Date.now();
       const dt = now - lastTouchTime;
 
-      // Estimate velocity (pixels/ms)
       touchVelocityRef.current = deltaY / dt;
 
       lastTouchY = currentY;
@@ -74,33 +73,97 @@ export default function Cards({ setCardSection }) {
     };
 
     const handleTouchEnd = () => {
-      let velocity = touchVelocityRef.current * 30; // Convert to px/frame assuming ~60fps
+      let velocity = touchVelocityRef.current * 30;
 
       const decay = () => {
         if (Math.abs(velocity) < 0.1) return;
 
-        handleWheel({
-          deltaY: velocity,
-          preventDefault: () => {},
-        });
+        handleWheel({ deltaY: velocity, preventDefault: () => {} });
 
-        velocity *= 0.92; // Friction factor
+        velocity *= 0.92;
         decayFrame.current = requestAnimationFrame(decay);
       };
 
       decay();
     };
 
+    // --- MOUSE DRAG VARIABLES ---
+    let isDragging = false;
+    let lastMouseY = 0;
+    let lastMouseTime = 0;
+
+    const handleMouseDown = (e) => {
+      isDragging = true;
+      lastMouseY = e.clientY;
+      lastMouseTime = Date.now();
+      touchVelocityRef.current = 0;
+      document.body.style.userSelect = "none";
+      if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
+    };
+
+    const handleMouseMove = (e) => {
+      if (!isDragging) return;
+
+      const currentY = e.clientY;
+      const deltaY = lastMouseY - currentY;
+
+      if (Math.abs(deltaY) < 2) return;
+
+      const now = Date.now();
+      const dt = now - lastMouseTime;
+
+      touchVelocityRef.current = deltaY / dt;
+
+      lastMouseY = currentY;
+      lastMouseTime = now;
+
+      handleWheel({
+        deltaY,
+        preventDefault: () => e.preventDefault(),
+      });
+    };
+
+    const handleMouseUp = () => {
+      if (!isDragging) return;
+      isDragging = false;
+
+      let velocity = touchVelocityRef.current * 30;
+      document.body.style.userSelect = "";
+
+      const decay = () => {
+        if (Math.abs(velocity) < 0.1) return;
+
+        handleWheel({ deltaY: velocity, preventDefault: () => {} });
+
+        velocity *= 0.92;
+        decayFrame.current = requestAnimationFrame(decay);
+      };
+
+      decay();
+    };
+
+    // Register all event listeners
     window.addEventListener("wheel", handle, { passive: false });
+
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd, { passive: true });
 
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
     return () => {
       window.removeEventListener("wheel", handle);
+
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
+
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+
       if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
     };
   }, []);

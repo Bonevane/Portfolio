@@ -179,4 +179,15 @@ export const cards = [
     code: "https://github.com/Bonevane/Spillage-Search",
     thumbnail: "./projects/Spillage.webp",
   },
+
+  {
+    title: "SEN-D",
+    section: "Web_Dev",
+    description:
+      "A kidney stone detection network based on the StackedEnsembleNet Detection (SEN-D) architecture.",
+    tags: ["AI", "ML", "React", "FastAPI"],
+    live: "https://sen-d.vercel.app",
+    code: "https://github.com/Bonevane/SEN-D",
+    thumbnail: "./projects/SEN-D.webp",
+  },
 ];

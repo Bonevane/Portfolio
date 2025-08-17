@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Homepage -->
   <url>
     <loc>https://bonevane.vercel.app/</loc>
     <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Home -->
   <url>
     <loc>https://bonevane.vercel.app/home</loc>
     <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Portfolios -->
   <url>
     <loc>https://bonevane.vercel.app/portfolios</loc>
     <lastmod>2025-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  
-  <!-- Misc -->
   <url>
     <loc>https://bonevane.vercel.app/misc</loc>
     <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
-  <!-- Contact -->
   <url>
     <loc>https://bonevane.vercel.app/contact</loc>
     <lastmod>2025-08-17</lastmod>

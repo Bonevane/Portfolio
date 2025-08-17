@@ -15,7 +15,6 @@
     "@react-three/fiber": "^9.1.2",
     "@tailwindcss/vite": "^4.1.8",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.16.0",
     "gsap": "^3.13.0",
     "ogl": "^1.0.11",
     "react": "^19.1.0",

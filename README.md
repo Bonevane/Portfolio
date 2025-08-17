@@ -2,15 +2,14 @@
 
 <div align="center">
 
-[![Email](https://img.shields.io/badge/Email-C9FF9F?style=flat&logo=gmail&logoColor=black)](mailto:rahmad.atomic44@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-AE86FF?style=flat&logo=github&logoColor=black)](https://github.com/bonevane)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-9FD5FF?style=flat&logo=linkedin&logoColor=black)](https://linkedin.com/in/rafay-ahmad)
-[![Discord](https://img.shields.io/badge/Discord-9FA9FF?style=flat&logo=discord&logoColor=black)](https://discord.com/users/bonevane)
-
-[![Itch.io](https://img.shields.io/badge/Itch.io-FFE29F?style=flat&logo=itchdotio&logoColor=black)](https://bonevane.itch.io)
-[![Instagram](https://img.shields.io/badge/Instagram-F8AEFF?style=flat&logo=instagram&logoColor=black)](https://instagram.com/rafay_ahmad44)
-[![YouTube](https://img.shields.io/badge/YouTube-FF8B8B?style=flat&logo=youtube&logoColor=black)](https://youtube.com/@bonevane)
-[![Twitter](https://img.shields.io/badge/Twitter-D9D9D9?style=flat&logo=x&logoColor=black)](https://x.com/Bonevane_YT)
+[![Email](https://img.shields.io/badge/Email-34A853?style=flat&logo=gmail&logoColor=white)](mailto:rahmad.atomic44@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/bonevane)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/rafay-ahmad)
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white)](https://discord.com/users/bonevane)
+[![Itch.io](https://img.shields.io/badge/Itch.io-FA5C5C?style=flat&logo=itchdotio&logoColor=white)](https://bonevane.itch.io)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white)](https://instagram.com/rafay_ahmad44)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtube.com/@bonevane)
+[![Twitter](https://img.shields.io/badge/Twitter-000000?style=flat&logo=x&logoColor=white)](https://x.com/Bonevane_YT)
 
 </div>
 

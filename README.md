@@ -2,15 +2,15 @@
 
 <div align="center">
 
-[![Email](https://img.shields.io/badge/Email-C9FF9F?style=for-the-badge&logo=gmail&logoColor=black)](mailto:rahmad.atomic44@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-AE86FF?style=for-the-badge&logo=github&logoColor=black)](https://github.com/bonevane)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-9FD5FF?style=for-the-badge&logo=linkedin&logoColor=black)](https://linkedin.com/in/rafay-ahmad)
-[![Discord](https://img.shields.io/badge/Discord-9FA9FF?style=for-the-badge&logo=discord&logoColor=black)](https://discord.com/users/bonevane)
+[![Email](https://img.shields.io/badge/Email-C9FF9F?style=flat&logo=gmail&logoColor=black)](mailto:rahmad.atomic44@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-AE86FF?style=flat&logo=github&logoColor=black)](https://github.com/bonevane)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-9FD5FF?style=flat&logo=linkedin&logoColor=black)](https://linkedin.com/in/rafay-ahmad)
+[![Discord](https://img.shields.io/badge/Discord-9FA9FF?style=flat&logo=discord&logoColor=black)](https://discord.com/users/bonevane)
 
-[![Itch.io](https://img.shields.io/badge/Itch.io-FFE29F?style=for-the-badge&logo=itchdotio&logoColor=black)](https://bonevane.itch.io)
-[![Instagram](https://img.shields.io/badge/Instagram-F8AEFF?style=for-the-badge&logo=instagram&logoColor=black)](https://instagram.com/rafay_ahmad44)
-[![YouTube](https://img.shields.io/badge/YouTube-FF8B8B?style=for-the-badge&logo=youtube&logoColor=black)](https://youtube.com/@bonevane)
-[![Twitter](https://img.shields.io/badge/Twitter-D9D9D9?style=for-the-badge&logo=x&logoColor=black)](https://x.com/Bonevane_YT)
+[![Itch.io](https://img.shields.io/badge/Itch.io-FFE29F?style=flat&logo=itchdotio&logoColor=black)](https://bonevane.itch.io)
+[![Instagram](https://img.shields.io/badge/Instagram-F8AEFF?style=flat&logo=instagram&logoColor=black)](https://instagram.com/rafay_ahmad44)
+[![YouTube](https://img.shields.io/badge/YouTube-FF8B8B?style=flat&logo=youtube&logoColor=black)](https://youtube.com/@bonevane)
+[![Twitter](https://img.shields.io/badge/Twitter-D9D9D9?style=flat&logo=x&logoColor=black)](https://x.com/Bonevane_YT)
 
 </div>
 

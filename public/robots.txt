@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+
+# Sitemap reference
+Sitemap: https://bonevane.vercel.app/sitemap.xml

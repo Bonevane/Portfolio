@@ -15,6 +15,10 @@ export default function Cards({ setCardSection, setActiveVideo }) {
   const lastX = useRef(0);
   const lastY = useRef(0);
   const lastTime = useRef(0);
+  
+  const imageTouchStartX = useRef(0);
+  const imageTouchStartY = useRef(0);
+  const isHorizontalSwipe = useRef(false);
 
   const selectedCardRef = useRef(selectedCard);
   const scrollAccumulatorRef = useRef(0);
@@ -81,6 +85,7 @@ export default function Cards({ setCardSection, setActiveVideo }) {
     };
 
     const move = (x, y, e) => {
+      if (isHorizontalSwipe.current) return;
       const dX = lastX.current - x;
       const dY = lastY.current - y;
       const effectiveDelta = dY + dX * 0.5;
@@ -315,6 +320,46 @@ export default function Cards({ setCardSection, setActiveVideo }) {
                   paddingTop: isSelected ? "56.25%" : "0%",
                   opacity: isSelected ? 1 : 0,
                 }}
+                onTouchStart={(e) => {
+                  if (isSelected && card.media && card.media.length > 1) {
+                    imageTouchStartX.current = e.touches[0].clientX;
+                    imageTouchStartY.current = e.touches[0].clientY;
+                    isHorizontalSwipe.current = false;
+                  }
+                }}
+                onTouchMove={(e) => {
+                  if (isSelected && card.media && card.media.length > 1) {
+                    const currentX = e.touches[0].clientX;
+                    const currentY = e.touches[0].clientY;
+                    const diffX = imageTouchStartX.current - currentX;
+                    const diffY = imageTouchStartY.current - currentY;
+                    
+                    if (!isHorizontalSwipe.current && Math.abs(diffX) > 10 && Math.abs(diffX) > Math.abs(diffY)) {
+                      isHorizontalSwipe.current = true;
+                    }
+                    
+                    if (isHorizontalSwipe.current) {
+                      e.stopPropagation();
+                    }
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (isSelected && card.media && card.media.length > 1) {
+                    if (isHorizontalSwipe.current) {
+                      e.stopPropagation();
+                      const endX = e.changedTouches[0].clientX;
+                      const diffX = imageTouchStartX.current - endX;
+                      if (Math.abs(diffX) > 40) {
+                        if (diffX > 0) {
+                          setCurrentMediaIndex((prev) => (prev < card.media.length - 1 ? prev + 1 : 0));
+                        } else {
+                          setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : card.media.length - 1));
+                        }
+                      }
+                    }
+                    isHorizontalSwipe.current = false;
+                  }
+                }}
               >
                 {card.media ? (
                   <>
@@ -364,7 +409,7 @@ export default function Cards({ setCardSection, setActiveVideo }) {
                         {/* Navigation Buttons */}
                         <div className="absolute inset-0 flex justify-between items-center px-2 pointer-events-none z-50">
                           <button
-                            className="carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-0 group-hover:opacity-100"
+                            className="carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
                             onClick={(e) => {
                               e.stopPropagation();
                               setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : card.media.length - 1));
@@ -374,7 +419,7 @@ export default function Cards({ setCardSection, setActiveVideo }) {
                           </button>
                           
                           <button
-                            className="carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-0 group-hover:opacity-100"
+                            className="carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
                             onClick={(e) => {
                               e.stopPropagation();
                               setCurrentMediaIndex((prev) => (prev < card.media.length - 1 ? prev + 1 : 0));

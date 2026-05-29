@@ -84,7 +84,7 @@ export default function App() {
           (activeVideo || activeExperience)
             ? "translate-y-[-100vh] scale-90 opacity-0 pointer-events-none" 
             : "translate-y-0 scale-100 opacity-100"
-        }`}
+        } ${currentTab === "Portfolios" ? "cards-page" : ""}`}
       >
         <div>
           <TextOverlay

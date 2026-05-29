@@ -57,7 +57,7 @@ export default function Cursor() {
         const isElementInteractable = target.closest(
           'a, button, [role="button"], input, select, textarea, .dock-tab, .card, .card-origin, .project-tag, .live-btn, .code-btn, .gallery-label, .gallery-item-inner, .toggle-switch, .bonevane'
         );
-        const isScrollable = target.closest(".cards-container, .gallery-wrapper");
+        const isScrollable = target.closest(".cards-container, .gallery-wrapper, .cards-page");
         const isVideoBackdrop = target.closest(".video-backdrop");
         const isVideoPlaying = target.closest(".video-playing");
         const isVideoPaused = target.closest(".video-paused");

@@ -261,6 +261,20 @@ export const cards = [
     ]
   },
   {
+    title: "Staccato",
+    section: "Web_Dev",
+    description:
+      "A minimalist Rapid Serial Visual Presentation (RSVP) engine designed for deep comprehension and high-velocity reading.",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Zustand"],
+    live: "https://staccato-read.vercel.app/",
+    code: "https://github.com/Bonevane/Staccato",
+    thumbnail: "/projects/Staccato.webp",
+    media: [
+      { type: 'image', url: './projects/Staccato.webp' },
+      { type: 'image', url: './projects/Staccato-2.webp' }
+    ]
+  },
+  {
     title: "GHMS",
     section: "Web_Dev",
     description:
@@ -289,22 +303,6 @@ export const cards = [
     ]
   },
   {
-    title: "Spillage",
-    section: "Web_Dev",
-    description:
-      "A search engine for over 190k indexed Medium articles. Built on Google's foundational research paper.",
-    tags: ["Next.js", "FastAPI", "NLP", "DSA"],
-    live: "https://spillage-search.vercel.app",
-    code: "https://github.com/Bonevane/Spillage-Search",
-    thumbnail: "/projects/Spillage.webp",
-    media: [
-      { type: 'image', url: './projects/Spillage.webp' },
-      { type: 'image', url: './projects/Spillage-2.webp' },
-      { type: 'image', url: './projects/Spillage-3.webp' },
-      { type: 'image', url: './projects/Spillage-4.webp' }
-    ]
-  },
-  {
     title: "SEN-D",
     section: "Web_Dev",
     description:
@@ -318,17 +316,19 @@ export const cards = [
     ]
   },
   {
-    title: "Staccato",
+    title: "Spillage",
     section: "Web_Dev",
     description:
-      "A minimalist Rapid Serial Visual Presentation (RSVP) engine designed for deep comprehension and high-velocity reading.",
-    tags: ["React", "TypeScript", "Tailwind CSS", "Zustand"],
-    live: "https://staccato-read.vercel.app/",
-    code: "https://github.com/Bonevane/Staccato",
-    thumbnail: "/projects/Staccato.webp",
+      "A search engine for over 190k indexed Medium articles with AI based summaries. Built on Google's foundational research paper.",
+    tags: ["Next.js", "FastAPI", "NLP", "AI"],
+    live: "https://spillage-search.vercel.app",
+    code: "https://github.com/Bonevane/Spillage-Search",
+    thumbnail: "/projects/Spillage.webp",
     media: [
-      { type: 'image', url: './projects/Staccato.webp' },
-      { type: 'image', url: './projects/Staccato-2.webp' }
+      { type: 'image', url: './projects/Spillage.webp' },
+      { type: 'image', url: './projects/Spillage-2.webp' },
+      { type: 'image', url: './projects/Spillage-3.webp' },
+      { type: 'image', url: './projects/Spillage-4.webp' }
     ]
   },
   {

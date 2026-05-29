@@ -121,8 +121,8 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
             <div className="gallery-item-inner">
               <div className="gallery-item-inner">
                 <div className="gallery-label">{pic.text}</div>
-                <img src={pic.url} className="gallery-image-blur" />
-                <img src={pic.url} className="gallery-image" />
+                <img src={pic.url} alt={`Blurred background for ${pic.text}`} className="gallery-image-blur" />
+                <img src={pic.url} alt={pic.text || "Gallery Image"} className="gallery-image" />
               </div>
             </div>
           </div>
@@ -144,8 +144,8 @@ export default function MiscGallery({ imagesLeft, imagesRight }) {
             <div className="gallery-item-inner">
               <div className="gallery-item-inner">
                 <div className="gallery-label">{pic.text}</div>
-                <img src={pic.url} className="gallery-image-blur" />
-                <img src={pic.url} className="gallery-image" />
+                <img src={pic.url} alt={`Blurred background for ${pic.text}`} className="gallery-image-blur" />
+                <img src={pic.url} alt={pic.text || "Gallery Image"} className="gallery-image" />
               </div>
             </div>
           </div>

@@ -45,6 +45,11 @@ export default function App() {
     if (window.location.pathname !== newPath) {
       window.history.pushState({ tab: currentTab }, "", newPath);
     }
+    
+    // Dynamic SEO Titles
+    if (currentTab) {
+      document.title = `${currentTab === "Home" ? "Creative Developer & Designer" : currentTab} | Rafay Ahmad`;
+    }
   }, [currentTab]);
 
   useEffect(() => {

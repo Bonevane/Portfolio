@@ -7,6 +7,7 @@ gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
 const SplitText = ({
   text,
+  as: Component = "p",
   className = "",
   delay = 100,
   duration = 0.6,
@@ -101,7 +102,7 @@ const SplitText = ({
   ]);
 
   return (
-    <p
+    <Component
       ref={ref}
       className={`split-parent ${className}`}
       style={{
@@ -113,7 +114,7 @@ const SplitText = ({
       }}
     >
       {text}
-    </p>
+    </Component>
   );
 };
 

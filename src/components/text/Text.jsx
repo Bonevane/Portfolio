@@ -27,6 +27,7 @@ export default function TextOverlay({ tab, activeSectionKey, setMiscSection, set
       <div key={title} style={{ pointerEvents: "all" }}>
         <div>
           <SplitText
+            as="h1"
             text={title}
             className="text-[4.6em] text-[#CEC9C9] mb-2 font-[ElMessiri] translate-x-[-2%]"
             delay={20}

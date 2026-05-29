@@ -35,7 +35,7 @@ body {
   min-height: 100vh;
 }
 
-h1 {
+h1.exp-title{
   font-size: 3.2em;
   line-height: 1.1;
 }

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Dock.css";
 import { tabs } from "../../data/Sections.js";
+import { paths } from "../../data/Paths.js";
 
 export default function Dock({ selected, setSelected }) {
   const [animateTabs, setAnimateTabs] = useState([]);
@@ -87,18 +88,24 @@ export default function Dock({ selected, setSelected }) {
       <div className="dock-highlight" ref={highlightRef} />
       <div className="dock-ring flex justify-between" ref={ringRef} />
       {tabs.map((tab, index) => (
-        <div
+        <a
           key={tab}
+          href={paths[tab] || `/${tab.toLowerCase()}`}
+          title={`${tab} Section`}
+          aria-label={`Navigate to ${tab} Section`}
           data-tab={tab}
           className={`dock-tab ${selected === tab ? "selected" : ""} ${
             animateTabs.includes(index) ? "swoop" : ""
           }`}
-          onClick={() => setSelected(tab)}
+          onClick={(e) => {
+            e.preventDefault();
+            setSelected(tab);
+          }}
           onMouseEnter={() => handleMouseEnter(tab)}
           onMouseLeave={handleMouseLeave}
         >
           {tab}
-        </div>
+        </a>
       ))}
       <div
         style={{

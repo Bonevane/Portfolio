@@ -197,7 +197,7 @@ export default function Experience({ onClose }) {
                 }}
               >
                 {/* Massive Title (Remains slightly visible and blurred when inactive) */}
-                <h1 className="font-[ElMessiri] text-center tracking-wide leading-tight px-4 text-white text-[5vw]">
+                <h1 className="exp-title font-[ElMessiri] text-center tracking-wide leading-tight px-4 text-white text-[5vw]">
                   {exp.title}
                 </h1>
 

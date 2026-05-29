@@ -137,7 +137,8 @@ export default function Flower() {
         <div className="flex items-center justify-center w-[70%] h-[70%] rounded-full backdrop-blur-lg bg-white/10 border border-white/5 z-20 profile-circle">
           <img
             src="/me.webp"
-            alt="Profile"
+            alt="Rafay Ahmad - Bonevane"
+            title="Rafay Ahmad - Bonevane"
             className="w-[90%] h-[90%] object-cover rounded-full "
           />
         </div>

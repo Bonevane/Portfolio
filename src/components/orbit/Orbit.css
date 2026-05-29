@@ -33,3 +33,7 @@
     transform: rotate(calc(var(--start-rotation, 0deg) * -1));
   }
 }
+
+.bonevane {
+  filter: contrast(100%) drop-shadow(0 0);
+}

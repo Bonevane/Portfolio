@@ -105,7 +105,10 @@ export default function Flower() {
 
   return (
     <div>
-      <div className="flower-container fixed top-0 right-0 translate-x-2/7 -translate-y-2/7 max-w-[900px] max-h-[900px] flex items-center justify-center">
+      <div 
+        className="flower-container fixed top-0 right-0 translate-x-2/7 -translate-y-2/7 max-w-[900px] max-h-[900px] flex items-center justify-center"
+        onDragStart={(e) => e.preventDefault()}
+      >
         {/* Rotating Flower Wrapper */}
         <div className="absolute w-full h-full rounded-full rotating-flower-wrapper z-10">
           <div

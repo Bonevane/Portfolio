@@ -46,18 +46,18 @@ export default function Orbit() {
   return (
     <div className="fixed top-[-40px] right-[-80px] w-[100vw] h-[100vh] animate-[fadeIn_1s_ease-in_backwards]">
       <div
-        className="absolute top-0 right-0 z-10 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)]"
+        className="absolute top-0 right-0 z-10 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)] cursor-pointer"
         ref={centerRef}
       >
         <img
           src={bonevaneIcon}
           alt="Bonevane"
-          className="w-[56vw] h-[56vw] max-w-[40vh] max-h-[40vh] rounded-full p-12 border-1 border-[#757575]/50 bg-[#84AEFF]/25 backdrop-blur-xl"
+          className="bonevane w-[56vw] h-[56vw] max-w-[40vh] max-h-[40vh] rounded-full p-12 border-1 border-[#757575]/50 bg-[#84AEFF]/25 backdrop-blur-xl"
         />
         <img
           src={bonevaneIcon}
           alt="Bonevane"
-          className="absolute top-0 right-0 w-[56vw] h-[56vw] max-w-[40vh] max-h-[40vh] rounded-full p-12 z-[-1]"
+          className="bonevane absolute top-0 right-0 w-[56vw] h-[56vw] max-w-[40vh] max-h-[40vh] rounded-full p-12 z-[-1]"
         />
       </div>
       {socials.map((social, i) => {

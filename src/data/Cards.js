@@ -8,7 +8,10 @@ export const cards = [
     tags: ["JavaScript", "HTML", "CSS"],
     live: "https://bonevane.github.io/calculator/",
     code: "https://github.com/Bonevane/calculator",
-    thumbnail: "./projects/Calculator.webp",
+    thumbnail: "/projects/Calculator.webp",
+    media: [
+      { type: 'image', url: './projects/Calculator.webp' }
+    ]
   },
   {
     title: "X&O",
@@ -18,7 +21,10 @@ export const cards = [
     tags: ["JavaScript", "HTML", "CSS"],
     live: "https://bonevane.github.io/tic-tac-toe/",
     code: "https://github.com/Bonevane/tic-tac-toe",
-    thumbnail: "./projects/TicTacToe.webp",
+    thumbnail: "/projects/TicTacToe.webp",
+    media: [
+      { type: 'image', url: './projects/TicTacToe.webp' }
+    ]
   },
   {
     title: "To Do",
@@ -28,7 +34,10 @@ export const cards = [
     tags: ["JavaScript", "HTML", "CSS"],
     live: "https://bonevane.github.io/to-do/",
     code: "https://github.com/Bonevane/to-do",
-    thumbnail: "./projects/ToDo.webp",
+    thumbnail: "/projects/ToDo.webp",
+    media: [
+      { type: 'image', url: './projects/ToDo.webp' }
+    ]
   },
   {
     title: "Weather",
@@ -38,7 +47,10 @@ export const cards = [
     tags: ["API", "JS", "Visual Crossing"],
     live: "https://bonevane.github.io/weather-app/",
     code: "https://github.com/Bonevane/weather-app",
-    thumbnail: "./projects/Weather.webp",
+    thumbnail: "/projects/Weather.webp",
+    media: [
+      { type: 'image', url: './projects/Weather.webp' }
+    ]
   },
   {
     title: "Autolist",
@@ -48,7 +60,10 @@ export const cards = [
     tags: ["Express.js", "PostgreSQL", "Neon DB"],
     live: "https://gta-cars-inventory.onrender.com/manufacturers",
     code: "https://github.com/Bonevane/gta-cars-inventory   ",
-    thumbnail: "./projects/Autolist.webp",
+    thumbnail: "/projects/Autolist.webp",
+    media: [
+      { type: 'image', url: './projects/Autolist.webp' }
+    ]
   },
   {
     title: "Notebox",
@@ -57,7 +72,23 @@ export const cards = [
     tags: ["Express.js", "EJS", "Forum"],
     live: "https://mini-message-board-mdy9.onrender.com/",
     code: "https://github.com/Bonevane/mini-message-board",
-    thumbnail: "./projects/Messages.webp",
+    thumbnail: "/projects/Messages.webp",
+    media: [
+      { type: 'image', url: './projects/Messages.webp' }
+    ]
+  },
+  {
+    title: "CUDA Neural Net",
+    section: "Experiments",
+    description:
+      "A high-performance neural network implemented from scratch using CUDA and cuBLAS for MNIST digit classification.",
+    tags: ["CUDA", "cuBLAS", "Deep Learning", "C++"],
+    live: "",
+    code: "https://github.com/Bonevane/CUDA-Neural-Network-for-MNIST-Classification",
+    thumbnail: "/projects/CUDA.webp",
+    media: [
+      { type: 'image', url: './projects/CUDA.webp' }
+    ]
   },
   {
     title: "Inside",
@@ -67,7 +98,10 @@ export const cards = [
     tags: ["Narrative", "Indie", "C++", "SFML"],
     live: "https://bonevane.itch.io/inside",
     code: "https://github.com/Bonevane/Inside-Remastered",
-    thumbnail: "./projects/Inside.webp",
+    thumbnail: "/projects/Inside.webp",
+    media: [
+      { type: 'image', url: './projects/Inside.webp' }
+    ]
   },
   {
     title: "Orrery",
@@ -77,7 +111,12 @@ export const cards = [
     tags: ["Java", "LibGDX", "Physics", "Space"],
     live: "https://bonevane.github.io/Orrery/",
     code: "https://github.com/Bonevane/Orrery",
-    thumbnail: "./projects/Orrery.webp",
+    thumbnail: "/projects/Orrery.webp",
+    media: [
+      { type: 'image', url: './projects/Orrery.webp' },
+      { type: 'image', url: './projects/Orrery-2.webp' },
+      { type: 'image', url: './projects/Orrery-3.webp' }
+    ]
   },
   {
     title: "Path Tracer",
@@ -87,7 +126,13 @@ export const cards = [
     tags: ["Unity", "HLSL", "C#"],
     live: "",
     code: "https://github.com/Bonevane/Path-Tracer",
-    thumbnail: "./projects/PathTracer.webp",
+    thumbnail: "/projects/PathTracer.webp",
+    media: [
+      { type: 'image', url: './projects/PathTracer.webp' },
+      { type: 'image', url: './projects/PathTracer-2.webp' },
+      { type: 'image', url: './projects/PathTracer-3.webp' },
+      { type: 'image', url: './projects/PathTracer-4.webp' }
+    ]
   },
   {
     title: "Aperture",
@@ -97,7 +142,28 @@ export const cards = [
     tags: ["Unity", "Android", "Puzzle", "2D"],
     live: "https://bonevane.itch.io/aperture",
     code: "",
-    thumbnail: "./projects/FeatureLarge.webp",
+    thumbnail: "/projects/FeatureLarge.webp",
+    media: [
+      { type: 'image', url: './projects/FeatureLarge.webp' },
+      { type: 'image', url: './projects/Aperture.webp' },
+      { type: 'image', url: './projects/Aperture-2.webp' },
+      { type: 'image', url: './projects/Aperture-3.webp' }
+    ]
+  },
+  {
+    title: "ScalAR",
+    section: "Game_Dev",
+    description:
+      "A mobile AR measuring app utilizing ARCore depth sensing and real-time camera tracking to measure objects and spaces.",
+    tags: ["AR", "ARCore", "Android", "Mobile"],
+    live: "",
+    code: "https://github.com/Bonevane/ScalAR-Measurement",
+    thumbnail: "/projects/ScalAR.webp",
+    media: [
+      { type: 'image', url: './projects/ScalAR.webp' },
+      { type: 'image', url: './projects/ScalAR-2.webp' },
+      { type: 'image', url: './projects/ScalAR-3.webp' }
+    ]
   },
   {
     title: "Never Settle",
@@ -107,7 +173,10 @@ export const cards = [
     tags: ["Oneplus", "Product Render", "3D"],
     live: "",
     code: "",
-    thumbnail: "./projects/Oneplus.webp",
+    thumbnail: "/projects/Oneplus.webp",
+    media: [
+      { type: 'image', url: './projects/Oneplus.webp' }
+    ]
   },
   {
     title: "Living",
@@ -117,17 +186,30 @@ export const cards = [
     tags: ["Interior", "Materials", "Lighting"],
     live: "",
     code: "",
-    thumbnail: "./projects/Couch.webp",
+    thumbnail: "/projects/Couch.webp",
+    media: [
+      { type: 'image', url: './projects/Couch.webp' },
+      { type: 'image', url: './projects/Couch-2.webp' },
+      { type: 'image', url: './projects/Couch-3.webp' }
+    ]
   },
   {
-    title: "Formula 1 Car",
+    title: "Formula 1",
     section: "Blender",
     description:
       "A high poly blender model of a Formula 1 car, based on the 2022 regulations.",
     tags: ["3D", "F1", "Cycles", "Materials"],
     live: "",
     code: "",
-    thumbnail: "./projects/F1.webp",
+    thumbnail: "/projects/F1.webp",
+    media: [
+      { type: 'image', url: './projects/F1.webp' },
+      { type: 'image', url: './projects/F1-2.webp' },
+      { type: 'image', url: './projects/F1-3.webp' },
+      { type: 'image', url: './projects/F1-4.webp' },
+      { type: 'image', url: './projects/F1-5.webp' },
+      { type: 'image', url: './projects/F1-6.webp' }
+    ]
   },
   {
     title: "Sunset Drive",
@@ -136,7 +218,34 @@ export const cards = [
     tags: ["Blender", "3D", "Realism", "Nature"],
     live: "",
     code: "",
-    thumbnail: "./projects/SunsetDrive.webp",
+    thumbnail: "/projects/SunsetDrive.webp",
+    media: [
+      { type: 'image', url: './projects/SunsetDrive.webp' },
+      { type: 'image', url: './projects/SunsetDrive-2.webp' }
+    ]
+  },
+  {
+    title: "Moon Over the Castle",
+    section: "Blender",
+    description:
+      "A Gran Turismo 4 inspired cinematic movie sequence, rendered in Blender, and graded & edited in Adobe Premiere Pro.",
+    tags: ["Blender", "3D", "Animation", "Premiere Pro"],
+    live: "",
+    code: "",
+    thumbnail: "/projects/GT4.png",
+    media: [
+      { 
+        type: 'video', 
+        url: '/videos/gt-final.mp4', 
+        title: 'Moon Over the Castle', 
+        description: 'A Gran Turismo 4 inspired cinematic movie sequence, rendered in Blender, and graded & edited in Adobe Premiere Pro.'
+      },
+      { type: 'image', url: './projects/GT4.png' },
+      { type: 'image', url: './projects/GT4-2.webp' },
+      { type: 'image', url: './projects/GT4-3.webp' },
+      { type: 'image', url: './projects/GT4-4.webp' },
+      { type: 'image', url: './projects/GT4-5.webp' }
+    ]
   },
   {
     title: "Danish's Space",
@@ -146,7 +255,10 @@ export const cards = [
     tags: ["JavaScript", "HTML", "CSS", "Frontend", "Design"],
     live: "https://bonevane.github.io/homepage/ ",
     code: "",
-    thumbnail: "./projects/dmunib.webp",
+    thumbnail: "/projects/dmunib.webp",
+    media: [
+      { type: 'image', url: './projects/dmunib.webp' }
+    ]
   },
   {
     title: "GHMS",
@@ -156,7 +268,10 @@ export const cards = [
     tags: ["PostgreSQL", "Next.js", "Healthcare"],
     live: "",
     code: "https://github.com/Bonevane/GHMS",
-    thumbnail: "./projects/GHMS.webp",
+    thumbnail: "/projects/GHMS.webp",
+    media: [
+      { type: 'image', url: './projects/GHMS.webp' }
+    ]
   },
   {
     title: "INF-19",
@@ -166,9 +281,13 @@ export const cards = [
     tags: ["D3.js", "Network Sim", "Data Viz"],
     live: "https://inf-19.vercel.app",
     code: "https://github.com/Bonevane/INF-19",
-    thumbnail: "./projects/INF-19.webp",
+    thumbnail: "/projects/INF-19.webp",
+    media: [
+      { type: 'image', url: './projects/INF-19.webp' },
+      { type: 'image', url: './projects/INF-19-2.webp' },
+      { type: 'image', url: './projects/INF-19-3.webp' }
+    ]
   },
-
   {
     title: "Spillage",
     section: "Web_Dev",
@@ -177,9 +296,14 @@ export const cards = [
     tags: ["Next.js", "FastAPI", "NLP", "DSA"],
     live: "https://spillage-search.vercel.app",
     code: "https://github.com/Bonevane/Spillage-Search",
-    thumbnail: "./projects/Spillage.webp",
+    thumbnail: "/projects/Spillage.webp",
+    media: [
+      { type: 'image', url: './projects/Spillage.webp' },
+      { type: 'image', url: './projects/Spillage-2.webp' },
+      { type: 'image', url: './projects/Spillage-3.webp' },
+      { type: 'image', url: './projects/Spillage-4.webp' }
+    ]
   },
-
   {
     title: "SEN-D",
     section: "Web_Dev",
@@ -188,6 +312,37 @@ export const cards = [
     tags: ["AI", "ML", "React", "FastAPI"],
     live: "https://sen-d.vercel.app",
     code: "https://github.com/Bonevane/SEN-D",
-    thumbnail: "./projects/SEN-D.webp",
+    thumbnail: "/projects/SEN-D.webp",
+    media: [
+      { type: 'image', url: './projects/SEN-D.webp' }
+    ]
+  },
+  {
+    title: "Staccato",
+    section: "Web_Dev",
+    description:
+      "A minimalist Rapid Serial Visual Presentation (RSVP) engine designed for deep comprehension and high-velocity reading.",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Zustand"],
+    live: "https://staccato-read.vercel.app/",
+    code: "https://github.com/Bonevane/Staccato",
+    thumbnail: "/projects/Staccato.webp",
+    media: [
+      { type: 'image', url: './projects/Staccato.webp' },
+      { type: 'image', url: './projects/Staccato-2.webp' }
+    ]
+  },
+  {
+    title: "REACH",
+    section: "Web_Dev",
+    description:
+      "An AI-powered alert intelligence system that transforms verbose emergency reports into location-specific, actionable warnings.",
+    tags: ["LLMs", "Qwen3-VL", "React", "PostGIS"],
+    live: "https://reach-prototype.netlify.app/",
+    code: "https://github.com/dmunish/reaching/",
+    thumbnail: "/projects/REACH.webp",
+    media: [
+      { type: 'image', url: './projects/REACH.webp' },
+      { type: 'image', url: './projects/REACH-2.webp' }
+    ]
   },
 ];

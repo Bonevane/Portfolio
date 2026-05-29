@@ -10,6 +10,11 @@ export const picsLeft = [
   { url: "./gallery/Moon.webp", text: "月 - Shot on Pixel 7 Pro" },
   { url: "./gallery/Night_Mountain.webp", text: "Bright Lights, Big City" },
   { url: "./gallery/Nust_Office.webp", text: "Where dreams come to die" },
+  { url: "./gallery/Catto-2.webp", text: "Another certified loaf" },
+  { url: "./gallery/Catto-3.webp", text: "Peak feline performance" },
+  { url: "./gallery/Clouds.webp", text: "Drifting through the sky" },
+  { url: "./gallery/G13.webp", text: "Urban geometry" },
+  { url: "./gallery/Lamp.webp", text: "Sherlock style, maybe" },
 ];
 
 export const picsRight = [
@@ -30,4 +35,8 @@ export const picsRight = [
   { url: "./gallery/Sunset_C2.webp", text: "Crimson farewell" },
   { url: "./gallery/Sunset_Gym.webp", text: "B's the winner in our hearts" },
   { url: "./gallery/Sunset_Leaves.webp", text: "Silhouette in the light" },
+  { url: "./gallery/Palm.webp", text: "Tropical breeze" },
+  { url: "./gallery/Plant.webp", text: "A touch of green" },
+  { url: "./gallery/Shower.webp", text: "Not sure but it looked good" },
+  { url: "./gallery/Tower.webp", text: "This may be a cell tower" },
 ];

@@ -25,7 +25,6 @@
 
 .rotating-flower {
   touch-action: none;
-  cursor: pointer;
   animation: spin-in 3s cubic-bezier(0.16, 0.6, 0.05, 1) forwards;
   will-change: transform;
 }

@@ -62,6 +62,7 @@ export const socials = [
   },
   {
     name: "Twitter",
+    tooltip: "Twitter...or X",
     icon: twitterIcon,
     link: "https://x.com/Bonevane_YT",
     color: "D9D9D9",

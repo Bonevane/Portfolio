@@ -17,7 +17,7 @@ export const sectionMap = {
     title: "Skills",
     subtitle: [
       "Things I've gotten good at. Or at least tried to.",
-      "Rendered on my trusty OnePlus 8 — sleek, smooth, and missed.",
+      "Rendered on my trusty Pixel 9 Pro.",
     ],
   },
   Gallery: {

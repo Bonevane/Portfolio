@@ -11,9 +11,9 @@ import {
 import { Suspense } from "react";
 import "./Phone.css";
 
-useGLTF.preload("/Oneplus.glb");
+useGLTF.preload("/P9P.glb");
 
-function SmartphoneModel({ url = "/Oneplus.glb" }) {
+function SmartphoneModel({ url = "/P9P.glb" }) {
   const { scene } = useGLTF(url);
   const [loaded, setLoaded] = useState(false);
 
@@ -80,49 +80,66 @@ export default function Phone() {
             </Html>
           }
         >
-          <ambientLight intensity={1} />
+          <ambientLight intensity={0.45} />
 
-          {/* Top Right */}
-          <directionalLight position={[3, 4, 5]} intensity={2} />
-          {/* Front Left */}
+          {/* Key: top right, warm-neutral */}
           <directionalLight
-            position={[-2, 1, 1]}
-            intensity={1.2}
-            color="#dceeff"
+            position={[3, 4, 5]}
+            intensity={2.6}
+            color="#fff3e4"
           />
-          {/* Back Right */}
+          {/* Fill: front left, soft and cool */}
           <directionalLight
-            position={[1.5, 2, -2]}
-            intensity={1.2}
-            color="#ccdfff"
+            position={[-3, 1, 2]}
+            intensity={0.7}
+            color="#dde7f5"
+          />
+          {/* Rim: back left, lifts the dark edge off the dark background */}
+          <directionalLight
+            position={[-2.5, 2, -3]}
+            intensity={3.5}
+            color="#eaf0fa"
           />
           {/* Back Top */}
           <directionalLight
             position={[0, 1, -2]}
-            intensity={10}
-            color="#e0e0ff"
+            intensity={8}
+            color="#f4f2ee"
           />
 
           {/* Reflection: Area Lights*/}
           <Environment resolution={256}>
+            {/* Long strip overhead: one continuous highlight across glass */}
             <Lightformer
-              intensity={4}
-              position={[0, 2, -3]}
-              scale={[4, 3, 1]}
+              form="rect"
+              intensity={3}
+              position={[0, 5, 0.5]}
+              scale={[8, 0.8, 1]}
               color="#ffffff"
             />
-
+            {/* Warm right */}
             <Lightformer
+              form="rect"
               intensity={3}
-              position={[3, 1, 3]}
+              position={[3.5, 1, 3]}
               scale={[3, 2, 1]}
-              color="#fffbe7"
+              color="#fff4e0"
             />
+            {/* Cool left */}
             <Lightformer
-              intensity={1.5}
-              position={[-4, 2, 1]}
+              form="rect"
+              intensity={1.8}
+              position={[-4, 1.5, 1]}
               scale={[2, 3, 1]}
-              color="#d4e8ff"
+              color="#d6e4ff"
+            />
+            {/* Back: feeds the transmission + rear clearcoat */}
+            <Lightformer
+              form="rect"
+              intensity={3}
+              position={[0, 2, -3]}
+              scale={[4, 3, 1]}
+              color="#f0f0f5"
             />
           </Environment>
 

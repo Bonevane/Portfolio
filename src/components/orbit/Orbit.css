@@ -1,39 +1,49 @@
+/* Plain spins only. Angle/radius are static transforms on wrappers in
+   Orbit.jsx; the reverse pair keeps the icon upright. */
 @keyframes orbit {
-  from {
-    transform: rotate(var(--start-rotation, 0deg));
-  }
-  to {
-    transform: rotate(calc(var(--start-rotation, 0deg) + 360deg));
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes orbitIn {
-  from {
-    transform: rotate(var(--start-rotation, 0deg));
-  }
-  to {
-    transform: rotate(calc(var(--start-rotation, 0deg) + 720deg));
-  }
-}
-
-@keyframes orbitInReverse {
-  from {
-    transform: rotate(calc(var(--start-rotation, 0deg) * -1 + 720deg));
-  }
-  to {
-    transform: rotate(calc(var(--start-rotation, 0deg) * -1));
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(720deg); }
 }
 
 @keyframes orbit-reverse {
-  from {
-    transform: rotate(calc(var(--start-rotation, 0deg) * -1 + 360deg));
-  }
-  to {
-    transform: rotate(calc(var(--start-rotation, 0deg) * -1));
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes orbitInReverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-720deg); }
 }
 
 .bonevane {
   filter: contrast(100%) drop-shadow(0 0);
+}
+
+/* Hover label under a chip / the avatar. Opaque on purpose: it rides on a
+   moving element, and a backdrop blur there would be re-sampled every frame. */
+.orbit-tooltip {
+  position: absolute;
+  z-index: 20;
+  padding: 0.35em 0.9em;
+  border-radius: 9999px;
+  border: 1px solid rgba(117, 117, 117, 0.7);
+  background: #1b2422;
+  color: #cec9c9;
+  font-family: Teachers, sans-serif;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -6px);
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.6, 0.64, 1);
+}
+
+.group:hover > .orbit-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }

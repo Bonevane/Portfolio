@@ -24,7 +24,7 @@ export default function TextOverlay({ tab, activeSectionKey, setMiscSection, set
         tab === "Contact" ? "in-contact" : ""
       }`}
     >
-      <div key={title} style={{ pointerEvents: "all" }}>
+      <div key={title}>
         <div>
           <SplitText
             as="h1"

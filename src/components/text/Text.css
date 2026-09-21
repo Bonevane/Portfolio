@@ -15,6 +15,12 @@
   pointer-events: none;
 }
 
+/* Only the text itself catches the pointer; the block around it is a
+   full-width invisible box that would otherwise sit over the orbits. */
+.text-container .split-parent {
+  pointer-events: auto;
+}
+
 @media screen and (max-width: 1000px) {
   .text-container {
     padding: 8vw;

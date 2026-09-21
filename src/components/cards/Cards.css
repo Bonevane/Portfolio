@@ -41,15 +41,8 @@
    position every frame, and WebKit restarts a retargeted transition from
    its start value each time, so with one set the cards never move until
    the updates stop, then snap. */
-body.ios .card-origin {
-  right: -12vh;
-  bottom: 12vh;
-  transition: none;
-}
-
+body.ios .card-origin,
 body.mac .card-origin {
-  right: -12vh;
-  bottom: 12vh;
   transition: none;
 }
 

@@ -38,6 +38,20 @@ export default function Cards({ setCardSection, setActiveVideo }) {
   const selectedCardRef = useRef(selectedCard);
   const scrollAccumulatorRef = useRef(0);
 
+  // On WebKit the wrapper has no CSS transition (see Cards.css), so a card
+  // closing would snap back. Give just that card a one-shot transition for
+  // the duration of the close; a single retarget is fine there.
+  const [closingCard, setClosingCard] = useState(null);
+
+  // Set together with selectedCard so the very first frame of the close
+  // already carries the transition.
+  const closeCard = () => {
+    const closing = selectedCardRef.current;
+    if (closing === null) return;
+    setClosingCard(closing);
+    setSelectedCard(null);
+  };
+
   useEffect(() => {
     selectedCardRef.current = selectedCard;
     if (selectedCard !== null) {
@@ -45,6 +59,12 @@ export default function Cards({ setCardSection, setActiveVideo }) {
       setCurrentMediaIndex(0);
     }
   }, [selectedCard]);
+
+  useEffect(() => {
+    if (closingCard === null) return;
+    const t = setTimeout(() => setClosingCard(null), 250);
+    return () => clearTimeout(t);
+  }, [closingCard]);
 
   // WebKit can't smooth per-frame transform updates with a CSS transition
   // (a transition retargeted inside rAF is re-evaluated at progress 0 every
@@ -139,7 +159,7 @@ export default function Cards({ setCardSection, setActiveVideo }) {
         
         // Wait until they've scrolled enough to trigger a close (~150px of delta)
         if (scrollAccumulatorRef.current > 150) {
-          setSelectedCard(null);
+          closeCard();
           scrollAccumulatorRef.current = 0;
         }
       }
@@ -367,29 +387,38 @@ export default function Cards({ setCardSection, setActiveVideo }) {
             key={cardIndex}
             className="card-origin absolute pointer-events-auto"
             onClick={() => {
-              isSelected ? setSelectedCard(null) : setSelectedCard(cardIndex);
+              isSelected ? closeCard() : setSelectedCard(cardIndex);
             }}
             style={{
               transform: `rotate(${-rotation}deg) translateY(${translateY}px) translateX(${translateX}px)`,
               transformOrigin: "bottom right",
               zIndex: cardIndex,
+              ...(isWebKit.current && closingCard === cardIndex
+                ? { transition: "all 0.2s ease-out" }
+                : {}),
               ...expandedStyle,
             }}
           >
             <div
               className={`card flex-col text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md border border-[#757575]/70`}
               style={{
+                // Depth blur goes on .card itself, except on WebKit, which
+                // won't update a per-frame filter on a layer that also has
+                // backdrop-filter + will-change (renders stale). Firefox has
+                // the opposite problem: a filter on a descendant of that
+                // layer breaks stacking. So each engine gets its own spot.
+                filter: isSelected || isWebKit.current ? undefined : `blur(${blur}px)`,
                 opacity: isSelected ? 1 : opacity,
                 padding: "0",
                 justifyContent: "normal",
               }}
             >
-              {/* The depth blur lives on this inner wrapper, not on .card:
-                  WebKit won't update a per-frame filter on the same layer
-                  that has backdrop-filter + will-change, so it renders stale. */}
               <div
                 className="flex flex-col w-full h-full"
-                style={{ filter: isSelected ? undefined : `blur(${blur}px)` }}
+                style={{
+                  filter:
+                    isSelected || !isWebKit.current ? undefined : `blur(${blur}px)`,
+                }}
               >
               <div
                 className="slideIn relative w-full group overflow-hidden"

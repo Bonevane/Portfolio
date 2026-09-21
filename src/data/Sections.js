@@ -31,8 +31,8 @@ export const sectionMap = {
   Home: {
     title: "Rafay Ahmad",
     subtitle: [
-      "Welcome to my space.",
-      "I'm just a software engineer from Pakistan that loves to build experimental stuff. Sometimes, I share what I do.",
+      "Welcome to my space!",
+      "I'm just a lil' software engineer from Pakistan that loves to build experimental stuff. Sometimes, I even share what I do.",
       "That's just how it goes. Enjoy your stay!",
     ],
   },

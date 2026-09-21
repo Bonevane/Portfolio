@@ -1,6 +1,10 @@
 export const tabs = ["Home", "Portfolios", "Misc", "Contact"];
 
 export const sectionMap = {
+  Highlights: {
+    title: "Highlights",
+    subtitle: ["The ones I'm proudest of. Start here."],
+  },
   Web_Dev: {
     title: "Web Dev",
     subtitle: [

@@ -1,5 +1,5 @@
 // Reverse Order
-export const cards = [
+const projects = [
   {
     title: "iCalc",
     section: "Experiments",
@@ -345,4 +345,17 @@ export const cards = [
       { type: 'image', url: './projects/REACH-2.webp' }
     ]
   },
+];
+
+// Titles to feature up front, in the order they should appear.
+// The carousel opens on the last card and scrolls backwards, so the first
+// title here is the first thing a visitor sees.
+export const highlights = ["REACH", "Formula 1", "Path Tracer", "Aperture"];
+
+export const cards = [
+  ...projects,
+  ...[...highlights].reverse().map((title) => ({
+    ...projects.find((p) => p.title === title),
+    section: "Highlights",
+  })),
 ];

@@ -1,6 +1,7 @@
 export const colors = {
   Home: ["#FFA73C", "#FFA73C", "#FF3232"], // Orange
 
+  Highlights: ["#FFE29A", "#F4B63F", "#5A3A00"], // Gold
   Web_Dev: ["#00E6E6", "#0073CB", "#001F3F"], // Blue
   Blender: ["#00B4DB", "#00C2CB", "#005f73"], // Cyan
   Experiments: ["#00B4DB", "#7449FF", "#005f73"], // Purple

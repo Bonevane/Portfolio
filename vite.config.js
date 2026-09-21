@@ -8,23 +8,16 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // React and core libraries
-          "react-vendor": ["react", "react-dom"],
-
-          // Three.js and 3D-related libraries (heavy!)
-          "three-vendor": [
-            "three",
-            "@react-three/fiber",
-            "@react-three/drei",
-            "@react-spring/three",
-          ],
-
-          // Animation and graphics
-          "animation-vendor": ["gsap", "ogl"],
-
-          // Utilities
-          "utils-vendor": ["clsx"],
+        // Function form so subpath imports (react/jsx-runtime, three/examples)
+        // land in the right chunk; the object form let jsx-runtime fall into
+        // three-vendor, which dragged 1.2 MB of three.js onto the Home page.
+        manualChunks(id) {
+          // Vite's preload helper is shared by every chunk; keep it with React.
+          if (id.includes("vite/preload-helper")) return "react-vendor";
+          if (!id.includes("node_modules")) return;
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return "react-vendor";
+          if (/[\\/]node_modules[\\/](three|@react-three|@react-spring)[\\/]/.test(id)) return "three-vendor";
+          if (/[\\/]node_modules[\\/](gsap|ogl)[\\/]/.test(id)) return "animation-vendor";
         },
       },
     },

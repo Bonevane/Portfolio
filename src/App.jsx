@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 
 import Aurora from "./bits/Aurora";
 import Cursor from "./components/cursor/Cursor.jsx";
@@ -8,12 +8,13 @@ import Cards from "./components/cards/Cards.jsx";
 import VideoPlayer from "./components/player/VideoPlayer.jsx";
 import TextOverlay from "./components/text/Text.jsx";
 import Gallery from "./components/gallery/Gallery.jsx";
-import Phone from "./components/phone/Phone.jsx";
+const Phone = lazy(() => import("./components/phone/Phone.jsx"));
 import Orbit from "./components/orbit/Orbit.jsx";
 import Experience from "./components/experience/Experience.jsx";
 import { picsLeft, picsRight } from "./data/Pictures.js";
 import { colors } from "./data/Colors.js";
 import { paths, tabsFromPath } from "./data/Paths.js";
+import { applySeo } from "./data/Seo.js";
 import "./App.css";
 
 export default function App() {
@@ -46,10 +47,14 @@ export default function App() {
       window.history.pushState({ tab: currentTab }, "", newPath);
     }
     
-    // Dynamic SEO Titles
-    if (currentTab) {
-      document.title = `${currentTab === "Home" ? "Creative Developer & Designer" : currentTab} | Rafay Ahmad`;
-    }
+    // Per-route title, description, canonical and social tags
+    if (currentTab) applySeo(currentTab);
+  }, [currentTab]);
+
+  // Warm the phone chunk (three.js + model) once the user is on Misc, so
+  // switching to Skills is instant without paying for it on Home.
+  useEffect(() => {
+    if (currentTab === "Misc") import("./components/phone/Phone.jsx");
   }, [currentTab]);
 
   useEffect(() => {
@@ -109,7 +114,9 @@ export default function App() {
           (miscSection === "Gallery" ? (
             <Gallery imagesLeft={picsLeft} imagesRight={picsRight} />
           ) : (
-            <Phone />
+            <Suspense fallback={null}>
+              <Phone />
+            </Suspense>
           ))}
         {currentTab === "Contact" && <Orbit />}
         <div className="dock-background">

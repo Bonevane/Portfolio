@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Bonevane.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
 
     <!-- Font Preloading for Performance -->
     <link
@@ -50,10 +55,13 @@
       property="og:description"
       content="Creative developer and designer passionate about crafting interactive experiences with React, Next.js, Three.js, Blender, Unity, and modern web technologies. Explore high-performance web applications, 3D art, path tracing, AR tools, and AI-driven engines."
     />
+    <meta property="og:site_name" content="Bonevane" />
+    <meta property="og:locale" content="en_US" />
     <meta
       property="og:image"
-      content="https://bonevane.vercel.app/projects/F1.webp"
+      content="https://bonevane.vercel.app/og-image.jpg"
     />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
@@ -71,9 +79,14 @@
       name="twitter:description"
       content="Creative developer and designer passionate about crafting interactive experiences with React, Next.js, Three.js, Blender, Unity, and modern web technologies. Explore high-performance web applications, 3D art, path tracing, AR tools, and AI-driven engines."
     />
+    <meta name="twitter:creator" content="@Bonevane_YT" />
     <meta
       name="twitter:image"
-      content="https://bonevane.vercel.app/projects/F1.webp"
+      content="https://bonevane.vercel.app/og-image.jpg"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Formula 1 Car 3D Model - Rafay Ahmad Portfolio"
     />
 
     <!-- Additional SEO -->
@@ -88,28 +101,58 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Rafay Ahmad",
-        "alternateName": "Bonevane",
-        "url": "https://bonevane.vercel.app/",
-        "image": "https://bonevane.vercel.app/projects/F1.webp",
-        "jobTitle": "Creative Developer & Designer",
-        "sameAs": [
-          "https://github.com/Bonevane",
-          "https://www.linkedin.com/in/rafay-ahmad-31278a221/",
-          "https://www.instagram.com/bonevane"
-        ],
-        "knowsAbout": ["React", "Three.js", "Blender", "Unity", "Frontend Development", "3D Art", "Creative Development"]
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://bonevane.vercel.app/#person",
+            "name": "Rafay Ahmad",
+            "alternateName": "Bonevane",
+            "url": "https://bonevane.vercel.app/",
+            "image": "https://bonevane.vercel.app/og-image.jpg",
+            "jobTitle": "Creative Developer & Designer",
+            "description": "Software engineer from Pakistan building interactive web experiences, 3D art, games and research projects.",
+            "nationality": "Pakistan",
+            "email": "mailto:rahmad.atomic44@gmail.com",
+            "sameAs": [
+              "https://github.com/bonevane",
+              "https://linkedin.com/in/rafay-ahmad",
+              "https://x.com/Bonevane_YT",
+              "https://youtube.com/@bonevane",
+              "https://instagram.com/rafay_ahmad44",
+              "https://bonevane.itch.io"
+            ],
+            "knowsAbout": ["React", "Next.js", "Three.js", "Blender", "Unity", "CUDA", "Deep Learning", "Frontend Development", "3D Art", "Creative Development"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://bonevane.vercel.app/#website",
+            "url": "https://bonevane.vercel.app/",
+            "name": "Bonevane",
+            "description": "Portfolio of Rafay Ahmad: web development, 3D and design, game development and experiments.",
+            "publisher": { "@id": "https://bonevane.vercel.app/#person" },
+            "inLanguage": "en"
+          }
+        ]
       }
     </script>
 
-    <!-- Additional favicon sizes -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/Bonevane.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/Bonevane.svg" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/Bonevane.svg" />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main style="font-family: sans-serif; padding: 2rem; color: #ceC9C9; background: #000">
+        <h1>Rafay Ahmad (Bonevane)</h1>
+        <p>Creative developer and designer from Pakistan. Web development with React, Next.js and Three.js; 3D art in Blender; games in Unity; research in deep learning.</p>
+        <p>This site is interactive and needs JavaScript. Find me on
+          <a href="https://github.com/bonevane">GitHub</a>,
+          <a href="https://linkedin.com/in/rafay-ahmad">LinkedIn</a>,
+          <a href="https://x.com/Bonevane_YT">X</a>,
+          <a href="https://youtube.com/@bonevane">YouTube</a>,
+          <a href="https://instagram.com/rafay_ahmad44">Instagram</a> or
+          <a href="https://bonevane.itch.io">itch.io</a>.
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

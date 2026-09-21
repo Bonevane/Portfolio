@@ -2,6 +2,21 @@ import { useEffect, useState, useRef } from "react";
 import { cards } from "../../data/Cards.js";
 import "./Cards.css";
 
+const visibleCount = 6;
+const half = Math.floor(visibleCount / 2);
+
+// Where a card sits for a given carousel position. Null when it is outside
+// the visible window (unless `force`).
+function layoutFor(cardIndex, center, force = false) {
+  const offset = (cardIndex - center) * 1.5;
+  if (!force && Math.abs(offset) > half + 1) return null;
+  return {
+    rotation: 5 + offset * 5,
+    translateX: offset * offset * 50,
+    translateY: offset * offset * 25,
+  };
+}
+
 export default function Cards({ setCardSection, setActiveVideo }) {
   const [centerIndex, setCenterIndex] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -31,9 +46,65 @@ export default function Cards({ setCardSection, setActiveVideo }) {
     }
   }, [selectedCard]);
 
+  // WebKit can't smooth per-frame transform updates with a CSS transition
+  // (a transition retargeted inside rAF is re-evaluated at progress 0 every
+  // frame), so on WebKit the smoothing the .card-origin transition provides
+  // elsewhere is done here in JS: each card's rendered rotate/translate
+  // chases its target by a fixed fraction per frame, like a short ease-out.
+  const isWebKit = useRef(false);
+  const smoothed = useRef({});
+  const [, setSmoothTick] = useState(0);
+  const centerIndexRef = useRef(0);
+  useEffect(() => {
+    centerIndexRef.current = centerIndex;
+  }, [centerIndex]);
+
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    const webkit =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (/Macintosh/.test(ua) && /Safari/.test(ua) && !/Chrome|Chromium|Edg/.test(ua));
+    isWebKit.current = webkit;
+    if (!webkit) return;
+
+    const follow = 0.15;
+    let frame;
+    const loop = () => {
+      const center = centerIndexRef.current;
+      const store = smoothed.current;
+      let changed = false;
+      cards.forEach((_, cardIndex) => {
+        const target = layoutFor(cardIndex, center);
+        if (!target) {
+          if (store[cardIndex]) {
+            delete store[cardIndex];
+          }
+          return;
+        }
+        const cur = store[cardIndex];
+        if (!cur) {
+          store[cardIndex] = { ...target };
+          return;
+        }
+        for (const k of ["rotation", "translateX", "translateY"]) {
+          const d = target[k] - cur[k];
+          if (Math.abs(d) > 0.01) {
+            cur[k] += d * follow;
+            changed = true;
+          } else if (cur[k] !== target[k]) {
+            cur[k] = target[k];
+            changed = true;
+          }
+        }
+      });
+      if (changed) setSmoothTick((t) => t + 1);
+      frame = requestAnimationFrame(loop);
+    };
+    frame = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   const wheelScrollFactor = 0.002;
-  const visibleCount = 6;
-  const half = Math.floor(visibleCount / 2);
 
   // Vibration for Android (Disabled for now)
   const lastVibrationStep = useRef(null);
@@ -209,15 +280,15 @@ export default function Cards({ setCardSection, setActiveVideo }) {
   return (
     <div className={`cards-container fixed bottom-[2em] right-[8em] w-[100vw] h-[100vh] pointer-events-none ${selectedCard !== null ? 'z-[60]' : 'z-10'}`}>
       {cards.map((card, cardIndex) => {
-        const offset = (cardIndex - centerIndex) * 1.5;
         const isSelected = selectedCard === cardIndex;
-
-        if (Math.abs(offset) > half + 1 && !isSelected) return null;
-
-        const baseRotation = 5;
-        const rotation = baseRotation + offset * 5;
-        const translateX = offset * offset * 50;
-        const translateY = offset * offset * 25;
+        const target = layoutFor(cardIndex, centerIndex);
+        if (!target && !isSelected) return null;
+        const offset = (cardIndex - centerIndex) * 1.5;
+        const shown =
+          isWebKit.current && target
+            ? smoothed.current[cardIndex] ?? target
+            : target ?? layoutFor(cardIndex, centerIndex, true);
+        const { rotation, translateX, translateY } = shown;
 
         const blur = Math.pow(Math.abs(offset), 2) * 0.6;
         const opacity = 1 - Math.abs(offset) * 0.18;
@@ -308,12 +379,18 @@ export default function Cards({ setCardSection, setActiveVideo }) {
             <div
               className={`card flex-col text-white font-semibold text-xl rounded-3xl shadow-xl backdrop-blur-md border border-[#757575]/70`}
               style={{
-                filter: isSelected ? undefined : `blur(${blur}px)`,
                 opacity: isSelected ? 1 : opacity,
                 padding: "0",
                 justifyContent: "normal",
               }}
             >
+              {/* The depth blur lives on this inner wrapper, not on .card:
+                  WebKit won't update a per-frame filter on the same layer
+                  that has backdrop-filter + will-change, so it renders stale. */}
+              <div
+                className="flex flex-col w-full h-full"
+                style={{ filter: isSelected ? undefined : `blur(${blur}px)` }}
+              >
               <div
                 className="slideIn relative w-full group overflow-hidden"
                 style={{
@@ -442,6 +519,7 @@ export default function Cards({ setCardSection, setActiveVideo }) {
                 )}
               </div>
               {cardContent}
+              </div>
             </div>
           </div>
         );

@@ -7,7 +7,7 @@ export const experiences = [
     description: "My deepest technical dive yet. I started researching VLMs for Urdu OCR under the supervision of Dr. Faisal Shafait, just because I wanted to shift my focus towards something more technical. It's been a brutal but incredibly rewarding journey, culminating in a paper at ICDAR 2026.",
     publication: {
       title: "Online Urdu Text-Line Recognition by Bridging Stroke Dynamics and Offline Representations (ICDAR 2026)",
-      url: "#"
+      url: "https://link.springer.com/chapter/10.1007/978-3-032-36033-5_40"
     }
   },
   {

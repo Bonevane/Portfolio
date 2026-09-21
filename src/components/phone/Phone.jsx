@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
 import { useSpring, a } from "@react-spring/three";
 import {
   OrbitControls,
@@ -15,13 +15,30 @@ useGLTF.preload("/P9P.glb");
 
 function SmartphoneModel({ url = "/P9P.glb" }) {
   const { scene } = useGLTF(url);
+  const gl = useThree((s) => s.gl);
+  const camera = useThree((s) => s.camera);
+  const rootScene = useThree((s) => s.scene);
+  const setFrameloop = useThree((s) => s.setFrameloop);
   const [loaded, setLoaded] = useState(false);
 
+  // Hold the render loop until every shader variant is compiled in parallel.
+  // Otherwise the first frame compiles ~14 physical materials synchronously,
+  // which is the hitch right as the phone starts spinning in.
+  useLayoutEffect(() => {
+    setFrameloop("never");
+  }, [setFrameloop]);
+
   useEffect(() => {
-    if (scene) {
+    let cancelled = false;
+    gl.compileAsync(rootScene, camera).then(() => {
+      if (cancelled) return;
+      setFrameloop("always");
       setLoaded(true);
-    }
-  }, [scene]);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [gl, rootScene, camera, setFrameloop]);
 
   const { position, rotation } = useSpring({
     delay: 500,

@@ -4,6 +4,14 @@ import { projectSlugFromPath } from "../../data/Paths.js";
 import { applySeo, projectSeo } from "../../data/Seo.js";
 import "./Cards.css";
 
+// Fade whichever edges of the long description still have text beyond them.
+function updateDescFade(el) {
+  if (!el) return;
+  const { scrollTop, scrollHeight, clientHeight } = el;
+  el.classList.toggle("fade-top", scrollTop > 1);
+  el.classList.toggle("fade-bottom", scrollTop + clientHeight < scrollHeight - 1);
+}
+
 const visibleCount = 6;
 const half = Math.floor(visibleCount / 2);
 
@@ -151,6 +159,9 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
     // General wheel and touch handling
     const handleWheel = (e) => {
       if (pausedRef.current) return;
+      // Scrolling over an open card's long description only ever scrolls the
+      // text, even at its ends, so it can't move the carousel or close the card.
+      if (e.target?.closest?.(".card-desc-scroll")) return;
       if (e.preventDefault) e.preventDefault();
 
       const dX = e.deltaX || 0;
@@ -175,8 +186,10 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
       }
     };
 
-    const start = (x, y, isTouch = false) => {
+    const start = (x, y, isTouch = false, target = null) => {
       if (pausedRef.current) return;
+      // Dragging on an open card's description scrolls the text, not the carousel.
+      if (target?.closest?.(".card-desc-scroll")) return;
       if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
       isTouch ? (isTouching.current = true) : (isDragging.current = true);
       lastX.current = x;
@@ -235,7 +248,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
     };
 
     // For Mouse Events
-    const handleMouseDown = (e) => start(e.clientX, e.clientY, false);
+    const handleMouseDown = (e) => start(e.clientX, e.clientY, false, e.target);
     const handleMouseMove = (e) => {
       if (!isDragging.current) return;
       move(e.clientX, e.clientY, e);
@@ -243,8 +256,13 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
     const handleMouseUp = () => end(false);
 
     // For Touch Events
-    const handleTouchStart = (e) => start(e.touches[0].clientX, e.touches[0].clientY, true);
-    const handleTouchMove = (e) => move(e.touches[0].clientX, e.touches[0].clientY, e);
+    const handleTouchStart = (e) =>
+      start(e.touches[0].clientX, e.touches[0].clientY, true, e.target);
+    const handleTouchMove = (e) => {
+      // Only a touch that started a carousel drag moves the carousel.
+      if (!isTouching.current) return;
+      move(e.touches[0].clientX, e.touches[0].clientY, e);
+    };
     const handleTouchEnd = () => end(true);
 
     // ALL THEM LISTENERS
@@ -363,8 +381,8 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
         const safeMediaIndex = (isSelected && card.media && currentMediaIndex < card.media.length) ? currentMediaIndex : 0;
 
         const cardContent = (
-          <div className="text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between h-full">
-            <div className="py-3 px-4">
+          <div className="text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between flex-1 min-h-0">
+            <div className="py-3 px-4 flex flex-col min-h-0">
               <div className="flex mb-2 gap-4 items-center">
                 <h2 className="text-[1em] font-[ElMessiri] whitespace-nowrap">
                   {card.title}
@@ -411,7 +429,24 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                   )}
                 </div>
               </div>
-              <p className="text-[0.6em] font-normal ">{card.description}</p>
+              {isSelected && card.longDescription ? (
+                <p
+                  ref={(el) => {
+                    if (!el) return;
+                    updateDescFade(el);
+                    // The card grows as it opens; re-check once it settles.
+                    const ro = new ResizeObserver(() => updateDescFade(el));
+                    ro.observe(el);
+                    return () => ro.disconnect();
+                  }}
+                  onScroll={(e) => updateDescFade(e.currentTarget)}
+                  className="card-desc-scroll text-[0.6em] font-normal overflow-y-auto min-h-0 pr-2"
+                >
+                  {card.longDescription}
+                </p>
+              ) : (
+                <p className="text-[0.6em] font-normal ">{card.description}</p>
+              )}
             </div>
             <div className="pb-4 px-4 flex gap-2 justify-between flex-wrap">
               {card.tags.map((tag) => (

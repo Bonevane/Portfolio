@@ -57,7 +57,7 @@ function projectPage(template, card) {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: card.title,
-    description: entry.description,
+    description: card.longDescription || entry.description,
     url: siteUrl + entry.path,
     image: images.length ? images : entry.image.url,
     keywords: card.tags.join(", "),
@@ -81,7 +81,7 @@ function projectPage(template, card) {
   const noscript = `<noscript>
       <main style="font-family: sans-serif; padding: 2rem; color: #cec9c9; background: #000">
         <h1>${esc(card.title)}</h1>
-        <p>${esc(entry.description)}</p>
+        <p>${esc(card.longDescription || entry.description)}</p>
         <p>${card.tags.map(esc).join(", ")}</p>
         <p>${links}</p>
         <p>By <a href="${siteUrl}/">Rafay Ahmad (Bonevane)</a>.</p>

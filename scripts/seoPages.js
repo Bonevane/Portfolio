@@ -127,11 +127,15 @@ export default function seoPages() {
   let outDir;
   return {
     name: "seo-pages",
-    apply: "build",
     configResolved(config) {
       outDir = path.resolve(config.root, config.build.outDir);
     },
+    // index.html uses %SITE_URL% so the address lives only in src/data/Site.js.
+    transformIndexHtml(html) {
+      return html.replaceAll("%SITE_URL%", siteUrl);
+    },
     closeBundle() {
+      if (!outDir || this.meta?.watchMode) return;
       const template = fs.readFileSync(path.join(outDir, "index.html"), "utf8");
       const write = (file, html) => fs.writeFileSync(path.join(outDir, file), html);
 
@@ -147,6 +151,7 @@ export default function seoPages() {
         write(`projects/${card.slug}.html`, projectPage(template, card));
       }
       write("sitemap.xml", sitemap());
+      write("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
     },
   };
 }

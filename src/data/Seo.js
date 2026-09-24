@@ -1,6 +1,8 @@
 // Per-route metadata applied by App on navigation. Everything else in the
 // <head> is static in index.html.
-export const siteUrl = "https://bonevane.vercel.app";
+import { siteUrl } from "./Site.js";
+
+export { siteUrl };
 
 export const seo = {
   Home: {

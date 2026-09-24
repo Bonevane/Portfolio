@@ -349,7 +349,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <h2 className="live-btn">Live</h2>
+                        <span className="live-btn block">Live</span>
                       </a>
                     )}
                     {card.code === "" ? (
@@ -360,7 +360,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <h2 className="code-btn">Code</h2>
+                        <span className="code-btn block">Code</span>
                       </a>
                     )}
                   </div>
@@ -385,7 +385,9 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
             </div>
             <div className="pb-4 px-4 flex gap-2 justify-between flex-wrap">
               {card.tags.map((tag) => (
-                <h2 className="project-tag">{tag}</h2>
+                <span key={tag} className="project-tag">
+                  {tag}
+                </span>
               ))}
             </div>
           </div>

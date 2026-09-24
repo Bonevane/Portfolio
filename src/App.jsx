@@ -108,7 +108,11 @@ export default function App() {
         {/* Show content based on active tab */}
         {currentTab === "Home" && <Flower />}
         {currentTab === "Portfolios" && (
-          <Cards setCardSection={setCardSection} setActiveVideo={setActiveVideo} />
+          <Cards
+            setCardSection={setCardSection}
+            setActiveVideo={setActiveVideo}
+            paused={Boolean(activeVideo || activeExperience)}
+          />
         )}
         {currentTab === "Misc" &&
           (miscSection === "Gallery" ? (

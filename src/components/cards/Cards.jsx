@@ -17,7 +17,14 @@ function layoutFor(cardIndex, center, force = false) {
   };
 }
 
-export default function Cards({ setCardSection, setActiveVideo }) {
+export default function Cards({ setCardSection, setActiveVideo, paused = false }) {
+  // Wheel/touch/drag listeners live on window, so an overlay on top (Experience,
+  // video player) would otherwise scroll the carousel behind it.
+  const pausedRef = useRef(paused);
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
+
   const [centerIndex, setCenterIndex] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
   const [prevCardSection, setPrevCardSection] = useState(0);
@@ -141,6 +148,7 @@ export default function Cards({ setCardSection, setActiveVideo }) {
   useEffect(() => {
     // General wheel and touch handling
     const handleWheel = (e) => {
+      if (pausedRef.current) return;
       if (e.preventDefault) e.preventDefault();
 
       const dX = e.deltaX || 0;
@@ -166,6 +174,7 @@ export default function Cards({ setCardSection, setActiveVideo }) {
     };
 
     const start = (x, y, isTouch = false) => {
+      if (pausedRef.current) return;
       if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
       isTouch ? (isTouching.current = true) : (isDragging.current = true);
       lastX.current = x;

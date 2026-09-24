@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { cards } from "../../data/Cards.js";
+import { projectSlugFromPath } from "../../data/Paths.js";
+import { applySeo, projectSeo } from "../../data/Seo.js";
 import "./Cards.css";
 
 const visibleCount = 6;
@@ -281,10 +283,37 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
     setPrevCardSection(cards[progress].section);
   }, [centerIndex, setCardSection, prevCardSection, animComplete]);
 
-  // Initial animation to the last card
+  // A /projects/<slug> URL opens that project: the intro animation lands on
+  // its card (in its own section, not the Highlights copy) and opens it.
+  const deepLinkIndex = useRef(
+    (() => {
+      const slug = projectSlugFromPath(window.location.pathname);
+      if (!slug) return -1;
+      return cards.findIndex((c) => c.slug === slug && c.section !== "Highlights");
+    })()
+  );
+
+  // Keep the address bar and <head> in step with the open card, so a project
+  // can be shared by URL. replaceState keeps the back button as it was.
+  const hadOpenCard = useRef(false);
+  useEffect(() => {
+    if (selectedCard !== null) {
+      const card = cards[selectedCard];
+      window.history.replaceState(window.history.state, "", `/projects/${card.slug}`);
+      applySeo(projectSeo(card));
+      hadOpenCard.current = true;
+    } else if (hadOpenCard.current) {
+      window.history.replaceState(window.history.state, "", "/portfolios");
+      applySeo("Portfolios");
+      hadOpenCard.current = false;
+    }
+  }, [selectedCard]);
+
+  // Initial animation to the last card (or the deep-linked one)
   useEffect(() => {
     let frameId;
-    const target = cards.length - 1;
+    const linked = deepLinkIndex.current;
+    const target = linked >= 0 ? linked : cards.length - 1;
     const speed = 0.05; // Speed to last card
     const centerRef = { current: 0 };
 
@@ -295,6 +324,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
         setCenterIndex(target);
         cancelAnimationFrame(frameId);
         setAnimComplete(true);
+        if (linked >= 0) setSelectedCard(linked);
         return;
       }
 

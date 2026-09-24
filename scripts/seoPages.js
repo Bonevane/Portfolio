@@ -4,8 +4,8 @@
 // generated from the project and gallery data.
 import fs from "node:fs";
 import path from "node:path";
-import { seo, siteUrl } from "../src/data/Seo.js";
-import { cards } from "../src/data/Cards.js";
+import { seo, siteUrl, projectSeo } from "../src/data/Seo.js";
+import { cards, projects } from "../src/data/Cards.js";
 import { picsLeft, picsRight } from "../src/data/Pictures.js";
 
 const esc = (s) =>
@@ -32,7 +32,63 @@ function pageFor(template, entry) {
     /(<meta\s+name="robots"\s+content=")[^"]*(")/,
     entry.noindex ? "noindex, nofollow" : "index, follow"
   );
+  if (entry.image) {
+    html = setAttr(html, /(<meta\s+property="og:image"\s+content=")[^"]*(")/, entry.image.url);
+    html = setAttr(html, /(<meta\s+name="twitter:image"\s+content=")[^"]*(")/, entry.image.url);
+    html = setAttr(html, /(<meta\s+property="og:image:alt"\s+content=")[^"]*(")/, entry.image.alt);
+    html = setAttr(html, /(<meta\s+name="twitter:image:alt"\s+content=")[^"]*(")/, entry.image.alt);
+    // The default share image is a JPEG; project thumbnails may be WebP/PNG.
+    html = html.replace(/\s*<meta\s+property="og:image:(type|width|height)"[^>]*>/g, "");
+  }
   return html;
+}
+
+const absUrl = (u) => siteUrl + "/" + u.replace(/^\.?\//, "");
+
+// Extra <head>/<noscript> content for a project page: a CreativeWork for
+// search engines, and readable text for crawlers that don't run JavaScript.
+function projectPage(template, card) {
+  const entry = projectSeo(card);
+  let html = pageFor(template, entry);
+
+  const images = card.media.filter((m) => m.type === "image").map((m) => absUrl(m.url));
+  const video = card.media.find((m) => m.type === "video");
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: card.title,
+    description: entry.description,
+    url: siteUrl + entry.path,
+    image: images.length ? images : entry.image.url,
+    keywords: card.tags.join(", "),
+    genre: card.section.replace("_", " "),
+    author: { "@id": `${siteUrl}/#person` },
+    isPartOf: { "@id": `${siteUrl}/#website` },
+  };
+  if (card.code) ld.codeRepository = card.code;
+  if (card.live) ld.sameAs = card.live;
+  if (video) ld.video = { "@type": "VideoObject", name: card.title, description: entry.description, contentUrl: absUrl(video.url), thumbnailUrl: entry.image.url };
+  html = html.replace(
+    "</head>",
+    `  <script type="application/ld+json">${JSON.stringify(ld)}</script>\n  </head>`
+  );
+
+  const links = [
+    card.live && `<a href="${esc(card.live)}">Live</a>`,
+    card.code && `<a href="${esc(card.code)}">Code</a>`,
+    `<a href="${siteUrl}/portfolios">All projects</a>`,
+  ].filter(Boolean).join(" · ");
+  const noscript = `<noscript>
+      <main style="font-family: sans-serif; padding: 2rem; color: #cec9c9; background: #000">
+        <h1>${esc(card.title)}</h1>
+        <p>${esc(entry.description)}</p>
+        <p>${card.tags.map(esc).join(", ")}</p>
+        <p>${links}</p>
+        <p>By <a href="${siteUrl}/">Rafay Ahmad (Bonevane)</a>.</p>
+      </main>
+    </noscript>`;
+  if (!/<noscript>[\s\S]*?<\/noscript>/.test(html)) throw new Error("seoPages: <noscript> not found");
+  return html.replace(/<noscript>[\s\S]*?<\/noscript>/, noscript);
 }
 
 function sitemap() {
@@ -44,15 +100,22 @@ function sitemap() {
     "/portfolios": projectImages,
     "/misc": galleryImages,
   };
-  const urls = Object.values(seo)
+  const pages = Object.values(seo)
     .filter((e) => e.path)
     .map((e) => {
       const imgs = (images[e.path] || [])
         .map((u) => `\n    <image:image><image:loc>${esc(abs(u))}</image:loc></image:image>`)
         .join("");
       return `  <url>\n    <loc>${siteUrl}${e.path}</loc>\n    <lastmod>${today}</lastmod>${imgs}\n  </url>`;
-    })
-    .join("\n");
+    });
+  const projectUrls = projects.map((p) => {
+    const imgs = [...new Set([p.thumbnail, ...p.media.filter((m) => m.type === "image").map((m) => m.url)])]
+      .filter(Boolean)
+      .map((u) => `\n    <image:image><image:loc>${esc(abs(u))}</image:loc></image:image>`)
+      .join("");
+    return `  <url>\n    <loc>${siteUrl}/projects/${p.slug}</loc>\n    <lastmod>${today}</lastmod>${imgs}\n  </url>`;
+  });
+  const urls = [...pages, ...projectUrls].join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls}
@@ -79,6 +142,10 @@ export default function seoPages() {
         write(`${seo[key].path.slice(1)}.html`, pageFor(template, seo[key]));
       }
       write("404.html", pageFor(template, seo[404]));
+      fs.mkdirSync(path.join(outDir, "projects"), { recursive: true });
+      for (const card of projects) {
+        write(`projects/${card.slug}.html`, projectPage(template, card));
+      }
       write("sitemap.xml", sitemap());
     },
   };

@@ -35,6 +35,24 @@ export const seo = {
   },
 };
 
+export const defaultImage = {
+  url: `${siteUrl}/og-image.jpg`,
+  alt: "Moon Over the Castle, a Blender cinematic by Rafay Ahmad",
+};
+
+// Metadata for a single project page (/projects/<slug>).
+export function projectSeo(card) {
+  const thumb = card.thumbnail || card.media?.find((m) => m.type === "image")?.url;
+  return {
+    title: `${card.title} | Rafay Ahmad`,
+    description: card.description.trim(),
+    path: `/projects/${card.slug}`,
+    image: thumb
+      ? { url: siteUrl + "/" + thumb.replace(/^\.?\//, ""), alt: card.title }
+      : defaultImage,
+  };
+}
+
 function setMeta(selector, attr, value) {
   let el = document.head.querySelector(selector);
   if (!el) {
@@ -46,8 +64,14 @@ function setMeta(selector, attr, value) {
   el.setAttribute(attr, value);
 }
 
-export function applySeo(tab) {
-  const entry = seo[tab] || seo["404"];
+export function applySeo(tabOrEntry) {
+  const entry =
+    typeof tabOrEntry === "object" ? tabOrEntry : seo[tabOrEntry] || seo["404"];
+  const image = entry.image || defaultImage;
+  setMeta('meta[property="og:image"]', "content", image.url);
+  setMeta('meta[property="og:image:alt"]', "content", image.alt);
+  setMeta('meta[name="twitter:image"]', "content", image.url);
+  setMeta('meta[name="twitter:image:alt"]', "content", image.alt);
   document.title = entry.title;
   setMeta('meta[name="description"]', "content", entry.description);
   setMeta('meta[property="og:title"]', "content", entry.title);
@@ -65,8 +89,7 @@ export function applySeo(tab) {
   }
   canonical.href = url;
 
-  // Unknown routes are served with a 200 by the SPA rewrite; keep them out
-  // of the index at least.
+  // Unknown routes get a real 404 from the server too (see scripts/seoPages.js).
   let robots = document.head.querySelector('meta[name="robots"]');
   if (robots) robots.setAttribute("content", entry.noindex ? "noindex, nofollow" : "index, follow");
 }

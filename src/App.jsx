@@ -13,13 +13,13 @@ import Orbit from "./components/orbit/Orbit.jsx";
 import Experience from "./components/experience/Experience.jsx";
 import { picsLeft, picsRight } from "./data/Pictures.js";
 import { colors } from "./data/Colors.js";
-import { paths, tabsFromPath } from "./data/Paths.js";
+import { paths, tabFromPath, projectSlugFromPath } from "./data/Paths.js";
 import { applySeo } from "./data/Seo.js";
 import "./App.css";
 
 export default function App() {
   const initialPath = typeof window !== 'undefined' ? window.location.pathname : "/";
-  const initialTab = tabsFromPath[initialPath] || "404";
+  const initialTab = tabFromPath(initialPath);
   const [currentTab, setCurrentTab] = useState(initialTab);
   const [cardSection, setCardSection] = useState(0);
   const [miscSection, setMiscSection] = useState("Photos");
@@ -43,7 +43,10 @@ export default function App() {
   // Navigation and History API
   useEffect(() => {
     const newPath = paths[currentTab];
-    if (window.location.pathname !== newPath) {
+    // /projects/<slug> belongs to the Portfolios tab; Cards manages that URL.
+    const onProjectPage =
+      currentTab === "Portfolios" && projectSlugFromPath(window.location.pathname);
+    if (window.location.pathname !== newPath && !onProjectPage) {
       window.history.pushState({ tab: currentTab }, "", newPath);
     }
     
@@ -60,7 +63,7 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
-      const tab = tabsFromPath[path] || "404";
+      const tab = tabFromPath(path);
       setCurrentTab(tab);
     };
 

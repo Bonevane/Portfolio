@@ -1,5 +1,5 @@
 // Reverse Order
-const projects = [
+export const projects = [
   {
     title: "iCalc",
     section: "Experiments",
@@ -381,6 +381,25 @@ const projects = [
     ]
   },
 ];
+
+// URL-safe name for a project, used for /projects/<slug>.
+export function slugify(title) {
+  return title
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+for (const p of projects) p.slug = slugify(p.title);
+{
+  const seen = new Set();
+  for (const p of projects) {
+    if (seen.has(p.slug)) throw new Error(`Duplicate project slug: ${p.slug}`);
+    seen.add(p.slug);
+  }
+}
 
 // Titles to feature up front, in the order they should appear.
 // The carousel opens on the last card and scrolls backwards, so the first

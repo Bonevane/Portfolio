@@ -367,7 +367,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
             : target ?? layoutFor(cardIndex, centerIndex, true);
         const { rotation, translateX, translateY } = shown;
 
-        const blur = Math.pow(Math.abs(offset), 2) * 0.6;
+        const blur = Math.pow(Math.abs(offset), 2) * 1.0;
         const opacity = 1 - Math.abs(offset) * 0.18;
 
         const expandedStyle = isSelected

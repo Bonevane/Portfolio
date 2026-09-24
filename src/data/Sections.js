@@ -3,12 +3,12 @@ export const tabs = ["Home", "Portfolios", "Misc", "Contact"];
 export const sectionMap = {
   Highlights: {
     title: "Highlights",
-    subtitle: ["The ones I'm proudest of. Start here."],
+    subtitle: ["Here's the projects I'm most proud of. This is a good place to start."],
   },
   Web_Dev: {
     title: "Web Dev",
     subtitle: [
-      "Here's a bunch of cool projects I made using various web frameworks.",
+      "These are a bunch of cool projects I made using various web frameworks.",
     ],
   },
   Blender: { title: "3D & Design", subtitle: ["Made in blender, with ❤️."] },

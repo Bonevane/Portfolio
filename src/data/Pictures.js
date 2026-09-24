@@ -15,10 +15,13 @@ export const picsLeft = [
   { url: "./gallery/Clouds.webp", text: "Drifting through the sky" },
   { url: "./gallery/G13.webp", text: "Urban geometry" },
   { url: "./gallery/Lamp.webp", text: "Sherlock style, maybe" },
+  { url: "./gallery/Pixel_Porcelain.webp", text: "*Coffee Sold Separately" },
+  { url: "./gallery/Pixel_Front.webp", text: "Front and center" },
 ];
 
 export const picsRight = [
   { url: "./gallery/Oneplus.webp", text: "Old Champ - #NeverForget" },
+  { url: "./gallery/Pixel_Hazel.webp", text: "The New Champ" },
   { url: "./gallery/Paw.webp", text: "Fluffball" },
   { url: "./gallery/Room_Corner.webp", text: "Stillness in the light" },
   { url: "./gallery/Sky.webp", text: "Calm days" },
@@ -35,6 +38,7 @@ export const picsRight = [
   { url: "./gallery/Sunset_C2.webp", text: "Crimson farewell" },
   { url: "./gallery/Sunset_Gym.webp", text: "B's the winner in our hearts" },
   { url: "./gallery/Sunset_Leaves.webp", text: "Silhouette in the light" },
+  { url: "./gallery/Pixel_Pink.webp", text: "ブラックピンク!!" },
   { url: "./gallery/Palm.webp", text: "Tropical breeze" },
   { url: "./gallery/Plant.webp", text: "A touch of green" },
   { url: "./gallery/Shower.webp", text: "Not sure but it looked good" },

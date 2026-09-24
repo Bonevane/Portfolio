@@ -91,6 +91,20 @@ const projects = [
     ]
   },
   {
+    title: "Bridge",
+    section: "Experiments",
+    description:
+      "Your Android phone on your Mac or PC, from anywhere. See and control it over any network, even when it's locked, with shared clipboard and notifications.",
+    tags: ["Kotlin", "Swift", "Rust", "iroh"],
+    live: "https://github.com/Bonevane/Bridge/releases",
+    code: "https://github.com/Bonevane/Bridge",
+    thumbnail: "/projects/Bridge.webp",
+    media: [
+      { type: 'image', url: './projects/Bridge.webp' },
+      { type: 'image', url: './projects/Bridge-2.webp' }
+    ]
+  },
+  {
     title: "Inside",
     section: "Game_Dev",
     description:
@@ -248,6 +262,27 @@ const projects = [
     ]
   },
   {
+    title: "Made by Google",
+    section: "Blender",
+    description:
+      "A full product commercial for my current daily driver, modelled, lit and animated in Blender.",
+    tags: ["Blender", "Product Render", "Animation", "3D"],
+    live: "",
+    code: "",
+    thumbnail: "/projects/Pixel.webp",
+    media: [
+      {
+        type: 'video',
+        url: '/videos/pixel-commercial.mp4',
+        title: 'Made by Google',
+        description: 'A full product commercial for my current daily driver, modelled, lit and animated in Blender.'
+      },
+      { type: 'image', url: './projects/Pixel-2.webp' },
+      { type: 'image', url: './projects/Pixel-3.webp' },
+      { type: 'image', url: './projects/Pixel-4.webp' }
+    ]
+  },
+  {
     title: "Danish's Space",
     section: "Web_Dev",
     description:
@@ -350,7 +385,14 @@ const projects = [
 // Titles to feature up front, in the order they should appear.
 // The carousel opens on the last card and scrolls backwards, so the first
 // title here is the first thing a visitor sees.
-export const highlights = ["REACH", "Formula 1", "Path Tracer", "Aperture"];
+export const highlights = [
+  "Bridge",
+  "REACH",
+  "Spillage",
+  "ScalAR",
+  "Made by Google",
+  "Moon Over the Castle",
+];
 
 export const cards = [
   ...projects,

@@ -42,13 +42,15 @@
   }
 }
 
+/* Starts at 1% rather than 0: Chrome never counts an element painted at
+   opacity 0 as the Largest Contentful Paint, which left the page with no LCP. */
 @keyframes zoomFadeIn {
   0% {
-    opacity: 0;
+    opacity: 0.01;
     /* transform: scale(0.7); */
   }
   50% {
-    opacity: 0;
+    opacity: 0.01;
   }
   100% {
     opacity: 1;

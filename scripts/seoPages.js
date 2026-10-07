@@ -46,9 +46,10 @@ function pageFor(template, entry) {
 const absUrl = (u) => siteUrl + "/" + u.replace(/^\.?\//, "");
 
 // Plain-HTML version of the site's navigation and project list, rendered into
-// <div id="root"> at build time. Crawlers read its links from the raw HTML
-// (the carousel only ever draws a few cards at once); React replaces it as
-// soon as the app mounts, so visitors only see it if JavaScript is off.
+// <div id="root"> at build time and hidden. Crawlers still read its links from
+// the raw HTML (the carousel only ever draws a few cards at once), and React
+// replaces it when the app mounts. Visitors without JavaScript get the
+// <noscript> fallback instead.
 function siteIndex(extra = "") {
   const sections = [...new Set(projects.map((p) => p.section))];
   const names = { Web_Dev: "Web Dev", Blender: "3D & Design", Game_Dev: "Game Dev", Experiments: "Experiments" };
@@ -61,7 +62,7 @@ function siteIndex(extra = "") {
       return `<h2>${esc(names[sec] || sec)}</h2><ul>${items}</ul>`;
     })
     .join("");
-  return `<div id="root"><div class="prerender" style="font-family: sans-serif; padding: 2rem; color: #cec9c9; background: #000; min-height: 100vh">
+  return `<div id="root"><div class="prerender" style="display: none">
       <nav><a href="/">Home</a> · <a href="/portfolios">Portfolio</a> · <a href="/misc">Gallery &amp; Skills</a> · <a href="/contact">Contact</a></nav>
       ${extra}
       <h1>Projects by Rafay Ahmad (Bonevane)</h1>${lists}

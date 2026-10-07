@@ -385,7 +385,18 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
             <div className="py-3 px-4 flex flex-col min-h-0">
               <div className="flex mb-2 gap-4 items-center">
                 <h2 className="text-[1em] font-[ElMessiri] whitespace-nowrap">
-                  {card.title}
+                  {/* A real link so crawlers can reach /projects/<slug>; a normal
+                      click still just opens or closes the card in place. */}
+                  <a
+                    href={`/projects/${card.slug}`}
+                    className="text-inherit no-underline"
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                      e.preventDefault();
+                    }}
+                  >
+                    {card.title}
+                  </a>
                 </h2>
                 <div className="flex justify-between items-center gap-2 w-full">
                   <div className="flex gap-2">

@@ -1,7 +1,7 @@
 import { projects } from "./Cards.js";
 
 export const paths = {
-  Home: "/home",
+  Home: "/",
   Portfolios: "/portfolios",
   Misc: "/misc",
   Contact: "/contact",

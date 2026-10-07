@@ -45,6 +45,34 @@ function pageFor(template, entry) {
 
 const absUrl = (u) => siteUrl + "/" + u.replace(/^\.?\//, "");
 
+// Plain-HTML version of the site's navigation and project list, rendered into
+// <div id="root"> at build time. Crawlers read its links from the raw HTML
+// (the carousel only ever draws a few cards at once); React replaces it as
+// soon as the app mounts, so visitors only see it if JavaScript is off.
+function siteIndex(extra = "") {
+  const sections = [...new Set(projects.map((p) => p.section))];
+  const names = { Web_Dev: "Web Dev", Blender: "3D & Design", Game_Dev: "Game Dev", Experiments: "Experiments" };
+  const lists = sections
+    .map((sec) => {
+      const items = projects
+        .filter((p) => p.section === sec)
+        .map((p) => `<li><a href="/projects/${p.slug}">${esc(p.title)}</a></li>`)
+        .join("");
+      return `<h2>${esc(names[sec] || sec)}</h2><ul>${items}</ul>`;
+    })
+    .join("");
+  return `<div id="root"><div class="prerender" style="font-family: sans-serif; padding: 2rem; color: #cec9c9; background: #000; min-height: 100vh">
+      <nav><a href="/">Home</a> · <a href="/portfolios">Portfolio</a> · <a href="/misc">Gallery &amp; Skills</a> · <a href="/contact">Contact</a></nav>
+      ${extra}
+      <h1>Projects by Rafay Ahmad (Bonevane)</h1>${lists}
+    </div></div>`;
+}
+
+function withIndex(html, extra) {
+  if (!html.includes('<div id="root"></div>')) throw new Error("seoPages: empty #root not found");
+  return html.replace('<div id="root"></div>', siteIndex(extra));
+}
+
 // Extra <head>/<noscript> content for a project page: a CreativeWork for
 // search engines, and readable text for crawlers that don't run JavaScript.
 function projectPage(template, card) {
@@ -88,7 +116,11 @@ function projectPage(template, card) {
       </main>
     </noscript>`;
   if (!/<noscript>[\s\S]*?<\/noscript>/.test(html)) throw new Error("seoPages: <noscript> not found");
-  return html.replace(/<noscript>[\s\S]*?<\/noscript>/, noscript);
+  html = html.replace(/<noscript>[\s\S]*?<\/noscript>/, noscript);
+  return withIndex(
+    html,
+    `<article><h1>${esc(card.title)}</h1><p>${esc(card.longDescription || entry.description)}</p><p>${links}</p></article>`
+  );
 }
 
 function sitemap() {
@@ -139,11 +171,10 @@ export default function seoPages() {
       const template = fs.readFileSync(path.join(outDir, "index.html"), "utf8");
       const write = (file, html) => fs.writeFileSync(path.join(outDir, file), html);
 
-      write("index.html", pageFor(template, seo.Home));
-      // /home is an alias of the home page; its canonical points at "/".
-      write("home.html", pageFor(template, seo.Home));
+      write("index.html", withIndex(pageFor(template, seo.Home)));
+      // /home is redirected to "/" in vercel.json, so it needs no file.
       for (const key of ["Portfolios", "Misc", "Contact"]) {
-        write(`${seo[key].path.slice(1)}.html`, pageFor(template, seo[key]));
+        write(`${seo[key].path.slice(1)}.html`, withIndex(pageFor(template, seo[key])));
       }
       write("404.html", pageFor(template, seo[404]));
       fs.mkdirSync(path.join(outDir, "projects"), { recursive: true });

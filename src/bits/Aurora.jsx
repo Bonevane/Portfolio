@@ -119,6 +119,17 @@ function lerp(a, b, t) {
   return a + (b - a) * t;
 }
 
+// True when WebGL is being emulated on the CPU (no GPU acceleration), as on
+// PageSpeed's test servers or a browser with hardware acceleration off. There,
+// redrawing this full-screen shader every frame blocks the page for 100ms+.
+function isSoftwareWebGL(gl) {
+  const info = gl.getExtension("WEBGL_debug_renderer_info");
+  const renderer = info
+    ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL)
+    : gl.getParameter(gl.RENDERER);
+  return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(String(renderer));
+}
+
 export default function Aurora({
   colorStops = ["#5227FF", "#7cff67", "#5227FF"],
   amplitude = 1.0,
@@ -131,6 +142,9 @@ export default function Aurora({
   const currentRGB = useRef(colorStops.map(hexToRGB));
   const targetRGB = useRef(colorStops.map(hexToRGB));
   const lastUpdate = useRef(performance.now());
+  // Set when WebGL is software-rendered: draws a single still frame instead
+  // of animating, and is called again whenever the colours change.
+  const drawStill = useRef(null);
 
   useEffect(() => {
     const ctn = ctnDom.current;
@@ -169,12 +183,38 @@ export default function Aurora({
       const width = ctn.offsetWidth;
       const height = ctn.offsetHeight;
       renderer.setSize(width, height);
-      program.uniforms.uResolution.value = [width, height];
+      // The shader maps gl_FragCoord (canvas pixels) to 0..1 with this, so it
+      // must be the canvas's pixel size, not its CSS size (they differ when
+      // renderer.dpr isn't 1).
+      program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height];
     };
     window.addEventListener("resize", resize);
     resize();
 
     let animateId = 0;
+
+    if (isSoftwareWebGL(gl)) {
+      renderer.dpr = 0.5;
+      resize();
+      drawStill.current = (time = performance.now() * 0.001) => {
+        currentRGB.current = targetRGB.current.map((c) => [...c]);
+        program.uniforms.uTime.value = time;
+        program.uniforms.uAmplitude.value = propsRef.current.amplitude;
+        program.uniforms.uBlend.value = propsRef.current.blend;
+        program.uniforms.uColorStops.value = currentRGB.current;
+        renderer.render({ scene: mesh });
+      };
+      const redraw = () => drawStill.current?.();
+      window.addEventListener("resize", redraw);
+      drawStill.current();
+      return () => {
+        window.removeEventListener("resize", redraw);
+        window.removeEventListener("resize", resize);
+        drawStill.current = null;
+        if (ctn && gl.canvas.parentNode === ctn) ctn.removeChild(gl.canvas);
+        gl.getExtension("WEBGL_lose_context")?.loseContext();
+      };
+    }
 
     const update = (t) => {
       animateId = requestAnimationFrame(update);
@@ -216,6 +256,7 @@ export default function Aurora({
   // When colorStops prop changes, update targetRGB
   useEffect(() => {
     targetRGB.current = colorStops.map(hexToRGB);
+    drawStill.current?.();
   }, [colorStops]);
 
   return <div ref={ctnDom} className="aurora-container" />;

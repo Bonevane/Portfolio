@@ -34,3 +34,25 @@
 .rotating-flower-wrapper:hover {
   transform: scale(1.04);
 }
+
+/* "Click my face to switch design" hint, shown on hover. */
+.design-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  padding: 0.4em 1em;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #e8e4e4;
+  font-family: Teachers, sans-serif;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.34, 1.6, 0.64, 1);
+}
+.group:hover > .design-hint {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

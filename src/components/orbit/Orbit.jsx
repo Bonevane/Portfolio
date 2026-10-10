@@ -1,9 +1,14 @@
 import { Fragment, useRef, useState, useEffect, useMemo } from "react";
 import { socials, bonevaneIcon } from "../../data/Socials";
 import "./Orbit.css";
+import { toggleDesign, useDesign } from "../../theme/design.js";
+
+// In the Material 3 design each platform chip takes a different M3 shape.
+const chipShapes = ["cookie9", "clover4", "sunny", "cookie6", "cookie12", "cookie8", "verySunny", "cookie7"];
 
 export default function Orbit() {
   const centerRef = useRef(null);
+  const design = useDesign();
   const [offsetY, setOffsetY] = useState(0);
   const [hoveredLayer, setHoveredLayer] = useState(null);
   const [layerConfigs, setLayerConfigs] = useState([
@@ -46,16 +51,18 @@ export default function Orbit() {
   return (
     <div className="fixed top-[-40px] right-[-80px] w-[100vw] h-[100vh] animate-[fadeIn_1s_ease-in_backwards]">
       <div
-        className="group absolute top-0 right-0 z-10 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)] cursor-pointer"
+        className="orbit-center group absolute top-0 right-0 z-10 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)] cursor-pointer"
         ref={centerRef}
+        onClick={(e) => toggleDesign(e.clientX, e.clientY)}
       >
         <span className="orbit-tooltip left-1/2 top-full mt-3">
-          That&apos;s me
+          {design === "m3" ? "Back to the original" : "That's me"}
         </span>
+        <span className="orbit-avatar-shape" aria-hidden="true" />
         <img
           src={bonevaneIcon}
           alt="Bonevane"
-          className="bonevane w-[56vw] h-[56vw] max-w-[40vh] max-h-[40vh] rounded-full p-12 border-1 border-[#757575]/50 bg-[#84AEFF]/25 backdrop-blur-xl"
+          className="bonevane orbit-avatar w-[56vw] h-[56vw] max-w-[40vh] max-h-[40vh] rounded-full p-12 border-1 border-[#757575]/50 bg-[#84AEFF]/25 backdrop-blur-xl"
         />
         <img
           src={bonevaneIcon}
@@ -78,16 +85,13 @@ export default function Orbit() {
         return (
           <div
             key={`ring-${layer}`}
-            className="absolute top-0 right-0 rounded-full z-[-10] pointer-events-none"
+            className="orbit-ring absolute top-0 right-0 rounded-full z-[-10] pointer-events-none"
             style={{
               width: size,
               height: size,
               marginRight: -size / 2 + offsetY,
               marginTop: -size / 2 + offsetY,
-              border: `1px solid rgba(117, 117, 117, ${
-                hoveredLayer === layer ? hoverAlpha : orbitAlpha
-              })`,
-              transition: "border 0.2s ease",
+              "--ring-alpha": hoveredLayer === layer ? hoverAlpha : orbitAlpha,
             }}
           ></div>
         );
@@ -137,7 +141,7 @@ export default function Orbit() {
                     }}
                   >
                     <div
-                      className="group absolute left-0 top-0 w-[16vw] h-[16vw] max-w-20 max-h-20 rounded-full translate-x-[-50%] translate-y-[-50%]"
+                      className="orbit-chip-wrap group absolute left-0 top-0 w-[16vw] h-[16vw] max-w-20 max-h-20 rounded-full translate-x-[-50%] translate-y-[-50%]"
                       style={{ transform: `rotate(${-rotation}deg)` }}
                     >
                       <span className="orbit-tooltip left-1/2 top-full mt-2">
@@ -147,11 +151,12 @@ export default function Orbit() {
                         href={social.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full h-full absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)] z-10"
+                        className="orbit-chip w-full h-full absolute rounded-full border-1 border-[#757575]/80 left-0 top-0 hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.34,2,0.64,1)] z-10"
+                        data-shape={chipShapes[i % chipShapes.length]}
                         onMouseEnter={() => setHoveredLayer(layer)}
                         onMouseLeave={() => setHoveredLayer(null)}
                         style={{
-                          backgroundColor: `color-mix(in srgb, #${social.color} 28%, #14201c)`,
+                          "--brand": `#${social.color}`,
                           pointerEvents: "all",
                         }}
                       >

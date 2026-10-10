@@ -4,24 +4,28 @@ export const standaloneVideos = [
   { 
     type: 'video', 
     url: '/videos/oc-shoot.mp4', 
+    aspect: '16 / 9',
     title: 'Organizing Committee Reveal', 
     description: 'A short, fast-paced reveal trailer for the organizing committee of SEECS Got Talent 25\'.'
   },
   { 
     type: 'video', 
     url: '/videos/khaapa-ranchers.mp4', 
+    aspect: '9 / 16',
     title: 'Ranchers x Papa\'s Khaapa', 
     description: 'A short cinematic film, created as part of a collaboration between Ranchers and Papa\'s Khaapa. Directed, Filmed & Edited by yours truly.',
   },
   { 
     type: 'video', 
     url: '/videos/khaapa-teaser.mp4', 
+    aspect: '9 / 16',
     title: 'Papa\'s Khaapa - Coming Soon', 
     description: 'A slow paced reveal trailer following Avengers: Doomsday format, for Papa\'s Khaapa.'
   },
   {
     type: 'video',
     url: '/videos/dextra-full.mp4',
+    aspect: '1 / 1',
     title: 'Dextra - Logo Reveal',
     description: 'A cinematic logo reveal for Dextra IV.'
   }

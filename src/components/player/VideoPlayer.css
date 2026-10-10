@@ -21,3 +21,26 @@
   0% { transform: translateY(15vh) scale(0.95); opacity: 0; }
   100% { transform: translateY(0) scale(1); opacity: 1; }
 }
+
+/* Sized from the video's known aspect ratio (data), so the black box is
+   already the right shape before the video has loaded. */
+.vp-video {
+  aspect-ratio: var(--ar);
+  width: min(calc(100vw - 1rem), calc(55vh * (var(--ar))));
+}
+@media (min-width: 768px) {
+  .vp-video {
+    width: min(90vw, calc(82vh * (var(--ar))));
+  }
+}
+
+/* Loading indicator over a video that is loading or buffering. */
+.vp-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./VideoPlayer.css";
+import Loader from "../loader/Loader.jsx";
 
 export default function VideoPlayer({ media, initialIndex, onClose }) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex || 0);
@@ -10,6 +11,10 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
   const containerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progresses, setProgresses] = useState(Array(media.length).fill(0));
+  // Which videos are still loading/buffering, to show a spinner over them.
+  const [loading, setLoading] = useState(() => media.map((m) => m.type === 'video'));
+  const setVideoLoading = (idx, value) =>
+    setLoading((prev) => (prev[idx] === value ? prev : prev.map((v, i) => (i === idx ? value : v))));
   const [volume, setVolume] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
@@ -222,8 +227,14 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
                       ref={el => videoRefs.current[idx] = el}
                       src={item.url} 
                       preload="metadata"
-                      className="max-h-[55vh] md:max-h-[82vh] max-w-full md:max-w-[90vw] object-contain rounded-2xl md:rounded-[3rem]"
+                      className="vp-video max-h-[55vh] md:max-h-[82vh] max-w-full md:max-w-[90vw] object-contain rounded-2xl md:rounded-[3rem] bg-black"
+                      style={{ "--ar": item.aspect || "16 / 9" }}
                       playsInline
+                      onLoadStart={() => setVideoLoading(idx, true)}
+                      onWaiting={() => setVideoLoading(idx, true)}
+                      onLoadedData={() => setVideoLoading(idx, false)}
+                      onCanPlay={() => setVideoLoading(idx, false)}
+                      onPlaying={() => setVideoLoading(idx, false)}
                       onTimeUpdate={(e) => {
                         setProgresses(prev => {
                           const newProg = [...prev];
@@ -242,6 +253,12 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
                     />
                   )}
                   
+                  {item.type === 'video' && loading[idx] && (
+                    <div className="vp-loading">
+                      <Loader label="Loading video" />
+                    </div>
+                  )}
+
                   {/* Embedded Control Pill */}
                   {item.type === 'video' && (
                     <div 

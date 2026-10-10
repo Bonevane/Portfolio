@@ -1,0 +1,88 @@
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: loaderIn 0.35s ease 0.15s backwards;
+}
+
+@keyframes loaderIn {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+}
+
+/* ------------------------------------------------ Material 3 Expressive --- */
+
+.m3-loader {
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: visible;
+}
+
+.m3-loader path {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.m3-loader-arc {
+  stroke: var(--md-primary);
+}
+
+.m3-loader-track {
+  stroke: var(--md-secondary-container);
+}
+
+/* --------------------------------------------------------------- classic --- */
+/* "Ring Resize" from SVG Spinners (MIT): an arc that grows and slides round
+   while the whole ring turns. */
+
+.ring-loader {
+  width: 3.5rem;
+  height: 3.5rem;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.35));
+}
+
+.ring-loader g {
+  transform-origin: center;
+  animation: ringTurn 2s linear infinite;
+}
+
+.ring-loader circle {
+  fill: none;
+  stroke: white;
+  stroke-width: 3;
+  stroke-linecap: round;
+  animation: ringResize 1.5s ease-in-out infinite;
+}
+
+@keyframes ringTurn {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ringResize {
+  0% {
+    stroke-dasharray: 0 150;
+    stroke-dashoffset: 0;
+  }
+  47.5% {
+    stroke-dasharray: 42 150;
+    stroke-dashoffset: -16;
+  }
+  95%,
+  100% {
+    stroke-dasharray: 42 150;
+    stroke-dashoffset: -59;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-loader g {
+    animation: none;
+  }
+}

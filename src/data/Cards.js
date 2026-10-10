@@ -251,6 +251,7 @@ export const projects = [
       { 
         type: 'video', 
         url: '/videos/gt-final.mp4', 
+        aspect: '2 / 1', // width / height, so the player is the right shape before it loads
         title: 'Moon Over the Castle', 
         description: 'A Gran Turismo 4 inspired cinematic movie sequence, rendered in Blender, and graded & edited in Adobe Premiere Pro.'
       },
@@ -274,6 +275,7 @@ export const projects = [
       {
         type: 'video',
         url: '/videos/pixel-commercial.mp4',
+        aspect: '9 / 16',
         title: 'Made by Google',
         description: 'A full product commercial for my current daily driver, modelled, lit and animated in Blender.'
       },

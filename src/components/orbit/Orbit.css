@@ -47,3 +47,24 @@
   opacity: 1;
   transform: translate(-50%, 0);
 }
+
+/* Ring and chip colours come from CSS variables set in Orbit.jsx, so the
+   Material 3 design can restyle them (see src/theme/m3-skin.css). */
+.orbit-ring {
+  border: 1px solid rgba(117, 117, 117, var(--ring-alpha));
+  transition: border 0.2s ease;
+}
+.orbit-chip {
+  background-color: color-mix(in srgb, var(--brand) 28%, #14201c);
+}
+
+/* Whichever chip is hovered sits above the rest of the orbit (otherwise later
+   chips and their tooltips can cover it). */
+.orbit-icon:has(.orbit-chip:hover) {
+  z-index: 50;
+}
+
+/* Material 3 only: the spinning cookie behind the avatar. */
+.orbit-avatar-shape {
+  display: none;
+}

@@ -27,3 +27,8 @@
     border: 2px solid transparent;
   }
 }
+
+/* The checkmark only exists in the Material 3 design. */
+.misc-toggle-check {
+  display: none;
+}

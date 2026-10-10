@@ -310,7 +310,7 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
 
         {/* Media Info Bar (Static below track) */}
         <div 
-          className="w-full max-w-6xl mx-auto flex flex-col gap-4 px-2 md:px-4 text-white"
+          className="vp-meta w-full max-w-6xl mx-auto flex flex-col gap-4 px-2 md:px-4 text-white"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center w-full gap-4">
@@ -319,7 +319,8 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
             <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
               <h2 className="text-xl md:text-3xl font-[ElMessiri] tracking-wide truncate">{currentMedia.title || "Untitled Video"}</h2>
               <button 
-                className={`shrink-0 carousel-nav-btn w-6 h-6 md:w-7 md:h-7 rounded-full border text-xs md:text-sm font-semibold flex items-center justify-center transition-all ${showInfo ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.4)]' : 'border-white/40 text-white/70 hover:bg-white/10 hover:text-white'}`}
+                data-on={showInfo}
+                className={`vp-info shrink-0 carousel-nav-btn w-6 h-6 md:w-7 md:h-7 rounded-full border text-xs md:text-sm font-semibold flex items-center justify-center transition-all ${showInfo ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.4)]' : 'border-white/40 text-white/70 hover:bg-white/10 hover:text-white'}`}
                 onClick={(e) => { e.stopPropagation(); setShowInfo(!showInfo); }}
               >
                 i
@@ -330,13 +331,13 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
             {media.length > 1 && (
               <div className="hidden sm:flex gap-3">
                 <button 
-                  className="carousel-nav-btn w-12 h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                  className="vp-nav carousel-nav-btn w-12 h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
                   onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev > 0 ? prev - 1 : media.length - 1)); }}
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="m15 18-6-6 6-6"/></svg>
                 </button>
                 <button 
-                  className="carousel-nav-btn w-12 h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                  className="vp-nav carousel-nav-btn w-12 h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
                   onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev < media.length - 1 ? prev + 1 : 0)); }}
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="m9 18 6-6-6-6"/></svg>
@@ -348,7 +349,7 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
           {/* Expandable Description */}
           <div className={`grid transition-all duration-500 ease-[cubic-bezier(0.34,1.3,0.64,1)] ${showInfo ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
             <div className="overflow-hidden">
-              <p className="text-white/70 max-w-[800px] text-sm md:text-lg leading-relaxed pt-1 pb-4 text-left">
+              <p className="vp-desc text-white/70 max-w-[800px] text-sm md:text-lg leading-relaxed pt-1 pb-4 text-left">
                 {currentMedia.description || "No description available."}
               </p>
             </div>
@@ -358,13 +359,13 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
           {media.length > 1 && (
             <div className="flex sm:hidden gap-4 w-full justify-center pb-4">
               <button 
-                className="carousel-nav-btn w-10 h-10 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                className="vp-nav carousel-nav-btn w-10 h-10 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
                 onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev > 0 ? prev - 1 : media.length - 1)); }}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </button>
               <button 
-                className="carousel-nav-btn w-10 h-10 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                className="vp-nav carousel-nav-btn w-10 h-10 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all"
                 onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev < media.length - 1 ? prev + 1 : 0)); }}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>

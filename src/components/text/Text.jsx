@@ -29,7 +29,7 @@ export default function TextOverlay({ tab, activeSectionKey, setMiscSection, set
           <SplitText
             as="h1"
             text={title}
-            className="text-[4.6em] text-[#CEC9C9] mb-2 font-[ElMessiri] translate-x-[-2%]"
+            className="page-title text-[4.6em] text-[#CEC9C9] mb-2 font-[ElMessiri] translate-x-[-2%]"
             delay={20}
             duration={2}
             ease="elastic.out(1, 0.3)"
@@ -46,7 +46,7 @@ export default function TextOverlay({ tab, activeSectionKey, setMiscSection, set
             <SplitText
               key={subtitle}
               text={subtitle}
-              className="text-[#CEC9C9] text-[1.4em] font-[Teachers]"
+              className="page-sub text-[#CEC9C9] text-[1.4em] font-[Teachers]"
               delay={10}
               duration={2}
               ease="elastic.out(1, 0.5)"
@@ -67,7 +67,7 @@ export default function TextOverlay({ tab, activeSectionKey, setMiscSection, set
           style={{ pointerEvents: "all" }}
         >
           <button 
-            className="toggle flex items-center gap-3 rounded-full border border-[#757575]/70 px-[2em] py-[0.8em] bg-[#D9D9D9]/15 text-[#CEC9C9] hover:bg-white/20 transition-all carousel-nav-btn font-inherit text-[1em]"
+            className="exp-btn toggle flex items-center gap-3 rounded-full border border-[#757575]/70 px-[2em] py-[0.8em] bg-[#D9D9D9]/15 text-[#CEC9C9] hover:bg-white/20 transition-all carousel-nav-btn font-inherit text-[1em]"
             onClick={() => {
               if (setActiveExperience) setActiveExperience(true);
             }}
@@ -84,7 +84,7 @@ export default function TextOverlay({ tab, activeSectionKey, setMiscSection, set
         >
           <ToggleSwitch setMiscSection={setMiscSection} />
           <button 
-            className="toggle flex items-center justify-center aspect-square rounded-full border border-[#757575]/70 p-[0.6em] bg-[#D9D9D9]/15 text-[#CEC9C9] hover:bg-white/20 transition-all carousel-nav-btn"
+            className="reel-btn toggle flex items-center justify-center aspect-square rounded-full border border-[#757575]/70 p-[0.6em] bg-[#D9D9D9]/15 text-[#CEC9C9] hover:bg-white/20 transition-all carousel-nav-btn"
             onClick={() => {
               if (cinematicMedia.length > 0 && setActiveVideo) {
                 setActiveVideo({ media: cinematicMedia, startIndex: 0 });

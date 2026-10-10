@@ -91,7 +91,7 @@ export default function Phone() {
         <Suspense
           fallback={
             <Html>
-              <div className="font-[Teachers] text-white/80 px-8 py-6 backdrop-blur-md border-[#757575] border rounded-full bg-[#ffffff]/20">
+              <div className="phone-loading font-[Teachers] text-white/80 px-8 py-6 backdrop-blur-md border-[#757575] border rounded-full bg-[#ffffff]/20">
                 Loading
               </div>
             </Html>

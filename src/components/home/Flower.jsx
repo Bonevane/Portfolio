@@ -1,8 +1,10 @@
 import { useRef, useEffect } from "react";
 import "./Flower.css";
+import { toggleDesign, useDesign } from "../../theme/design.js";
 
 export default function Flower() {
   const ref = useRef(null);
+  const design = useDesign();
 
   useEffect(() => {
     const el = ref.current;
@@ -134,13 +136,16 @@ export default function Flower() {
         </div>
 
         {/* Center blurred circle and my pic*/}
-        <div className="flex items-center justify-center w-[70%] h-[70%] rounded-full backdrop-blur-lg bg-white/10 border border-white/5 z-20 profile-circle">
+        <div className="group relative flex items-center justify-center w-[70%] h-[70%] rounded-full backdrop-blur-lg bg-white/10 border border-white/5 z-20 profile-circle">
           <img
             src="/me.webp"
             alt="Rafay Ahmad - Bonevane"
-            title="Rafay Ahmad - Bonevane"
-            className="w-[90%] h-[90%] object-cover rounded-full "
+            className="w-[90%] h-[90%] object-cover rounded-full cursor-pointer"
+            onClick={(e) => toggleDesign(e.clientX, e.clientY)}
           />
+          <span className="design-hint">
+            {design === "m3" ? "Back to the original" : "That's me"}
+          </span>
         </div>
       </div>
     </div>

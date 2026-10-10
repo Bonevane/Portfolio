@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "./theme/m3.css";
+@import "./theme/m3-skin.css";
 
 ::selection {
   background: transparent;

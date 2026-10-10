@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import "./Dock.css";
 import { tabs } from "../../data/Sections.js";
 import { paths } from "../../data/Paths.js";
+import { useDesign } from "../../theme/design.js";
 
 export default function Dock({ selected, setSelected }) {
+  const design = useDesign();
   const [animateTabs, setAnimateTabs] = useState([]);
 
   const containerRef = useRef(null);
@@ -80,8 +82,27 @@ export default function Dock({ selected, setSelected }) {
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [selected]);
+    // Also re-measure when the dock itself changes size, e.g. when switching
+    // between the original and Material 3 designs (different font/padding)
+    // or when a web font finishes loading.
+    // Re-measure whenever any tab changes size: the dock itself can stay the
+    // same width while its tabs move (e.g. switching designs, fonts loading).
+    const ro = new ResizeObserver(handleResize);
+    containerRef.current
+      ?.querySelectorAll("[data-tab]")
+      .forEach((tab) => ro.observe(tab));
+    // And after a design switch: once the new styles apply, and again when the
+    // dock's own padding/gap transition finishes (tabs slide, but don't resize).
+    const t = setTimeout(handleResize, 50);
+    const container = containerRef.current;
+    container?.addEventListener("transitionend", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      ro.disconnect();
+      clearTimeout(t);
+      container?.removeEventListener("transitionend", handleResize);
+    };
+  }, [selected, design]);
 
   return (
     <div className="dock-container swoop" ref={containerRef}>

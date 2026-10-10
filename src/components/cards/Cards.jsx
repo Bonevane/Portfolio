@@ -381,10 +381,10 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
         const safeMediaIndex = (isSelected && card.media && currentMediaIndex < card.media.length) ? currentMediaIndex : 0;
 
         const cardContent = (
-          <div className="text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between flex-1 min-h-0">
-            <div className="py-3 px-4 flex flex-col min-h-0">
-              <div className="flex mb-2 gap-4 items-center">
-                <h2 className="text-[1em] font-[ElMessiri] whitespace-nowrap">
+          <div className="card-body text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between flex-1 min-h-0">
+            <div className="card-head py-3 px-4 flex flex-col min-h-0">
+              <div className="card-title-row flex mb-2 gap-4 items-center">
+                <h2 className="card-title text-[1em] font-[ElMessiri] whitespace-nowrap">
                   {/* A real link so crawlers can reach /projects/<slug>; a normal
                       click still just opens or closes the card in place. */}
                   <a
@@ -459,7 +459,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                 <p className="text-[0.6em] font-normal ">{card.description}</p>
               )}
             </div>
-            <div className="pb-4 px-4 flex gap-2 justify-between flex-wrap">
+            <div className="card-tags pb-4 px-4 flex gap-2 justify-between flex-wrap">
               {card.tags.map((tag) => (
                 <span key={tag} className="project-tag">
                   {tag}
@@ -569,7 +569,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                     
                     {isSelected && card.media[safeMediaIndex].type === 'video' && (
                       <div 
-                        className="absolute inset-0 rounded-t-3xl flex items-center justify-center z-40 bg-black/20 backdrop-blur-sm pointer-events-auto cursor-pointer"
+                        className="card-play-scrim absolute inset-0 rounded-t-3xl flex items-center justify-center z-40 bg-black/20 backdrop-blur-sm pointer-events-auto cursor-pointer"
                         onClick={(e) => {
                           e.stopPropagation();
                           if (setActiveVideo) {
@@ -579,7 +579,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                           }
                         }}
                       >
-                        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center hover:scale-110 hover:bg-white/30 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                        <div className="card-play w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center hover:scale-110 hover:bg-white/30 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]">
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" className="ml-1">
                             <path d="M8 5V19L19 12L8 5Z" />
                           </svg>
@@ -594,7 +594,8 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                           {card.media.map((_, idx) => (
                             <div 
                               key={idx} 
-                              className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === safeMediaIndex ? 'bg-white scale-125' : 'bg-white/40'}`} 
+                              className={`card-dot w-2 h-2 rounded-full transition-all duration-300 ${idx === safeMediaIndex ? 'bg-white scale-125' : 'bg-white/40'}`}
+                              data-active={idx === safeMediaIndex} 
                             />
                           ))}
                         </div>
@@ -602,7 +603,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                         {/* Navigation Buttons */}
                         <div className="absolute inset-0 flex justify-between items-center px-2 pointer-events-none z-50">
                           <button
-                            className="carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                            className="card-nav carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
                             onClick={(e) => {
                               e.stopPropagation();
                               setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : card.media.length - 1));
@@ -612,7 +613,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
                           </button>
                           
                           <button
-                            className="carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                            className="card-nav carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
                             onClick={(e) => {
                               e.stopPropagation();
                               setCurrentMediaIndex((prev) => (prev < card.media.length - 1 ? prev + 1 : 0));

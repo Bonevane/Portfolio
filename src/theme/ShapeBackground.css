@@ -1,0 +1,61 @@
+.bg-shapes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--m3-page);
+  transition: background-color 0.6s var(--m3-effects);
+}
+
+/* Every shape turns slowly anticlockwise. */
+.bg-shape {
+  position: absolute;
+  overflow: visible;
+  animation: bg-shape-spin 90s linear infinite reverse;
+  will-change: transform;
+}
+
+.bg-shape path {
+  transition: fill 0.6s var(--m3-effects);
+}
+
+/* Big, behind the right-hand content. */
+.bg-shape-a {
+  width: 78vmax;
+  height: 78vmax;
+  right: -26vmax;
+  top: -24vmax;
+}
+
+/* Lower left, under the dock. */
+.bg-shape-b {
+  width: 46vmax;
+  height: 46vmax;
+  left: -20vmax;
+  bottom: -24vmax;
+}
+
+/* Accent, bottom right. */
+.bg-shape-c {
+  width: 22vmax;
+  height: 22vmax;
+  right: 4vmax;
+  bottom: -10vmax;
+}
+
+@keyframes bg-shape-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Firefox: fixed cookies drawn as masks (see ShapeBackground.jsx). */
+.bg-shapes-gecko .bg-shape {
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-shape {
+    animation: none;
+  }
+}

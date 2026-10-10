@@ -33,7 +33,6 @@
 [data-design="m3"] .vp-info {
   border: 0;
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   box-shadow: none;
   font-family: var(--m3-font);
   font-weight: 560;
@@ -144,7 +143,6 @@
   border-radius: 9999px;
   background-color: color-mix(in srgb, var(--m3-card) 82%, transparent);
   backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
   box-shadow: 0 4px 18px rgb(0 0 0 / 0.12);
 }
 
@@ -201,7 +199,6 @@
 [data-design="m3"] .rotating-flower {
   background: var(--md-primary-container) !important;
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   transition: background-color 0.6s var(--m3-effects);
 }
 
@@ -209,7 +206,6 @@
   background-color: var(--md-secondary-container);
   border: 0;
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 
 [data-design="m3"] .design-hint {
@@ -360,7 +356,6 @@
 [data-design="m3"] .card-play-scrim {
   background-color: rgb(0 0 0 / 0.12);
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 [data-design="m3"] .card-play {
   width: 5rem;
@@ -370,7 +365,6 @@
   position: relative;
   background: none;
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   box-shadow: none;
   transition: transform 0.6s var(--m3-spring);
 }
@@ -469,7 +463,6 @@
   border: 0;
   background: none;
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 /* The cookie behind the logo is its own layer, so it can turn (anticlockwise)
    while the logo stays upright. */
@@ -641,7 +634,6 @@
   background-color: color-mix(in srgb, var(--md-primary) 10%, transparent);
   border: 2px solid color-mix(in srgb, var(--md-primary) 55%, transparent);
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 [data-design="m3"] .cursor-ring::before {
   content: "";
@@ -649,7 +641,6 @@
   inset: -2px;
   background-color: color-mix(in srgb, var(--md-secondary-container) 55%, transparent);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   clip-path: url(#m3-cookie9);
   opacity: 0;
   transform: scale(0.6);
@@ -661,7 +652,6 @@
   border-color: transparent;
   /* Hand the blur to the cookie, or the ring would be its backdrop root. */
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 [data-design="m3"] .ring-interactable::before {
   opacity: 1;

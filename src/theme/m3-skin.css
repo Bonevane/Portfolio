@@ -1,0 +1,687 @@
+/* Material 3 Expressive skin for the existing components. Every rule is scoped
+   to <html data-design="m3">, so the original design is never affected.
+
+   Rules here are unlayered, so they win over Tailwind utilities without
+   !important. !important is only used where a component sets an inline style.
+
+   Corner-radius changes always use --m3-emphasized (no overshoot): a springy
+   curve overshoots below the target radius and flashes a sharp square. */
+
+/* ------------------------------------------------------------ page text --- */
+
+[data-design="m3"] .page-title {
+  color: var(--md-on-surface);
+  /* The original's -2% shift compensates El Messiri's spacing; Google Sans
+     only needs its large side bearing taken back to line up with the text. */
+  translate: -0.03em;
+}
+
+[data-design="m3"] .page-sub {
+  color: var(--md-on-surface-variant);
+}
+
+/* Shared button behaviour: state layer on hover, squash on press. */
+[data-design="m3"] .exp-btn,
+[data-design="m3"] .reel-btn,
+[data-design="m3"] .toggleBtn,
+[data-design="m3"] .live-btn,
+[data-design="m3"] .code-btn,
+[data-design="m3"] .card-nav,
+[data-design="m3"] .exp-close,
+[data-design="m3"] .exp-read,
+[data-design="m3"] .vp-nav,
+[data-design="m3"] .vp-info {
+  border: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  font-family: var(--m3-font);
+  font-weight: 560;
+  font-variation-settings: "ROND" 70;
+  transition: border-radius 0.3s var(--m3-emphasized), transform 0.4s var(--m3-spring-fast),
+    background-color 0.25s var(--m3-effects), color 0.25s var(--m3-effects);
+}
+
+/* "Experience & Publications": filled container button. */
+[data-design="m3"] .exp-btn {
+  padding: 0.85em 1.7em;
+  border-radius: var(--m3-pill);
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+[data-design="m3"] .exp-btn:hover {
+  background-color: color-mix(in srgb, var(--md-primary-container) 90%, var(--md-on-primary-container));
+}
+[data-design="m3"] .exp-btn:active {
+  border-radius: 0.6em;
+  transform: scale(0.97);
+}
+
+/* Video reel: tonal icon button, circle that squares up when pressed. */
+[data-design="m3"] .reel-btn {
+  padding: 0.75em;
+  border-radius: 50%;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+[data-design="m3"] .reel-btn:hover {
+  background-color: color-mix(in srgb, var(--md-secondary-container) 88%, var(--md-on-secondary-container));
+}
+[data-design="m3"] .reel-btn:active {
+  border-radius: 30%;
+  transform: scale(0.94);
+}
+
+/* ------------------------------------------------ connected button group --- */
+/* Gallery / Skills: two joined buttons. Outer corners are pills, inner corners
+   tight; the selected one fills with primary and rounds all its corners. */
+
+[data-design="m3"] .misc-toggle {
+  gap: 0.2em;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+[data-design="m3"] .misc-toggle-slider {
+  display: none;
+}
+
+[data-design="m3"] .toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85em 1.45em;
+  background-color: var(--md-secondary-container) !important; /* inline style */
+  color: var(--md-on-secondary-container);
+  animation: none;
+}
+[data-design="m3"] .toggleBtn:hover {
+  animation: none;
+  background-color: color-mix(in srgb, var(--md-secondary-container) 88%, var(--md-on-secondary-container)) !important;
+}
+[data-design="m3"] .toggleBtn:first-of-type {
+  border-radius: var(--m3-pill) 0.5em 0.5em var(--m3-pill);
+}
+[data-design="m3"] .toggleBtn:last-of-type {
+  border-radius: 0.5em var(--m3-pill) var(--m3-pill) 0.5em;
+}
+[data-design="m3"] .toggleBtn[data-selected="true"] {
+  background-color: var(--md-primary) !important;
+  color: var(--md-on-primary);
+  border-radius: var(--m3-pill);
+}
+[data-design="m3"] .toggleBtn:active {
+  border-radius: 0.5em;
+  transform: scale(0.97);
+}
+
+/* Checkmark grows in (width + fade) so the button widens smoothly. */
+[data-design="m3"] .misc-toggle-check {
+  display: inline-flex;
+  width: 0;
+  margin-right: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: width 0.35s var(--m3-emphasized), margin 0.35s var(--m3-emphasized),
+    opacity 0.2s var(--m3-effects);
+}
+[data-design="m3"] .toggleBtn[data-selected="true"] .misc-toggle-check {
+  width: 1em;
+  margin-right: 0.4em;
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------- dock ---- */
+/* Floating toolbar: frosted pill; solid primary indicator springs between
+   tabs. */
+
+[data-design="m3"] .dock-container {
+  --dock-pad: 0.45em;
+  font-family: var(--m3-font);
+  gap: 0.35em;
+  padding: var(--dock-pad);
+  border-radius: 9999px;
+  background-color: color-mix(in srgb, var(--m3-card) 82%, transparent);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.12);
+}
+
+[data-design="m3"] .dock-tab {
+  border: 0;
+  padding: 0.85em 1.5em;
+  color: var(--md-on-surface-variant);
+  font-size: 1.5em;
+  font-weight: 560;
+  font-variation-settings: "ROND" 70;
+  transition: color 0.3s var(--m3-effects);
+}
+[data-design="m3"] .dock-tab.selected {
+  color: var(--md-on-primary);
+}
+
+[data-design="m3"] .dock-highlight {
+  top: var(--dock-pad);
+  bottom: var(--dock-pad);
+  height: auto;
+  border: 0;
+  backdrop-filter: none;
+  background-color: var(--md-primary);
+  transition: transform 0.55s var(--m3-spring), width 0.45s var(--m3-emphasized),
+    background-color 0.6s var(--m3-effects);
+}
+
+[data-design="m3"] .dock-ring {
+  top: var(--dock-pad);
+  bottom: var(--dock-pad);
+  height: auto;
+  border: 1.5px solid var(--md-outline);
+  background-color: transparent;
+  animation: none;
+  transition: transform 0.4s var(--m3-spring), width 0.35s var(--m3-emphasized),
+    opacity 0.2s var(--m3-effects), border-color 0.6s var(--m3-effects);
+  z-index: 5;
+}
+
+[data-design="m3"] .dock-underline,
+[data-design="m3"] .dock-underline-full {
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  [data-design="m3"] .dock-background {
+    background: linear-gradient(to top, var(--m3-page), transparent);
+  }
+}
+
+/* --------------------------------------------------------------- home ---- */
+
+/* Photo frame: the original flower shape, filled with the section colour. */
+[data-design="m3"] .rotating-flower {
+  background: var(--md-primary-container) !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background-color 0.6s var(--m3-effects);
+}
+
+[data-design="m3"] .profile-circle {
+  background-color: var(--md-secondary-container);
+  border: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-design="m3"] .design-hint {
+  background: var(--md-inverse-surface);
+  color: var(--md-inverse-on-surface);
+  font-family: var(--m3-font);
+  font-weight: 540;
+}
+
+/* ------------------------------------------------------------ gallery ---- */
+
+[data-design="m3"] .gallery-item {
+  --photo-radius: 1.8vw;
+}
+[data-design="m3"] .gallery-item:hover {
+  --photo-radius: 3.6vw;
+}
+[data-design="m3"] .gallery-item-inner {
+  transition: transform 0.45s var(--m3-spring-fast);
+}
+/* The markup nests two .gallery-item-inner; only scale once. */
+[data-design="m3"] .gallery-item-inner .gallery-item-inner,
+[data-design="m3"] .gallery-item-inner .gallery-item-inner:hover {
+  transform: none;
+}
+[data-design="m3"] .gallery-image,
+[data-design="m3"] .gallery-image-blur,
+[data-design="m3"] .gallery-fallback {
+  border-radius: var(--photo-radius);
+  transition: border-radius 0.5s var(--m3-emphasized), transform 0.45s var(--m3-spring-fast);
+}
+[data-design="m3"] .gallery-image {
+  border: 0;
+  /* A crisp edge and a soft lift, so pale photos don't melt into the page. */
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--md-outline) 35%, transparent),
+    0 2px 6px rgb(0 0 0 / 0.1),
+    0 12px 28px -8px rgb(0 0 0 / 0.22);
+}
+/* No blurred glow behind the photos in M3. */
+[data-design="m3"] .gallery-image-blur {
+  display: none;
+}
+[data-design="m3"] .gallery-fallback {
+  border: 0;
+  background: var(--md-secondary-container);
+}
+[data-design="m3"] .gallery-item:hover .gallery-fallback {
+  transform: scale(1.04);
+}
+@media screen and (max-width: 1000px) {
+  [data-design="m3"] .gallery-item {
+    --photo-radius: 4.2vw;
+  }
+  [data-design="m3"] .gallery-item:hover {
+    --photo-radius: 8vw;
+  }
+}
+[data-design="m3"] .gallery-label {
+  font-family: var(--m3-font);
+  font-weight: 520;
+  letter-spacing: 0.12em;
+  color: var(--md-on-surface-variant);
+}
+
+/* -------------------------------------------------------------- cards ---- */
+
+[data-design="m3"] .card {
+  font-family: var(--m3-font);
+  border-radius: 2.2rem;
+  border: 1px solid color-mix(in srgb, var(--md-outline-variant) 55%, transparent);
+  background-color: color-mix(in srgb, var(--m3-card) 94%, transparent);
+  color: var(--md-on-surface);
+  box-shadow: 0 12px 36px rgb(0 0 0 / 0.14);
+}
+[data-design="m3"] .card .rounded-t-3xl {
+  border-top-left-radius: 2.2rem;
+  border-top-right-radius: 2.2rem;
+}
+[data-design="m3"] .card img {
+  border-color: transparent;
+}
+
+[data-design="m3"] .card-body {
+  color: var(--md-on-surface-variant);
+}
+[data-design="m3"] .card-title {
+  color: var(--md-on-surface);
+}
+[data-design="m3"] .card-head {
+  padding: 0.9em 1.05em 0.4em;
+}
+[data-design="m3"] .card-title-row {
+  gap: 0.5em;
+  margin-bottom: 0.45em;
+}
+[data-design="m3"] .card-tags {
+  padding: 0 1.05em 0.9em;
+  gap: 0.35em;
+  justify-content: flex-start;
+}
+
+/* Live: filled. Code: tonal. */
+[data-design="m3"] .live-btn,
+[data-design="m3"] .code-btn {
+  padding: 0.55em 1.25em;
+  border-radius: calc(0.55em + 0.5lh);
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  font-weight: 620;
+  animation: none;
+}
+[data-design="m3"] .code-btn {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+[data-design="m3"] .live-btn:hover,
+[data-design="m3"] .code-btn:hover {
+  animation: none;
+  transform: scale(1.06);
+}
+[data-design="m3"] .live-btn:active,
+[data-design="m3"] .code-btn:active {
+  border-radius: 0.45em;
+  transform: scale(0.95);
+}
+
+/* Tags as chips: rounded rectangle, springing into a pill on hover. */
+[data-design="m3"] .project-tag {
+  padding: 0.5em 1em;
+  border: 1px solid var(--md-outline-variant);
+  border-radius: 0.6em;
+  color: var(--md-on-surface-variant);
+  font-family: var(--m3-font);
+  font-weight: 540;
+  transition: border-radius 0.35s var(--m3-emphasized), transform 0.4s var(--m3-spring-fast),
+    background-color 0.25s var(--m3-effects), color 0.25s var(--m3-effects);
+}
+[data-design="m3"] .project-tag:hover {
+  border-radius: calc(0.5em + 0.5lh);
+  border-color: transparent;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  transform: scale(1.05);
+}
+
+/* Video play button: an M3 cookie. */
+[data-design="m3"] .card-play-scrim {
+  background-color: rgb(0 0 0 / 0.12);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+[data-design="m3"] .card-play {
+  width: 5rem;
+  height: 5rem;
+  border: 0;
+  border-radius: 0;
+  position: relative;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  transition: transform 0.6s var(--m3-spring);
+}
+/* The cookie is its own layer so it can turn while the play icon stays put. */
+[data-design="m3"] .card-play::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: url(#m3-cookie9);
+  background-color: var(--md-primary-container);
+  transition: rotate 0.6s var(--m3-spring);
+}
+[data-design="m3"] .card-play svg {
+  position: relative;
+  fill: var(--md-on-primary-container);
+  width: 28px;
+  height: 28px;
+}
+[data-design="m3"] .card-play:hover {
+  background: none;
+  transform: scale(1.08);
+}
+[data-design="m3"] .card-play:hover::before {
+  rotate: 40deg;
+}
+
+/* Carousel indicator: the active dot stretches into a pill. */
+[data-design="m3"] .card-dot {
+  width: 0.5rem;
+  background-color: rgb(255 255 255 / 0.55);
+  transform: none;
+  transition: width 0.35s var(--m3-emphasized), background-color 0.25s;
+}
+[data-design="m3"] .card-dot[data-active="true"] {
+  width: 1.3rem;
+  background-color: #fff;
+}
+
+[data-design="m3"] .card-nav {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+[data-design="m3"] .card-nav:hover {
+  background-color: var(--md-secondary-container);
+  transform: scale(1.06);
+}
+[data-design="m3"] .card-nav:active {
+  border-radius: 30%;
+  transform: scale(0.94);
+}
+
+/* ------------------------------------------------------------ contact ---- */
+
+[data-design="m3"] .orbit-ring {
+  border: 1.5px solid
+    color-mix(in srgb, var(--md-outline) calc(var(--ring-alpha) * 100%), transparent);
+}
+
+/* Bigger chips: logos sit inside shapes now, not circles. */
+[data-design="m3"] .orbit-chip-wrap {
+  width: 19vw;
+  height: 19vw;
+  max-width: 6.25rem;
+  max-height: 6.25rem;
+}
+
+[data-design="m3"] .orbit-chip {
+  border: 0;
+  border-radius: 0;
+  background-color: color-mix(in srgb, var(--brand) 64%, #000);
+  transition: transform 0.45s var(--m3-spring-fast);
+}
+[data-design="m3"] .orbit-chip:hover {
+  transform: scale(1.12);
+}
+[data-design="m3"] .orbit-chip img {
+  padding: 26%;
+}
+[data-design="m3"] .orbit-chip[data-shape="cookie9"] { clip-path: url(#m3-cookie9); }
+[data-design="m3"] .orbit-chip[data-shape="clover4"] { clip-path: url(#m3-clover4); }
+[data-design="m3"] .orbit-chip[data-shape="sunny"] { clip-path: url(#m3-sunny); }
+[data-design="m3"] .orbit-chip[data-shape="cookie6"] { clip-path: url(#m3-cookie6); }
+[data-design="m3"] .orbit-chip[data-shape="cookie12"] { clip-path: url(#m3-cookie12); }
+[data-design="m3"] .orbit-chip[data-shape="cookie8"] { clip-path: url(#m3-cookie8); }
+[data-design="m3"] .orbit-chip[data-shape="verySunny"] { clip-path: url(#m3-verySunny); }
+[data-design="m3"] .orbit-chip[data-shape="cookie7"] { clip-path: url(#m3-cookie7); }
+
+/* Avatar: a big cookie. Light uses the deep primary so the white logo shows;
+   dark uses the brighter container. */
+[data-design="m3"] .orbit-avatar {
+  position: relative;
+  z-index: 1;
+  border: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* The cookie behind the logo is its own layer, so it can turn (anticlockwise)
+   while the logo stays upright. */
+[data-design="m3"] .orbit-avatar-shape {
+  display: block;
+  position: absolute;
+  inset: 0;
+  clip-path: url(#m3-cookie12);
+  /* A deep shade of the section colour, so the white logo sits on it calmly. */
+  background-color: color-mix(in srgb, var(--md-primary) 78%, #000);
+  transition: background-color 0.6s var(--m3-effects);
+  animation: m3-spin-back 40s linear infinite;
+}
+[data-design="m3"][data-theme="dark"] .orbit-avatar-shape {
+  background-color: color-mix(in srgb, var(--md-primary-container) 45%, var(--md-surface-container));
+}
+@keyframes m3-spin-back {
+  to {
+    rotate: -360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-design="m3"] .orbit-avatar-shape {
+    animation: none;
+  }
+}
+
+[data-design="m3"] .orbit-tooltip {
+  border: 0;
+  border-radius: 0.5em;
+  background: var(--md-inverse-surface);
+  color: var(--md-inverse-on-surface);
+  font-family: var(--m3-font);
+  font-weight: 520;
+}
+
+/* ------------------------------------------------- experience overlay ---- */
+
+[data-design="m3"] .experience-backdrop,
+[data-design="m3"] .video-backdrop {
+  background-color: color-mix(in srgb, var(--m3-page) 82%, transparent);
+}
+[data-design="m3"] .exp-title {
+  color: var(--md-on-surface);
+}
+[data-design="m3"] .exp-org {
+  display: inline-block;
+  padding: 0.35em 1em;
+  border-radius: 9999px;
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  font-family: var(--m3-font);
+  font-weight: 560;
+  letter-spacing: 0.08em;
+}
+[data-design="m3"] .exp-desc {
+  color: var(--md-on-surface-variant);
+  font-family: var(--m3-font);
+}
+[data-design="m3"] .exp-pub-label {
+  color: var(--md-tertiary);
+  font-weight: 600;
+}
+[data-design="m3"] .exp-pub-title {
+  color: var(--md-on-surface);
+}
+[data-design="m3"] .exp-read {
+  padding: 0.85em 1.7em;
+  border-radius: var(--m3-pill);
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+}
+[data-design="m3"] .exp-read:hover {
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+}
+[data-design="m3"] .exp-read:active {
+  border-radius: 0.6em;
+  transform: scale(0.97);
+}
+[data-design="m3"] .exp-close {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+[data-design="m3"] .exp-close:hover {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  transform: scale(1.06);
+}
+[data-design="m3"] .exp-close:active {
+  border-radius: 30%;
+}
+
+/* -------------------------------------------------------- video player --- */
+
+[data-design="m3"] .vp-meta {
+  color: var(--md-on-surface);
+}
+[data-design="m3"] .vp-desc {
+  color: var(--md-on-surface-variant);
+  font-family: var(--m3-font);
+}
+[data-design="m3"] .vp-nav {
+  border-radius: 50%;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+[data-design="m3"] .vp-nav:hover {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  transform: scale(1.06);
+}
+[data-design="m3"] .vp-nav:active {
+  border-radius: 30%;
+}
+[data-design="m3"] .vp-info {
+  border-radius: 50%;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+[data-design="m3"] .vp-info[data-on="true"] {
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+}
+
+/* ---------------------------------------------------------- misc bits ---- */
+
+[data-design="m3"] .phone-loading {
+  border: 0;
+  backdrop-filter: none;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  font-family: var(--m3-font);
+}
+
+@media screen and (max-width: 1000px) {
+  [data-design="m3"] .text-container.in-misc {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--m3-page) 88%, transparent),
+      transparent
+    );
+  }
+  [data-design="m3"] .text-container.in-contact {
+    background: radial-gradient(100% 100% at top left, var(--m3-page), transparent);
+  }
+}
+
+/* -------------------------------------------------------------- cursor --- */
+/* Section-coloured dot and ring. Over something clickable the ring becomes a
+   frosted, spinning M3 cookie; the spin is on a child (::before) so it never
+   rotates the ring's own positioning transform. */
+
+[data-design="m3"] .cursor-dot {
+  background-color: var(--md-primary);
+  mix-blend-mode: normal;
+}
+[data-design="m3"] .cursor-dot svg [stroke] {
+  stroke: var(--md-on-surface);
+}
+[data-design="m3"] .cursor-dot svg [fill="white"] {
+  fill: var(--md-on-surface);
+}
+
+[data-design="m3"] .cursor-ring {
+  background-color: color-mix(in srgb, var(--md-primary) 10%, transparent);
+  border: 2px solid color-mix(in srgb, var(--md-primary) 55%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+[data-design="m3"] .cursor-ring::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background-color: color-mix(in srgb, var(--md-secondary-container) 55%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  clip-path: url(#m3-cookie9);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s var(--m3-effects), transform 0.45s var(--m3-spring-fast);
+  animation: m3-cursor-spin 7s linear infinite;
+}
+[data-design="m3"] .ring-interactable {
+  background-color: transparent;
+  border-color: transparent;
+  /* Hand the blur to the cookie, or the ring would be its backdrop root. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+[data-design="m3"] .ring-interactable::before {
+  opacity: 1;
+  transform: scale(1);
+}
+[data-design="m3"] .ring-scrollable,
+[data-design="m3"] .ring-grab,
+[data-design="m3"] .ring-play,
+[data-design="m3"] .ring-pause,
+[data-design="m3"] .ring-close {
+  background-color: color-mix(in srgb, var(--md-primary-container) 75%, transparent);
+  border-color: transparent;
+}
+[data-design="m3"] .ring-carousel-btn {
+  background-color: transparent;
+  border: 2px solid var(--md-primary);
+}
+
+@keyframes m3-cursor-spin {
+  to {
+    rotate: 360deg;
+  }
+}

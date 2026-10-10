@@ -1,0 +1,67 @@
+/* Material 3 Expressive foundation. Everything here only applies when
+   <html data-design="m3">; the original design is untouched otherwise.
+   Colours are CSS variables written by src/theme/m3.js. */
+
+:root[data-design="m3"] {
+  --m3-font: "Google Sans Flex", "Google Sans", system-ui, sans-serif;
+
+  /* Motion. Springs (with overshoot) only for position/scale; corner radius
+     and colour use non-overshooting curves, or a pill would briefly collapse
+     to a sharp square mid-animation. */
+  --m3-spring-fast: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+  --m3-spring: cubic-bezier(0.38, 1.21, 0.22, 1);
+  --m3-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --m3-effects: cubic-bezier(0.31, 0.94, 0.34, 1);
+
+  font-family: var(--m3-font);
+  font-variation-settings: "ROND" 40;
+  color: var(--md-on-surface);
+  background-color: var(--m3-page);
+  transition: background-color 0.6s var(--m3-effects), color 0.6s var(--m3-effects);
+}
+
+:root[data-design="m3"] body {
+  background-color: var(--m3-page);
+}
+
+:root[data-design="m3"] ::selection {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  text-shadow: none;
+}
+
+/* Every font on the page becomes Google Sans Flex in M3 mode. */
+:root[data-design="m3"] .font-\[Teachers\],
+:root[data-design="m3"] .font-\[ElMessiri\] {
+  font-family: var(--m3-font);
+}
+:root[data-design="m3"] .font-\[ElMessiri\] {
+  font-weight: 560;
+  font-variation-settings: "ROND" 100, "opsz" 144;
+  letter-spacing: -0.02em;
+}
+
+/* ---- Shared M3 control look, applied to hook classes in m3-skin.css ---- */
+/* Pill radius = half the control's real height (padding + half a line), so
+   the press morph animates instead of jumping from a 9999px radius. */
+:root[data-design="m3"] {
+  --m3-pill: calc(0.85em + 0.5lh);
+}
+
+/* ---- Design switch: circular reveal from the click point ---- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: design-reveal 0.85s cubic-bezier(0.2, 0, 0, 1) both;
+}
+@keyframes design-reveal {
+  from {
+    clip-path: circle(0 at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--reveal-r, 150%) at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+}

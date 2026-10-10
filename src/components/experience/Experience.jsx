@@ -136,7 +136,7 @@ export default function Experience({ onClose }) {
       
       {/* Floating Close Button */}
       <div 
-        className="fixed top-8 right-8 z-[1000] carousel-nav-btn w-12 h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/20 flex items-center justify-center text-white cursor-pointer hover:bg-white hover:text-black hover:scale-110 transition-all shadow-[0_0_30px_rgba(0,0,0,0.5)]"
+        className="exp-close fixed top-8 right-8 z-[1000] carousel-nav-btn w-12 h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/20 flex items-center justify-center text-white cursor-pointer hover:bg-white hover:text-black hover:scale-110 transition-all shadow-[0_0_30px_rgba(0,0,0,0.5)]"
         onClick={onClose}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -203,7 +203,7 @@ export default function Experience({ onClose }) {
 
                 {/* Organization and Year (Fades out seamlessly) */}
                 <h3 
-                  className="font-[Teachers] uppercase tracking-[0.2em] text-white/60 mt-4 will-change-opacity"
+                  className="exp-org font-[Teachers] uppercase tracking-[0.2em] text-white/60 mt-4 will-change-opacity"
                   style={{ opacity: descOpacity }}
                 >
                   {exp.organization} <span className="mx-2">•</span> {exp.year}
@@ -214,21 +214,21 @@ export default function Experience({ onClose }) {
                   className="mt-8 w-[90vw] max-w-[700px] will-change-opacity flex flex-col items-center text-center"
                   style={{ opacity: descOpacity }}
                 >
-                  <p className="text-white/70 text-lg md:text-xl leading-relaxed font-[Teachers]">
+                  <p className="exp-desc text-white/70 text-lg md:text-xl leading-relaxed font-[Teachers]">
                     {exp.description}
                   </p>
                   
                   {exp.publication && (
                     <div className="mt-12 flex flex-col items-center justify-center gap-6">
                       <div className="flex flex-col items-center text-center">
-                        <span className="text-xs text-white/40 uppercase tracking-[0.3em] mb-2">Featured Publication</span>
-                        <span className="text-white/90 font-[ElMessiri] text-2xl tracking-wide">{exp.publication.title}</span>
+                        <span className="exp-pub-label text-xs text-white/40 uppercase tracking-[0.3em] mb-2">Featured Publication</span>
+                        <span className="exp-pub-title text-white/90 font-[ElMessiri] text-2xl tracking-wide">{exp.publication.title}</span>
                       </div>
                       <a 
                         href={exp.publication.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="group carousel-nav-btn flex items-center gap-3 rounded-full border border-white/20 px-8 py-3 bg-transparent text-white/80 hover:bg-white hover:text-black hover:border-white transition-all duration-300 cursor-pointer"
+                        className="exp-read group carousel-nav-btn flex items-center gap-3 rounded-full border border-white/20 px-8 py-3 bg-transparent text-white/80 hover:bg-white hover:text-black hover:border-white transition-all duration-300 cursor-pointer"
                       >
                         <span className="text-xs font-[Teachers] tracking-[0.2em] uppercase font-medium">Read Full Article</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform duration-300">

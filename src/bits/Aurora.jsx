@@ -224,7 +224,9 @@ export default function Aurora({
       renderer.render({ scene: mesh });
     };
 
-    animateId = requestAnimationFrame(update);
+    // Draw the first frame right away (not on the next frame), so a design
+    // switch snapshot already contains the aurora instead of it popping in.
+    update(performance.now());
 
     return () => {
       cancelAnimationFrame(animateId);

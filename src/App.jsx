@@ -1,6 +1,10 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 
 import Aurora from "./bits/Aurora";
+import ShapeBackground from "./theme/ShapeBackground.jsx";
+import ShapeDefs from "./theme/ShapeDefs.jsx";
+import useM3Theme from "./theme/useM3Theme.js";
+import { useDesign } from "./theme/design.js";
 import Cursor from "./components/cursor/Cursor.jsx";
 import Flower from "./components/home/Flower.jsx";
 import Dock from "./components/dock/Dock.jsx";
@@ -18,6 +22,7 @@ import { applySeo } from "./data/Seo.js";
 import "./App.css";
 
 export default function App() {
+  const design = useDesign();
   const initialPath = typeof window !== 'undefined' ? window.location.pathname : "/";
   const initialTab = tabFromPath(initialPath);
   const [currentTab, setCurrentTab] = useState(initialTab);
@@ -76,6 +81,9 @@ export default function App() {
   // Active Section calculation (For colors and text)
   let activeSectionKey = currentTab === "Portfolios" ? cardSection : currentTab;
   activeSectionKey = currentTab === "Misc" ? miscSection : activeSectionKey;
+  // Material 3 design: the section's seed colour recolours the whole UI.
+  useM3Theme(currentTab === "404" ? "404" : activeSectionKey, design === "m3");
+
   if (Object.prototype.hasOwnProperty.call(colors, activeSectionKey)) {
     color = colors[activeSectionKey];
   } else {
@@ -84,11 +92,16 @@ export default function App() {
 
   return (
     <div className=" w-screen h-screen overflow-hidden relative">
+      <ShapeDefs />
       <Cursor />
       
       {/* Background stays completely static */}
       <div className="absolute inset-0 w-full h-full">
-      <Aurora colorStops={color} blend={1} amplitude={0.5} speed={1} />
+      {design === "m3" ? (
+        <ShapeBackground />
+      ) : (
+        <Aurora colorStops={color} blend={1} amplitude={0.5} speed={1} />
+      )}
       </div>
       
       {/* Only the UI contents lift up and out */}

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { cards } from "../../data/Cards.js";
 import { projectSlugFromPath } from "../../data/Paths.js";
 import { applySeo, projectSeo } from "../../data/Seo.js";
+import ScrollHint from "./ScrollHint.jsx";
 import "./Cards.css";
 
 // Fade whichever edges of the long description still have text beyond them.
@@ -27,19 +28,77 @@ function layoutFor(cardIndex, center, force = false) {
   };
 }
 
-export default function Cards({ setCardSection, setActiveVideo, paused = false }) {
+export default function Cards({ setCardSection, setActiveVideo, paused = false, isExperienceOpen = false }) {
   // Wheel/touch/drag listeners live on window, so an overlay on top (Experience,
   // video player) would otherwise scroll the carousel behind it.
   const pausedRef = useRef(paused);
   useEffect(() => {
     pausedRef.current = paused;
+    if (paused) dismissScrollHint();
   }, [paused]);
+
+  const isExperienceOpenRef = useRef(isExperienceOpen);
+  useEffect(() => {
+    isExperienceOpenRef.current = isExperienceOpen;
+    if (isExperienceOpen) dismissScrollHint();
+  }, [isExperienceOpen]);
 
   const [centerIndex, setCenterIndex] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
   const [prevCardSection, setPrevCardSection] = useState(0);
   const [animComplete, setAnimComplete] = useState(false);
+  const animCompleteRef = useRef(false);
+  useEffect(() => {
+    animCompleteRef.current = animComplete;
+  }, [animComplete]);
+
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+
+  // Wrong-way scroll detection dropdown
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  const [hintShake, setHintShake] = useState(false);
+  const [hintDirection, setHintDirection] = useState("up");
+  const isHintVisibleRef = useRef(false);
+  useEffect(() => {
+    isHintVisibleRef.current = showScrollHint;
+  }, [showScrollHint]);
+
+  const hintTimerRef = useRef(null);
+  const shakeTimerRef = useRef(null);
+  const wrongScrollDeltaRef = useRef(0);
+  const resetAccumulatorTimerRef = useRef(null);
+  const stuckAtBoundaryTimeRef = useRef(0);
+  const gestureMovedCarouselRef = useRef(false);
+  const gestureEndTimerRef = useRef(null);
+
+  const dismissScrollHint = () => {
+    if (hintTimerRef.current) {
+      clearTimeout(hintTimerRef.current);
+      hintTimerRef.current = null;
+    }
+    setShowScrollHint(false);
+    wrongScrollDeltaRef.current = 0;
+  };
+
+  const triggerScrollHint = (direction) => {
+    if (pausedRef.current || isExperienceOpenRef.current) return;
+    if (selectedCardRef.current !== null) return;
+
+    setHintDirection(direction);
+
+    if (isHintVisibleRef.current) {
+      setHintShake(true);
+      if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
+      shakeTimerRef.current = setTimeout(() => setHintShake(false), 450);
+    } else {
+      setShowScrollHint(true);
+    }
+
+    if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+    hintTimerRef.current = setTimeout(() => {
+      setShowScrollHint(false);
+    }, 3500);
+  };
   const touchVelocityRef = useRef(0);
   const decayFrame = useRef(null);
   const isDragging = useRef(false);
@@ -74,6 +133,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
     if (selectedCard !== null) {
       scrollAccumulatorRef.current = 0;
       setCurrentMediaIndex(0);
+      dismissScrollHint();
     }
   }, [selectedCard]);
 
@@ -168,10 +228,79 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
       const dY = e.deltaY || 0;
       const effectiveDelta = dY + dX * 0.5;
 
+      const currentIdx = centerIndexRef.current;
+      const maxIdx = cards.length - 1;
+      const nextIdx = Math.max(0, Math.min(maxIdx, currentIdx + effectiveDelta * wheelScrollFactor));
+      const didMove = Math.abs(nextIdx - currentIdx) > 0.0001;
+
+      // Reset gesture tracking when scrolling ceases
+      if (gestureEndTimerRef.current) clearTimeout(gestureEndTimerRef.current);
+      gestureEndTimerRef.current = setTimeout(() => {
+        gestureMovedCarouselRef.current = false;
+        stuckAtBoundaryTimeRef.current = 0;
+        wrongScrollDeltaRef.current = 0;
+      }, 250);
+
+      // Detect scrolling the wrong way:
+      // Only when publications & experience section is not open, no card selected, and not momentum decay
+      if (
+        !pausedRef.current &&
+        !isExperienceOpenRef.current &&
+        selectedCardRef.current === null &&
+        !e.isDecay
+      ) {
+        if (didMove) {
+          // This scroll gesture is actively moving the carousel.
+          // A gesture that moved the carousel must NEVER trigger the wrong-way hint!
+          gestureMovedCarouselRef.current = true;
+          stuckAtBoundaryTimeRef.current = 0;
+          wrongScrollDeltaRef.current = 0;
+
+          // If the hint is visible and user scrolls in a valid direction, dismiss it
+          if (isHintVisibleRef.current) {
+            dismissScrollHint();
+          }
+        } else {
+          // The carousel DID NOT move (it is clamped against the end).
+          const isAtTop = currentIdx >= maxIdx - 0.01 && effectiveDelta > 0;
+          const isAtBottom = currentIdx <= 0.01 && effectiveDelta < 0;
+
+          if (isAtTop || isAtBottom) {
+            if (stuckAtBoundaryTimeRef.current === 0) {
+              stuckAtBoundaryTimeRef.current = Date.now();
+            }
+
+            // If this gesture was already moving the carousel to the end,
+            // ignore the arrival delta. Only trigger if the user keeps scrolling
+            // once at the end (continuous wheeling for > 400ms at the boundary)
+            // OR if the gesture started while already resting at the boundary.
+            const isContinuingPastBoundary =
+              gestureMovedCarouselRef.current &&
+              Date.now() - stuckAtBoundaryTimeRef.current > 400;
+            const isStartedAtBoundary = !gestureMovedCarouselRef.current;
+
+            if (isStartedAtBoundary || isContinuingPastBoundary) {
+              wrongScrollDeltaRef.current += Math.abs(effectiveDelta);
+
+              if (resetAccumulatorTimerRef.current) clearTimeout(resetAccumulatorTimerRef.current);
+              resetAccumulatorTimerRef.current = setTimeout(() => {
+                wrongScrollDeltaRef.current = 0;
+              }, 250);
+
+              if (wrongScrollDeltaRef.current >= 150) {
+                triggerScrollHint(isAtTop ? "up" : "down");
+                wrongScrollDeltaRef.current = 0;
+              }
+            }
+          }
+        }
+      }
+
       // Always update the center index so the background carousel rotates
       setCenterIndex((prev) => {
         let next = prev + effectiveDelta * wheelScrollFactor;
         next = Math.max(0, Math.min(cards.length - 1, next));
+        centerIndexRef.current = next;
         return next;
       });
 
@@ -240,7 +369,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
       let velocity = touchVelocityRef.current * 30;
       const decay = () => {
         if (Math.abs(velocity) < 0.1) return;
-        handleWheel({ deltaY: velocity, deltaX: 0, preventDefault: () => {} });
+        handleWheel({ deltaY: velocity, deltaX: 0, isDecay: true, preventDefault: () => {} });
         velocity *= 0.92;
         decayFrame.current = requestAnimationFrame(decay);
       };
@@ -283,6 +412,10 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
       if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
+      if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+      if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
+      if (resetAccumulatorTimerRef.current) clearTimeout(resetAccumulatorTimerRef.current);
+      if (gestureEndTimerRef.current) clearTimeout(gestureEndTimerRef.current);
     };
   }, []);
 
@@ -342,6 +475,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
         setCenterIndex(target);
         cancelAnimationFrame(frameId);
         setAnimComplete(true);
+        animCompleteRef.current = true;
         if (linked >= 0) setSelectedCard(linked);
         return;
       }
@@ -355,7 +489,14 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
   }, []);
 
   return (
-    <div className={`cards-container fixed bottom-[2em] right-[8em] w-[100vw] h-[100vh] pointer-events-none ${selectedCard !== null ? 'z-[60]' : 'z-10'}`}>
+    <>
+      <ScrollHint
+        visible={showScrollHint}
+        shake={hintShake}
+        direction={hintDirection}
+        onDismiss={dismissScrollHint}
+      />
+      <div className={`cards-container fixed bottom-[2em] right-[8em] w-[100vw] h-[100vh] pointer-events-none ${selectedCard !== null ? 'z-[60]' : 'z-10'}`}>
       {cards.map((card, cardIndex) => {
         const isSelected = selectedCard === cardIndex;
         const target = layoutFor(cardIndex, centerIndex);
@@ -642,5 +783,6 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false }
         );
       })}
     </div>
+    </>
   );
 }

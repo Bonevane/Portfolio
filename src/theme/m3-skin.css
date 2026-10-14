@@ -22,6 +22,7 @@
 
 /* Shared button behaviour: state layer on hover, squash on press. */
 [data-design="m3"] .exp-btn,
+[data-design="m3"] .scroll-hint,
 [data-design="m3"] .reel-btn,
 [data-design="m3"] .toggleBtn,
 [data-design="m3"] .live-btn,
@@ -41,17 +42,20 @@
     background-color 0.25s var(--m3-effects), color 0.25s var(--m3-effects);
 }
 
-/* "Experience & Publications": filled container button. */
-[data-design="m3"] .exp-btn {
+/* "Experience & Publications" and scroll hint: filled container button. */
+[data-design="m3"] .exp-btn,
+[data-design="m3"] .scroll-hint {
   padding: 0.85em 1.7em;
   border-radius: var(--m3-pill);
   background-color: var(--md-primary-container);
   color: var(--md-on-primary-container);
 }
-[data-design="m3"] .exp-btn:hover {
+[data-design="m3"] .exp-btn:hover,
+[data-design="m3"] .scroll-hint:hover {
   background-color: color-mix(in srgb, var(--md-primary-container) 90%, var(--md-on-primary-container));
 }
-[data-design="m3"] .exp-btn:active {
+[data-design="m3"] .exp-btn:active,
+[data-design="m3"] .scroll-hint:active {
   border-radius: 0.6em;
   transform: scale(0.97);
 }
@@ -418,6 +422,7 @@
   border-radius: 30%;
   transform: scale(0.94);
 }
+
 
 /* ------------------------------------------------------------ contact ---- */
 

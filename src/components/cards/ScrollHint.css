@@ -1,0 +1,33 @@
+.scroll-hint-wrapper {
+  will-change: transform, opacity;
+}
+
+.scroll-hint {
+  font-family: Teachers, sans-serif;
+  box-shadow: none;
+}
+
+@keyframes hintWiggle {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-4px);
+  }
+  40%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-hint-wiggle {
+  animation: hintWiggle 0.4s ease-in-out;
+}
+
+@media screen and (max-width: 720px) {
+  .scroll-hint-wrapper {
+    top: 1rem;
+  }
+  .scroll-hint {
+    padding: 0.6em 1.4em !important;
+  }
+}

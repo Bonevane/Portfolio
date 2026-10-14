@@ -128,6 +128,7 @@ export default function App() {
             setCardSection={setCardSection}
             setActiveVideo={setActiveVideo}
             paused={Boolean(activeVideo || activeExperience)}
+            isExperienceOpen={Boolean(activeExperience)}
           />
         )}
         {currentTab === "Misc" &&

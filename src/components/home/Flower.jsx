@@ -144,7 +144,7 @@ export default function Flower() {
             onClick={(e) => toggleDesign(e.clientX, e.clientY)}
           />
           <span className="design-hint">
-            {design === "m3" ? "Back to the original" : "That's me"}
+            {design === "m3" ? "Back to the original" : "Tap for another look :)"}
           </span>
         </div>
       </div>

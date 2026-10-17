@@ -246,7 +246,7 @@ export const projects = [
     tags: ["Blender", "3D", "Animation", "Premiere Pro"],
     live: "",
     code: "",
-    thumbnail: "/projects/GT4.png",
+    thumbnail: "/projects/GT4.webp",
     media: [
       { 
         type: 'video', 
@@ -255,7 +255,7 @@ export const projects = [
         title: 'Moon Over the Castle', 
         description: 'A Gran Turismo 4 inspired cinematic movie sequence, rendered in Blender, and graded & edited in Adobe Premiere Pro.'
       },
-      { type: 'image', url: '/projects/GT4.png' },
+      { type: 'image', url: '/projects/GT4.webp' },
       { type: 'image', url: '/projects/GT4-2.webp' },
       { type: 'image', url: '/projects/GT4-3.webp' },
       { type: 'image', url: '/projects/GT4-4.webp' },

@@ -149,3 +149,21 @@ body.mac .card-origin {
 .card-desc-scroll.fade-bottom {
   --fade-bottom: 2.2em;
 }
+
+/* Title row: the title stays on one line unless it really doesn't fit next to
+   the buttons and the corner triangle; then it wraps instead of pushing the
+   triangle out past the card's corner (long titles on narrow phones). The
+   actions take their own width, grow into any space left over, and stay on
+   the title's first line (one line tall, centred as before), so the triangle
+   keeps to the top-right corner however the title wraps. */
+.card-title {
+  min-width: 0;
+  white-space: normal;
+}
+
+.card-actions {
+  flex: 1 0 auto;
+  width: auto;
+  align-self: flex-start;
+  min-height: 1lh;
+}

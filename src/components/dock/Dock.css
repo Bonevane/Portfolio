@@ -15,7 +15,7 @@
 
 @media screen and (max-width: 1000px) {
   .dock-container {
-    bottom: 8vh;
+    bottom: 10vh;
     left: 2.4em;
     font-size: 2vw;
   }

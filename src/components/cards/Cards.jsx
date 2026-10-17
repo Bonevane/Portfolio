@@ -188,7 +188,7 @@ const CardInner = memo(function CardInner({
                 {card.title}
               </a>
             </h2>
-            <div className="flex justify-between items-center gap-2 w-full">
+            <div className="card-actions flex justify-between items-center gap-2 w-full">
               <div className="flex gap-2">
                 {card.live === "" ? (
                   ""
@@ -215,6 +215,7 @@ const CardInner = memo(function CardInner({
               </div>
               {!isSelected && (
                 <svg
+                  className="card-arrow"
                   width="30"
                   height="30"
                   viewBox="0 0 35 35"
@@ -300,7 +301,6 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
   const shakeTimerRef = useRef(null);
   const wrongScrollDeltaRef = useRef(0);
   const resetAccumulatorTimerRef = useRef(null);
-  const stuckAtBoundaryTimeRef = useRef(0);
   const gestureMovedCarouselRef = useRef(false);
   const gestureEndTimerRef = useRef(null);
 
@@ -485,7 +485,6 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
       if (gestureEndTimerRef.current) clearTimeout(gestureEndTimerRef.current);
       gestureEndTimerRef.current = setTimeout(() => {
         gestureMovedCarouselRef.current = false;
-        stuckAtBoundaryTimeRef.current = 0;
         wrongScrollDeltaRef.current = 0;
       }, 250);
 
@@ -501,7 +500,6 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
           // This scroll gesture is actively moving the carousel.
           // A gesture that moved the carousel must NEVER trigger the wrong-way hint!
           gestureMovedCarouselRef.current = true;
-          stuckAtBoundaryTimeRef.current = 0;
           wrongScrollDeltaRef.current = 0;
 
           // If the hint is visible and user scrolls in a valid direction, dismiss it
@@ -513,32 +511,21 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
           const isAtTop = currentIdx >= maxIdx - 0.01 && effectiveDelta > 0;
           const isAtBottom = currentIdx <= 0.01 && effectiveDelta < 0;
 
-          if (isAtTop || isAtBottom) {
-            if (stuckAtBoundaryTimeRef.current === 0) {
-              stuckAtBoundaryTimeRef.current = Date.now();
-            }
+          // Only a gesture that starts while resting at the end counts. A
+          // gesture that moved the carousel there (a flick and its momentum
+          // tail included) never shows the hint, however long it keeps going;
+          // the user has to stop at the end and then scroll outwards.
+          if ((isAtTop || isAtBottom) && !gestureMovedCarouselRef.current) {
+            wrongScrollDeltaRef.current += Math.abs(effectiveDelta);
 
-            // If this gesture was already moving the carousel to the end,
-            // ignore the arrival delta. Only trigger if the user keeps scrolling
-            // once at the end (continuous wheeling for > 400ms at the boundary)
-            // OR if the gesture started while already resting at the boundary.
-            const isContinuingPastBoundary =
-              gestureMovedCarouselRef.current &&
-              Date.now() - stuckAtBoundaryTimeRef.current > 400;
-            const isStartedAtBoundary = !gestureMovedCarouselRef.current;
+            if (resetAccumulatorTimerRef.current) clearTimeout(resetAccumulatorTimerRef.current);
+            resetAccumulatorTimerRef.current = setTimeout(() => {
+              wrongScrollDeltaRef.current = 0;
+            }, 250);
 
-            if (isStartedAtBoundary || isContinuingPastBoundary) {
-              wrongScrollDeltaRef.current += Math.abs(effectiveDelta);
-
-              if (resetAccumulatorTimerRef.current) clearTimeout(resetAccumulatorTimerRef.current);
-              resetAccumulatorTimerRef.current = setTimeout(() => {
-                wrongScrollDeltaRef.current = 0;
-              }, 250);
-
-              if (wrongScrollDeltaRef.current >= 150) {
-                triggerScrollHint(isAtTop ? "up" : "down");
-                wrongScrollDeltaRef.current = 0;
-              }
+            if (wrongScrollDeltaRef.current >= 150) {
+              triggerScrollHint(isAtTop ? "up" : "down");
+              wrongScrollDeltaRef.current = 0;
             }
           }
         }

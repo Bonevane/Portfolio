@@ -195,6 +195,14 @@
   [data-design="m3"] .dock-background {
     background: linear-gradient(to top, var(--m3-page), transparent);
   }
+  /* The pill is wider than the original dock (padding + background), so the
+     original's fixed left offset leaves it off-centre; centre it instead. */
+  [data-design="m3"] .dock-container {
+    left: 0;
+    right: 0;
+    width: fit-content;
+    margin-inline: auto;
+  }
 }
 
 /* --------------------------------------------------------------- home ---- */
@@ -354,6 +362,40 @@
   background-color: var(--md-secondary-container);
   color: var(--md-on-secondary-container);
   transform: scale(1.05);
+}
+
+/* "Open" triangle in a closed card's corner, in the section colour. */
+[data-design="m3"] .card-arrow path {
+  fill: var(--md-primary);
+  fill-opacity: 1;
+  transition: fill 0.6s var(--m3-effects);
+}
+
+/* Phones: Google Sans runs wider than the original font, so the same card
+   wrapped its tags onto extra rows and squeezed the description. Tighter
+   spacing and a slightly smaller description keep it close to the original. */
+@media screen and (max-width: 720px) {
+  [data-design="m3"] .card-head {
+    padding: 0.7em 0.85em 0.25em;
+  }
+  [data-design="m3"] .card-title-row {
+    margin-bottom: 0.3em;
+  }
+  [data-design="m3"] .card-head > p {
+    font-size: 0.55em;
+    line-height: 1.45;
+  }
+  [data-design="m3"] .card-tags {
+    padding: 0 0.85em 0.75em;
+    gap: 0.3em;
+  }
+  [data-design="m3"] .project-tag {
+    padding: 0.35em 0.75em;
+  }
+  [data-design="m3"] .live-btn,
+  [data-design="m3"] .code-btn {
+    padding: 0.45em 1em;
+  }
 }
 
 /* Video play button: an M3 cookie. */
@@ -628,11 +670,16 @@
   background-color: var(--md-primary);
   mix-blend-mode: normal;
 }
+/* Icons (scroll, grab, play...) sit on the primary-coloured dot, so they use
+   on-primary. They set their colour on the <svg> element, which the shapes
+   inherit, so recolour the svg itself as well as any shape. */
+[data-design="m3"] .cursor-dot svg[stroke],
 [data-design="m3"] .cursor-dot svg [stroke] {
-  stroke: var(--md-on-surface);
+  stroke: var(--md-on-primary);
 }
+[data-design="m3"] .cursor-dot svg[fill="white"],
 [data-design="m3"] .cursor-dot svg [fill="white"] {
-  fill: var(--md-on-surface);
+  fill: var(--md-on-primary);
 }
 
 [data-design="m3"] .cursor-ring {

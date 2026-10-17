@@ -36,10 +36,15 @@ export default function Cursor() {
 
     const updateRing = () => {
       // Lerp for buttery smooth ring follow
-      ring.current.x += (mouse.current.x - ring.current.x) * 0.15;
-      ring.current.y += (mouse.current.y - ring.current.y) * 0.15;
-
-      ringEl.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
+      const dx = mouse.current.x - ring.current.x;
+      const dy = mouse.current.y - ring.current.y;
+      // Once the ring has caught up there's nothing to redraw; skipping the
+      // write lets the browser leave its blurred backdrop alone.
+      if (Math.abs(dx) > 0.05 || Math.abs(dy) > 0.05) {
+        ring.current.x += dx * 0.15;
+        ring.current.y += dy * 0.15;
+        ringEl.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
+      }
 
       requestRef.current = requestAnimationFrame(updateRing);
     };

@@ -62,13 +62,19 @@ export function schemeFor(section, dark) {
   return vars;
 }
 
-// The variables are always kept current (they are unused by the original
-// design), so switching to M3 never shows a frame with stale colours.
+// Writes the scheme only while M3 is active: the original design never reads
+// these variables, and changing them on <html> makes the browser recheck the
+// whole page's styles at every section change. useM3Theme applies them in a
+// layout effect, so switching to M3 still has them before its first frame.
 export function applyScheme(section, dark, active) {
   const root = document.documentElement;
-  for (const [k, v] of Object.entries(schemeFor(section, dark))) root.style.setProperty(k, v);
   root.dataset.theme = dark ? "dark" : "light";
-  document
-    .querySelector('meta[name="theme-color"]')
-    ?.setAttribute("content", active ? schemeFor(section, dark)["--m3-page"] : "#000000");
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (!active) {
+    meta?.setAttribute("content", "#000000");
+    return;
+  }
+  const vars = schemeFor(section, dark);
+  for (const [k, v] of Object.entries(vars)) root.style.setProperty(k, v);
+  meta?.setAttribute("content", vars["--m3-page"]);
 }

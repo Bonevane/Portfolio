@@ -156,7 +156,14 @@ export default function Aurora({
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
-      antialias: true,
+      // The only geometry is one triangle whose edges are all off-screen, so
+      // multisampling changes no pixel; it just multiplies the GPU's memory
+      // traffic for this full-screen canvas, which weak GPUs feel.
+      antialias: false,
+      // Drawn at half resolution and stretched to fill the screen: the aurora
+      // is a soft gradient, so this differs by at most a couple of colour
+      // levels (pixel diffs) for a quarter of the GPU work every frame.
+      dpr: 0.5,
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);

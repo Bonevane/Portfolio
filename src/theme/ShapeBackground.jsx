@@ -129,18 +129,23 @@ export default function ShapeBackground() {
             }}
           />
         ) : (
-          <svg key={l.cls} className={`bg-shape ${l.cls}`} viewBox="0 0 1 1">
-            <g
-              ref={(el) => (groupRefs.current[k] = el)}
-              transform={`rotate(${k * 30} 0.5 0.5)`}
-            >
-              <path
-                ref={(el) => (pathRefs.current[k] = el)}
-                d={initial[k]}
-                style={{ fill: `var(${l.fill})` }}
-              />
-            </g>
-          </svg>
+          // The spin is on an HTML wrapper: Chrome runs a CSS animation on an
+          // <svg> element on the main thread (restyling it every frame), but
+          // hands one on a <div> to the GPU.
+          <div key={l.cls} className={`bg-shape ${l.cls}`}>
+            <svg viewBox="0 0 1 1">
+              <g
+                ref={(el) => (groupRefs.current[k] = el)}
+                transform={`rotate(${k * 30} 0.5 0.5)`}
+              >
+                <path
+                  ref={(el) => (pathRefs.current[k] = el)}
+                  d={initial[k]}
+                  style={{ fill: `var(${l.fill})` }}
+                />
+              </g>
+            </svg>
+          </div>
         ),
       )}
     </div>

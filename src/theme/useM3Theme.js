@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { applyScheme } from "./m3.js";
 
 const query = "(prefers-color-scheme: dark)";
@@ -14,7 +14,9 @@ export default function useM3Theme(section, enabled = true) {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  useEffect(() => {
+  // A layout effect, so the colours are in place in the same commit that turns
+  // M3 on (the design switch renders synchronously inside a view transition).
+  useLayoutEffect(() => {
     applyScheme(section, dark, enabled);
   }, [section, dark, enabled]);
 

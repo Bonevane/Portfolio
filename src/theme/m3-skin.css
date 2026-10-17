@@ -651,6 +651,9 @@
   transform: scale(0.6);
   transition: opacity 0.2s var(--m3-effects), transform 0.45s var(--m3-spring-fast);
   animation: m3-cursor-spin 7s linear infinite;
+  /* Only spin while the cookie is showing (below); a running animation
+     restyles the page every frame even at opacity 0. */
+  animation-play-state: paused;
 }
 [data-design="m3"] .ring-interactable {
   background-color: transparent;
@@ -661,6 +664,7 @@
 [data-design="m3"] .ring-interactable::before {
   opacity: 1;
   transform: scale(1);
+  animation-play-state: running;
 }
 [data-design="m3"] .ring-scrollable,
 [data-design="m3"] .ring-grab,

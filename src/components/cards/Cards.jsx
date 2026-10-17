@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { memo, useEffect, useState, useRef } from "react";
 import { cards } from "../../data/Cards.js";
 import { projectSlugFromPath } from "../../data/Paths.js";
 import { applySeo, projectSeo } from "../../data/Seo.js";
@@ -27,6 +27,239 @@ function layoutFor(cardIndex, center, force = false) {
     translateY: offset * offset * 25,
   };
 }
+
+// Everything inside a card except its position and depth effects. Scrolling
+// re-renders the carousel every frame, but only the cards' transforms change
+// then, so this is memoized and only re-renders when the card itself changes
+// (opened, closed, or showing another image).
+const CardInner = memo(function CardInner({
+  card,
+  isSelected,
+  mediaIndex,
+  setCurrentMediaIndex,
+  setActiveVideo,
+  swipe,
+}) {
+  const hasGallery = isSelected && card.media && card.media.length > 1;
+  // Once opened, a card keeps its gallery mounted (already downloaded), so
+  // closing it still cross-fades from whichever image was showing.
+  const [opened, setOpened] = useState(false);
+  if (isSelected && !opened) setOpened(true);
+  const showPrev = () =>
+    setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : card.media.length - 1));
+  const showNext = () =>
+    setCurrentMediaIndex((prev) => (prev < card.media.length - 1 ? prev + 1 : 0));
+
+  return (
+    <>
+      <div
+        className="slideIn relative w-full group overflow-hidden"
+        style={{
+          paddingTop: isSelected ? "56.25%" : "0%",
+          opacity: isSelected ? 1 : 0,
+        }}
+        onTouchStart={(e) => {
+          if (!hasGallery) return;
+          swipe.startX = e.touches[0].clientX;
+          swipe.startY = e.touches[0].clientY;
+          swipe.horizontal = false;
+        }}
+        onTouchMove={(e) => {
+          if (!hasGallery) return;
+          const diffX = swipe.startX - e.touches[0].clientX;
+          const diffY = swipe.startY - e.touches[0].clientY;
+          if (!swipe.horizontal && Math.abs(diffX) > 10 && Math.abs(diffX) > Math.abs(diffY)) {
+            swipe.horizontal = true;
+          }
+          if (swipe.horizontal) e.stopPropagation();
+        }}
+        onTouchEnd={(e) => {
+          if (!hasGallery) return;
+          if (swipe.horizontal) {
+            e.stopPropagation();
+            const diffX = swipe.startX - e.changedTouches[0].clientX;
+            if (Math.abs(diffX) > 40) diffX > 0 ? showNext() : showPrev();
+          }
+          swipe.horizontal = false;
+        }}
+      >
+        {card.media ? (
+          <>
+            {card.media.map((mediaItem, idx) =>
+              // A card that hasn't been opened only needs the image it opens
+              // on; the rest of its gallery loads when it is opened.
+              !opened && !isSelected && idx !== mediaIndex ? null : (
+                <img
+                  key={idx}
+                  decoding="async"
+                  src={mediaItem.type === 'image' || !mediaItem.type ? mediaItem.url : card.thumbnail}
+                  alt={card.title}
+                  className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${
+                    isSelected ? "border-b border-[#757575]/70" : ""
+                  } rounded-t-3xl ${idx === mediaIndex ? "opacity-100" : "opacity-0"}`}
+                />
+              ),
+            )}
+
+            {isSelected && card.media[mediaIndex].type === 'video' && (
+              <div
+                className="card-play-scrim absolute inset-0 rounded-t-3xl flex items-center justify-center z-40 bg-black/20 backdrop-blur-sm pointer-events-auto cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (setActiveVideo) {
+                    const videoMedia = card.media.filter(m => m.type === 'video');
+                    const startIndex = videoMedia.findIndex(m => m.url === card.media[mediaIndex].url);
+                    setActiveVideo({ media: videoMedia, startIndex: Math.max(0, startIndex) });
+                  }
+                }}
+              >
+                <div className="card-play w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center hover:scale-110 hover:bg-white/30 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" className="ml-1">
+                    <path d="M8 5V19L19 12L8 5Z" />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+            {hasGallery && (
+              <>
+                {/* Dots indicator */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+                  {card.media.map((_, idx) => (
+                    <div
+                      key={idx}
+                      className={`card-dot w-2 h-2 rounded-full transition-all duration-300 ${idx === mediaIndex ? 'bg-white scale-125' : 'bg-white/40'}`}
+                      data-active={idx === mediaIndex}
+                    />
+                  ))}
+                </div>
+
+                {/* Navigation Buttons */}
+                <div className="absolute inset-0 flex justify-between items-center px-2 pointer-events-none z-50">
+                  <button
+                    className="card-nav carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      showPrev();
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                  </button>
+
+                  <button
+                    className="card-nav carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      showNext();
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <img
+            decoding="async"
+            src={card.thumbnail}
+            alt={card.title}
+            className={`absolute top-0 left-0 w-full h-full object-cover ${
+              isSelected ? "border-b border-[#757575]/70" : ""
+            }  rounded-t-3xl`}
+          />
+        )}
+      </div>
+
+      <div className="card-body text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between flex-1 min-h-0">
+        <div className="card-head py-3 px-4 flex flex-col min-h-0">
+          <div className="card-title-row flex mb-2 gap-4 items-center">
+            <h2 className="card-title text-[1em] font-[ElMessiri] whitespace-nowrap">
+              {/* A real link so crawlers can reach /projects/<slug>; a normal
+                  click still just opens or closes the card in place. */}
+              <a
+                href={`/projects/${card.slug}`}
+                className="text-inherit no-underline"
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                  e.preventDefault();
+                }}
+              >
+                {card.title}
+              </a>
+            </h2>
+            <div className="flex justify-between items-center gap-2 w-full">
+              <div className="flex gap-2">
+                {card.live === "" ? (
+                  ""
+                ) : (
+                  <a
+                    href={card.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="live-btn block">Live</span>
+                  </a>
+                )}
+                {card.code === "" ? (
+                  ""
+                ) : (
+                  <a
+                    href={card.code}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="code-btn block">Code</span>
+                  </a>
+                )}
+              </div>
+              {!isSelected && (
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 35 35"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M28.3546 1.82294C30.889 1.96936 32.9114 3.99181 33.0579 6.52625L34.3849 29.4963C34.6499 34.0837 29.1068 36.5694 25.8576 33.3202L1.56055 9.02315C-1.68861 5.77399 0.797104 0.23093 5.38446 0.495944L28.3546 1.82294Z"
+                    fill="#D9D9D9"
+                    fillOpacity="0.9"
+                  />
+                </svg>
+              )}
+            </div>
+          </div>
+          {isSelected && card.longDescription ? (
+            <p
+              ref={(el) => {
+                if (!el) return;
+                updateDescFade(el);
+                // The card grows as it opens; re-check once it settles.
+                const ro = new ResizeObserver(() => updateDescFade(el));
+                ro.observe(el);
+                return () => ro.disconnect();
+              }}
+              onScroll={(e) => updateDescFade(e.currentTarget)}
+              className="card-desc-scroll text-[0.6em] font-normal overflow-y-auto min-h-0 pr-2"
+            >
+              {card.longDescription}
+            </p>
+          ) : (
+            <p className="text-[0.6em] font-normal ">{card.description}</p>
+          )}
+        </div>
+        <div className="card-tags pb-4 px-4 flex gap-2 justify-between flex-wrap">
+          {card.tags.map((tag) => (
+            <span key={tag} className="project-tag">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+});
 
 export default function Cards({ setCardSection, setActiveVideo, paused = false, isExperienceOpen = false }) {
   // Wheel/touch/drag listeners live on window, so an overlay on top (Experience,
@@ -101,15 +334,15 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
   };
   const touchVelocityRef = useRef(0);
   const decayFrame = useRef(null);
+  const renderFrame = useRef(0);
   const isDragging = useRef(false);
   const isTouching = useRef(false);
   const lastX = useRef(0);
   const lastY = useRef(0);
   const lastTime = useRef(0);
   
-  const imageTouchStartX = useRef(0);
-  const imageTouchStartY = useRef(0);
-  const isHorizontalSwipe = useRef(false);
+  // Touch state for swiping between an open card's images (see CardInner).
+  const swipeRef = useRef({ startX: 0, startY: 0, horizontal: false });
 
   const selectedCardRef = useRef(selectedCard);
   const scrollAccumulatorRef = useRef(0);
@@ -152,8 +385,11 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
   const smoothed = useRef({});
   const [, setSmoothTick] = useState(0);
   const centerIndexRef = useRef(0);
+  // Restarts the WebKit smoothing loop below, which stops once cards settle.
+  const wakeSmoothing = useRef(() => {});
   useEffect(() => {
     centerIndexRef.current = centerIndex;
+    wakeSmoothing.current();
   }, [centerIndex]);
 
   useEffect(() => {
@@ -165,7 +401,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
     if (!webkit) return;
 
     const follow = 0.15;
-    let frame;
+    let frame = 0;
     const loop = () => {
       const center = centerIndexRef.current;
       const store = smoothed.current;
@@ -194,11 +430,23 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
           }
         }
       });
-      if (changed) setSmoothTick((t) => t + 1);
-      frame = requestAnimationFrame(loop);
+      // Keep going only while something is still moving, so the page can
+      // idle (an endless loop keeps iPhones from ever resting).
+      if (changed) {
+        setSmoothTick((t) => t + 1);
+        frame = requestAnimationFrame(loop);
+      } else {
+        frame = 0;
+      }
     };
-    frame = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frame);
+    wakeSmoothing.current = () => {
+      if (!frame) frame = requestAnimationFrame(loop);
+    };
+    wakeSmoothing.current();
+    return () => {
+      cancelAnimationFrame(frame);
+      wakeSmoothing.current = () => {};
+    };
   }, []);
 
   const wheelScrollFactor = 0.002;
@@ -296,13 +544,16 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
         }
       }
 
-      // Always update the center index so the background carousel rotates
-      setCenterIndex((prev) => {
-        let next = prev + effectiveDelta * wheelScrollFactor;
-        next = Math.max(0, Math.min(cards.length - 1, next));
-        centerIndexRef.current = next;
-        return next;
-      });
+      // Always update the center index so the background carousel rotates.
+      // Trackpads send well over 60 wheel events a second, so the position is
+      // tracked here and rendered at most once per frame.
+      centerIndexRef.current = nextIdx;
+      if (!renderFrame.current) {
+        renderFrame.current = requestAnimationFrame(() => {
+          renderFrame.current = 0;
+          setCenterIndex(centerIndexRef.current);
+        });
+      }
 
       if (selectedCardRef.current !== null) {
         scrollAccumulatorRef.current += Math.abs(effectiveDelta);
@@ -329,7 +580,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
     };
 
     const move = (x, y, e) => {
-      if (isHorizontalSwipe.current) return;
+      if (swipeRef.current.horizontal) return;
       const dX = lastX.current - x;
       const dY = lastY.current - y;
       const effectiveDelta = dY + dX * 0.5;
@@ -412,6 +663,7 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
       if (decayFrame.current) cancelAnimationFrame(decayFrame.current);
+      if (renderFrame.current) cancelAnimationFrame(renderFrame.current);
       if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
       if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
       if (resetAccumulatorTimerRef.current) clearTimeout(resetAccumulatorTimerRef.current);
@@ -521,95 +773,6 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
 
         const safeMediaIndex = (isSelected && card.media && currentMediaIndex < card.media.length) ? currentMediaIndex : 0;
 
-        const cardContent = (
-          <div className="card-body text-left text-[#B5B5B5] text-[3.4vh] flex flex-col justify-between flex-1 min-h-0">
-            <div className="card-head py-3 px-4 flex flex-col min-h-0">
-              <div className="card-title-row flex mb-2 gap-4 items-center">
-                <h2 className="card-title text-[1em] font-[ElMessiri] whitespace-nowrap">
-                  {/* A real link so crawlers can reach /projects/<slug>; a normal
-                      click still just opens or closes the card in place. */}
-                  <a
-                    href={`/projects/${card.slug}`}
-                    className="text-inherit no-underline"
-                    onClick={(e) => {
-                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-                      e.preventDefault();
-                    }}
-                  >
-                    {card.title}
-                  </a>
-                </h2>
-                <div className="flex justify-between items-center gap-2 w-full">
-                  <div className="flex gap-2">
-                    {card.live === "" ? (
-                      ""
-                    ) : (
-                      <a
-                        href={card.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span className="live-btn block">Live</span>
-                      </a>
-                    )}
-                    {card.code === "" ? (
-                      ""
-                    ) : (
-                      <a
-                        href={card.code}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span className="code-btn block">Code</span>
-                      </a>
-                    )}
-                  </div>
-                  {!isSelected && (
-                    <svg
-                      width="30"
-                      height="30"
-                      viewBox="0 0 35 35"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M28.3546 1.82294C30.889 1.96936 32.9114 3.99181 33.0579 6.52625L34.3849 29.4963C34.6499 34.0837 29.1068 36.5694 25.8576 33.3202L1.56055 9.02315C-1.68861 5.77399 0.797104 0.23093 5.38446 0.495944L28.3546 1.82294Z"
-                        fill="#D9D9D9"
-                        fillOpacity="0.9"
-                      />
-                    </svg>
-                  )}
-                </div>
-              </div>
-              {isSelected && card.longDescription ? (
-                <p
-                  ref={(el) => {
-                    if (!el) return;
-                    updateDescFade(el);
-                    // The card grows as it opens; re-check once it settles.
-                    const ro = new ResizeObserver(() => updateDescFade(el));
-                    ro.observe(el);
-                    return () => ro.disconnect();
-                  }}
-                  onScroll={(e) => updateDescFade(e.currentTarget)}
-                  className="card-desc-scroll text-[0.6em] font-normal overflow-y-auto min-h-0 pr-2"
-                >
-                  {card.longDescription}
-                </p>
-              ) : (
-                <p className="text-[0.6em] font-normal ">{card.description}</p>
-              )}
-            </div>
-            <div className="card-tags pb-4 px-4 flex gap-2 justify-between flex-wrap">
-              {card.tags.map((tag) => (
-                <span key={tag} className="project-tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        );
-
         return (
           <div
             key={cardIndex}
@@ -636,6 +799,13 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
                 // the opposite problem: a filter on a descendant of that
                 // layer breaks stacking. So each engine gets its own spot.
                 filter: isSelected || isWebKit.current ? undefined : `blur(${blur}px)`,
+                // A card blurred this much by depth looks the same without its
+                // frosted-glass backdrop (pixel diffs: at most a few colour
+                // levels), and stacking the two blurs every frame is what
+                // makes weaker GPUs drop frames, so the far cards skip it.
+                ...(!isSelected && blur >= 4
+                  ? { backdropFilter: "none", WebkitBackdropFilter: "none" }
+                  : {}),
                 opacity: isSelected ? 1 : opacity,
                 padding: "0",
                 justifyContent: "normal",
@@ -648,135 +818,14 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
                     isSelected || !isWebKit.current ? undefined : `blur(${blur}px)`,
                 }}
               >
-              <div
-                className="slideIn relative w-full group overflow-hidden"
-                style={{
-                  paddingTop: isSelected ? "56.25%" : "0%",
-                  opacity: isSelected ? 1 : 0,
-                }}
-                onTouchStart={(e) => {
-                  if (isSelected && card.media && card.media.length > 1) {
-                    imageTouchStartX.current = e.touches[0].clientX;
-                    imageTouchStartY.current = e.touches[0].clientY;
-                    isHorizontalSwipe.current = false;
-                  }
-                }}
-                onTouchMove={(e) => {
-                  if (isSelected && card.media && card.media.length > 1) {
-                    const currentX = e.touches[0].clientX;
-                    const currentY = e.touches[0].clientY;
-                    const diffX = imageTouchStartX.current - currentX;
-                    const diffY = imageTouchStartY.current - currentY;
-                    
-                    if (!isHorizontalSwipe.current && Math.abs(diffX) > 10 && Math.abs(diffX) > Math.abs(diffY)) {
-                      isHorizontalSwipe.current = true;
-                    }
-                    
-                    if (isHorizontalSwipe.current) {
-                      e.stopPropagation();
-                    }
-                  }
-                }}
-                onTouchEnd={(e) => {
-                  if (isSelected && card.media && card.media.length > 1) {
-                    if (isHorizontalSwipe.current) {
-                      e.stopPropagation();
-                      const endX = e.changedTouches[0].clientX;
-                      const diffX = imageTouchStartX.current - endX;
-                      if (Math.abs(diffX) > 40) {
-                        if (diffX > 0) {
-                          setCurrentMediaIndex((prev) => (prev < card.media.length - 1 ? prev + 1 : 0));
-                        } else {
-                          setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : card.media.length - 1));
-                        }
-                      }
-                    }
-                    isHorizontalSwipe.current = false;
-                  }
-                }}
-              >
-                {card.media ? (
-                  <>
-                    {card.media.map((mediaItem, idx) => (
-                      <img
-                        key={idx}
-                        src={mediaItem.type === 'image' || !mediaItem.type ? mediaItem.url : card.thumbnail}
-                        alt={card.title}
-                        className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${
-                          isSelected ? "border-b border-[#757575]/70" : ""
-                        } rounded-t-3xl ${idx === safeMediaIndex ? "opacity-100" : "opacity-0"}`}
-                      />
-                    ))}
-                    
-                    {isSelected && card.media[safeMediaIndex].type === 'video' && (
-                      <div 
-                        className="card-play-scrim absolute inset-0 rounded-t-3xl flex items-center justify-center z-40 bg-black/20 backdrop-blur-sm pointer-events-auto cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (setActiveVideo) {
-                            const videoMedia = card.media.filter(m => m.type === 'video');
-                            const startIndex = videoMedia.findIndex(m => m.url === card.media[safeMediaIndex].url);
-                            setActiveVideo({ media: videoMedia, startIndex: Math.max(0, startIndex) });
-                          }
-                        }}
-                      >
-                        <div className="card-play w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center hover:scale-110 hover:bg-white/30 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" className="ml-1">
-                            <path d="M8 5V19L19 12L8 5Z" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
-
-                    {isSelected && card.media.length > 1 && (
-                      <>
-                        {/* Dots indicator */}
-                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-50">
-                          {card.media.map((_, idx) => (
-                            <div 
-                              key={idx} 
-                              className={`card-dot w-2 h-2 rounded-full transition-all duration-300 ${idx === safeMediaIndex ? 'bg-white scale-125' : 'bg-white/40'}`}
-                              data-active={idx === safeMediaIndex} 
-                            />
-                          ))}
-                        </div>
-
-                        {/* Navigation Buttons */}
-                        <div className="absolute inset-0 flex justify-between items-center px-2 pointer-events-none z-50">
-                          <button
-                            className="card-nav carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : card.media.length - 1));
-                            }}
-                          >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                          </button>
-                          
-                          <button
-                            className="card-nav carousel-nav-btn w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all pointer-events-auto cursor-pointer opacity-100 md:opacity-0 md:group-hover:opacity-100"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentMediaIndex((prev) => (prev < card.media.length - 1 ? prev + 1 : 0));
-                            }}
-                          >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <img
-                    src={card.thumbnail}
-                    alt={card.title}
-                    className={`absolute top-0 left-0 w-full h-full object-cover ${
-                      isSelected ? "border-b border-[#757575]/70" : ""
-                    }  rounded-t-3xl`}
-                  />
-                )}
-              </div>
-              {cardContent}
+              <CardInner
+                card={card}
+                isSelected={isSelected}
+                mediaIndex={safeMediaIndex}
+                setCurrentMediaIndex={setCurrentMediaIndex}
+                setActiveVideo={setActiveVideo}
+                swipe={swipeRef.current}
+              />
               </div>
             </div>
           </div>

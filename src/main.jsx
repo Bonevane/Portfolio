@@ -3,8 +3,10 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { initDesign } from './theme/design.js'
+import { initFx } from './theme/fx.js'
 
 initDesign()
+initFx()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

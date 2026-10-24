@@ -3,6 +3,7 @@ import { cards } from "../../data/Cards.js";
 import { projectSlugFromPath } from "../../data/Paths.js";
 import { applySeo, projectSeo } from "../../data/Seo.js";
 import ScrollHint from "./ScrollHint.jsx";
+import { useFx } from "../../theme/fx.js";
 import "./Cards.css";
 
 // Fade whichever edges of the long description still have text beyond them.
@@ -263,6 +264,9 @@ const CardInner = memo(function CardInner({
 });
 
 export default function Cards({ setCardSection, setActiveVideo, paused = false, isExperienceOpen = false }) {
+  // Lite effects (weak GPUs, see theme/fx.js): gentler depth blur on the far
+  // cards, with a little more fade carrying the depth instead.
+  const lite = useFx() === "lite";
   // Wheel/touch/drag listeners live on window, so an overlay on top (Experience,
   // video player) would otherwise scroll the carousel behind it.
   const pausedRef = useRef(paused);
@@ -747,8 +751,9 @@ export default function Cards({ setCardSection, setActiveVideo, paused = false, 
             : target ?? layoutFor(cardIndex, centerIndex, true);
         const { rotation, translateX, translateY } = shown;
 
-        const blur = Math.pow(Math.abs(offset), 2) * 1.0;
-        const opacity = 1 - Math.abs(offset) * 0.18;
+        const depthBlur = Math.pow(Math.abs(offset), 2) * 1.0;
+        const blur = lite ? Math.min(depthBlur, 6) : depthBlur;
+        const opacity = 1 - Math.abs(offset) * (lite ? 0.2 : 0.18);
 
         const expandedStyle = isSelected
           ? {

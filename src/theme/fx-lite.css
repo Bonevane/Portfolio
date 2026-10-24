@@ -1,0 +1,26 @@
+/* Lite effects (src/theme/fx.js): on GPUs that can't keep up, the cards and
+   buttons drop their live "frosted glass" blur. A blur has to be recomputed
+   every frame anything behind it moves, which is what weak mobile GPUs choke
+   on. The cards keep their own tint: what's behind them is mostly the soft
+   aurora, which looks almost the same unblurred (pixel checks: the cards'
+   colour stays within a few levels). Buttons over pictures get a slightly
+   darker tint, as the blur used to soften what's behind them. The dock is
+   left as is. */
+
+[data-fx="lite"] .card,
+[data-fx="lite"] .card-play-scrim,
+[data-fx="lite"] .card-play,
+[data-fx="lite"] .card-nav,
+[data-fx="lite"] .vp-nav,
+[data-fx="lite"] .vp-controls,
+[data-fx="lite"] .exp-close {
+  backdrop-filter: none;
+}
+
+[data-fx="lite"]:not([data-design="m3"]) .card-nav:not(:hover),
+[data-fx="lite"]:not([data-design="m3"]) .vp-controls {
+  background-color: rgba(0, 0, 0, 0.55);
+}
+[data-fx="lite"]:not([data-design="m3"]) .card-play:not(:hover) {
+  background-color: rgba(60, 60, 60, 0.55);
+}

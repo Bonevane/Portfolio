@@ -262,7 +262,7 @@ export default function VideoPlayer({ media, initialIndex, onClose }) {
                   {/* Embedded Control Pill */}
                   {item.type === 'video' && (
                     <div 
-                      className={`absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-[90%] md:w-[80%] max-w-[600px] h-10 md:h-12 rounded-full bg-black/40 md:bg-black/30 backdrop-blur-xl border border-white/10 flex items-center px-4 md:px-6 gap-3 md:gap-6 transition-opacity duration-500 z-50 cursor-auto ${!isPlaying ? 'opacity-100' : 'opacity-100 md:opacity-0 md:group-hover:opacity-100'}`}
+                      className={`vp-controls absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-[90%] md:w-[80%] max-w-[600px] h-10 md:h-12 rounded-full bg-black/40 md:bg-black/30 backdrop-blur-xl border border-white/10 flex items-center px-4 md:px-6 gap-3 md:gap-6 transition-opacity duration-500 z-50 cursor-auto ${!isPlaying ? 'opacity-100' : 'opacity-100 md:opacity-0 md:group-hover:opacity-100'}`}
                       onClick={(e) => e.stopPropagation()}
                     >
                     {/* Main Scrubber */}

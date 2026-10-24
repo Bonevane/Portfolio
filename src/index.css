@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./theme/m3.css";
 @import "./theme/m3-skin.css";
+@import "./theme/fx-lite.css";
 
 ::selection {
   background: transparent;
